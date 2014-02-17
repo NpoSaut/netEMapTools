@@ -4,6 +4,11 @@
         xmlns:m="clr-namespace:MapVisualization;assembly=MapVisualization"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        <m:MapView />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <m:MapView Name="map" Grid.Row="0" Margin="2" />
+        <Button Grid.Row="1" Content="yo" Margin="2" Click="Button_Click" />
     </Grid>
 </Window>
