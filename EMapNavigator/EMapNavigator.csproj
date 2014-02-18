@@ -94,6 +94,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Geographics\Geographics.csproj">
+      <Project>{4eaf91df-7a6c-4f0e-b15b-f372ce42c8d0}</Project>
+      <Name>Geographics</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MapVisualization\MapVisualization.csproj">
       <Project>{e4d20511-9feb-4102-bee2-208b124c60c4}</Project>
       <Name>MapVisualization</Name>
