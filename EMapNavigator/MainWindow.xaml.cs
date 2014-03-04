@@ -1,17 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using Geographics;
+using GMapElements;
 
 namespace EMapNavigator
 {
@@ -27,6 +18,16 @@ namespace EMapNavigator
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            GMap gMap;
+            using (var mapStream = new FileStream("Щербинка_1.gps", FileMode.Open))
+            {
+                gMap = GMap.Load(mapStream);
+            }
+
+            foreach (var post in gMap.Sections.SelectMany(sec => sec.Posts))
+            {
+                map.AddElement(new KilometerPostMapElement(post));
+            }
         }
     }
 }
