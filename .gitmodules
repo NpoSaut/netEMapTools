@@ -1,3 +1,6 @@
 [submodule "Geographics"]
 	path = Geographics
 	url = https://github.com/NpoSaut/netGeographicsLib.git
+[submodule "GMapElements"]
+	path = GMapElements
+	url = https://github.com/NpoSaut/netGMapElements.git
