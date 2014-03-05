@@ -19,7 +19,7 @@ namespace EMapNavigator
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             GMap gMap;
-            using (var mapStream = new FileStream("Щербинка_1.gps", FileMode.Open))
+            using (var mapStream = new FileStream("Екатеринбург.gps", FileMode.Open))
             {
                 gMap = GMap.Load(mapStream);
             }
