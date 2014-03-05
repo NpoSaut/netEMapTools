@@ -1,6 +1,8 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Media;
 using Geographics;
 using GMapElements;
 using MapVisualization;
@@ -42,9 +44,15 @@ namespace EMapNavigator
             }
         }
 
+        private readonly List<EarthPoint> _trackPoints = new List<EarthPoint>();
+        private MapTrackElement _previousMapTrackElement;
+
         private void Map_OnGeographicMouseClick(object Sender, GeographicEventArgs E)
         {
-            map.AddElement(new MapMarkerElement(E.Point));
+            _trackPoints.Add(E.Point);
+            if (_previousMapTrackElement != null) map.RemoveElement(_previousMapTrackElement);
+            _previousMapTrackElement = new MapTrackElement(_trackPoints, new Pen(Brushes.BlueViolet, 2));
+            map.AddElement(_previousMapTrackElement);
         }
     }
 }
