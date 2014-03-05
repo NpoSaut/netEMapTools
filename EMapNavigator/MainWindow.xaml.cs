@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows;
 using Geographics;
 using GMapElements;
+using MapVisualization;
 
 namespace EMapNavigator
 {
@@ -24,10 +25,26 @@ namespace EMapNavigator
                 gMap = GMap.Load(mapStream);
             }
 
-            foreach (var post in gMap.Sections.SelectMany(sec => sec.Posts))
+            foreach (var section in gMap.Sections)
             {
-                map.AddElement(new KilometerPostMapElement(post));
+                for (int i = 0; i < section.Posts.Count; i++)
+                {
+                    var post = section.Posts[i];
+                    map.AddElement(new KilometerPostMapElement(post));
+                    if (i + 1 < section.Posts.Count)
+                    {
+                        var nextPost = section.Posts[i + 1];
+                        foreach (var gObject in post.Tracks.First().Objects)
+                        {
+                        }
+                    }
+                }
             }
+        }
+
+        private void Map_OnGeographicMouseClick(object Sender, GeographicEventArgs E)
+        {
+            map.AddElement(new MapMarkerElement(E.Point));
         }
     }
 }
