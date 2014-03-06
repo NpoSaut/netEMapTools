@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Media;
 using GMapElements;
@@ -10,23 +11,32 @@ namespace EMapNavigator.MapElements
     {
         public int Ordinate { get; private set; }
 
-        public KilometerPostMapElement(GPost Post) : base(Post.Point) { this.Ordinate = Post.Ordinate; }
+        public KilometerPostMapElement(GPost Post) : base(Post.Point)
+        {
+            this.Ordinate = Post.Ordinate;
+            SectionBrush = Brushes.Aquamarine;
+        }
+
+        private Brush mainBrush = Brushes.DarkSlateGray;
+        public Brush SectionBrush { get; set; }
 
         protected override void DrawPointElement(DrawingContext dc)
         {
-            var postLabelText = string.Format("{0}км", Ordinate / 1000);
+            var postLabelText = string.Format("{0}км", (double)Ordinate / 1000);
             var postLabel = new FormattedText(postLabelText, CultureInfo.CurrentCulture,
-                                         FlowDirection.LeftToRight, new Typeface("Verdana"), 10, Brushes.DodgerBlue);
+                                         FlowDirection.LeftToRight, new Typeface("Verdana"), 10, mainBrush);
 
-            dc.PushTransform(new TranslateTransform(-1, -26));
+            const int flagHeight = 22;
 
-            dc.DrawRectangle(Brushes.White, new Pen(Brushes.DarkRed, 2), new Rect(0, 0, postLabel.Width + 4, postLabel.Height + 4));
-            dc.DrawText(postLabel, new Point(2,2));
-            dc.DrawLine(new Pen(Brushes.DarkRed, 2), new Point(0, 0), new Point(0, 26));
+            dc.PushTransform(new TranslateTransform(0, -flagHeight));
+
+            dc.DrawRectangle(Brushes.White, new Pen(mainBrush, 1), new Rect(-0.5, -0.5, Math.Round(postLabel.Width) + 5, Math.Round(postLabel.Height) + 2));
+            dc.DrawText(postLabel, new Point(2,0));
+            dc.DrawLine(new Pen(mainBrush, 2), new Point(0, 0), new Point(0, flagHeight));
 
             dc.Pop();
 
-            dc.DrawEllipse(Brushes.Aquamarine, new Pen(Brushes.SaddleBrown, 2), new Point(0, 0), 5, 5);
+            dc.DrawEllipse(SectionBrush, new Pen(mainBrush, 1.5), new Point(0, 0), 5, 5);
         }
     }
 }

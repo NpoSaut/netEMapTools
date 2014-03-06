@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -15,6 +16,22 @@ namespace EMapNavigator
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Color[] _sectionColors =
+            new[]
+            {
+                Color.FromRgb(255, 255, 102),
+                Color.FromRgb(255, 204, 102),
+                Color.FromRgb(255, 204, 153),
+                Color.FromRgb(255, 153, 153),
+                Color.FromRgb(255, 102, 51),
+                Color.FromRgb(255, 51, 51),
+                Color.FromRgb(255, 102, 204),
+                Color.FromRgb(153, 102, 255),
+                Color.FromRgb(102, 153, 255),
+                Color.FromRgb(102, 204, 204),
+                Color.FromRgb(0, 255, 51),
+            };
+
         public MainWindow()
         {
             InitializeComponent();
@@ -22,6 +39,8 @@ namespace EMapNavigator
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            var r = new Random();
+
             GMap gMap;
             using (var mapStream = new FileStream(Path.Combine("maps", "Екатеринбург.gps"), FileMode.Open))
             {
@@ -30,10 +49,11 @@ namespace EMapNavigator
 
             foreach (var section in gMap.Sections)
             {
+                var sectionBrush = new SolidColorBrush(_sectionColors[r.Next(_sectionColors.Length)]);
                 for (int i = 0; i < section.Posts.Count; i++)
                 {
                     var post = section.Posts[i];
-                    map.AddElement(new KilometerPostMapElement(post));
+                    map.AddElement(new KilometerPostMapElement(post) { SectionBrush = sectionBrush});
                     if (i + 1 < section.Posts.Count)
                     {
                         var nextPost = section.Posts[i + 1];
