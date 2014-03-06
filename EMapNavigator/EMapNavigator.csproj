@@ -111,7 +111,7 @@
       <Project>{87d32b78-3566-4d13-9b15-2b369e04a325}</Project>
       <Name>GMapElements</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MapVisualization\MapVisualization.csproj">
+    <ProjectReference Include="..\MapViewControl\MapVisualization.csproj">
       <Project>{e4d20511-9feb-4102-bee2-208b124c60c4}</Project>
       <Name>MapVisualization</Name>
     </ProjectReference>

@@ -4,3 +4,6 @@
 [submodule "GMapElements"]
 	path = GMapElements
 	url = https://github.com/NpoSaut/netGMapElements.git
+[submodule "MapViewControl"]
+	path = MapViewControl
+	url = https://github.com/NpoSaut/netMapViewControlLib.git
