@@ -1,11 +1,10 @@
 ﻿using System.Globalization;
 using System.Windows;
 using System.Windows.Media;
-using Geographics;
 using GMapElements;
 using MapVisualization.Elements;
 
-namespace EMapNavigator
+namespace EMapNavigator.MapElements
 {
     public class KilometerPostMapElement : MapPointElement
     {

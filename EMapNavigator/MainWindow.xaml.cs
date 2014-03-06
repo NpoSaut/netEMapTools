@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
+using EMapNavigator.MapElements;
 using Geographics;
 using GMapElements;
 using MapVisualization;
@@ -22,7 +23,7 @@ namespace EMapNavigator
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             GMap gMap;
-            using (var mapStream = new FileStream("Екатеринбург.gps", FileMode.Open))
+            using (var mapStream = new FileStream(Path.Combine("maps", "Екатеринбург.gps"), FileMode.Open))
             {
                 gMap = GMap.Load(mapStream);
             }

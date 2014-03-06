@@ -3,7 +3,7 @@ using System.Windows.Media;
 using Geographics;
 using MapVisualization.Elements;
 
-namespace EMapNavigator
+namespace EMapNavigator.MapElements
 {
     public class MapMarkerElement : MapPointElement
     {
