@@ -9,6 +9,13 @@ namespace EMapNavigator
     {
         public Pen TrackPen { get; set; }
 
+        /// <summary>Z-индекс элемента на карте</summary>
+        /// <remarks>Меньшее значения индекса соответствуют нижним слоям на карте</remarks>
+        protected override int ZIndex
+        {
+            get { return -1; }
+        }
+
         /// <summary>
         /// Создаёт новый многоточечный объект на карте
         /// </summary>
