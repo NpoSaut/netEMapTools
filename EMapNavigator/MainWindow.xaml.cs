@@ -1,13 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using System.Windows.Media;
 using EMapNavigator.MapElements;
-using Geographics;
 using GMapElements;
 using MapVisualization;
+using Tracking;
 
 namespace EMapNavigator
 {
@@ -33,7 +34,7 @@ namespace EMapNavigator
 
         #endregion
 
-        private readonly List<EarthPoint> _trackPoints = new List<EarthPoint>();
+        public GpsTrack SelectingTrack { get; private set; }
         private MapTrackElement _previousMapTrackElement;
         public MainWindow() { InitializeComponent(); }
 
@@ -53,7 +54,7 @@ namespace EMapNavigator
                 for (int i = 0; i < section.Posts.Count; i++)
                 {
                     GPost post = section.Posts[i];
-                    map.AddElement(new KilometerPostMapElement(post) { SectionBrush = sectionBrush });
+                    Map.AddElement(new KilometerPostMapElement(post) { SectionBrush = sectionBrush });
                     if (i + 1 < section.Posts.Count)
                     {
                         GPost nextPost = section.Posts[i + 1];
@@ -63,12 +64,24 @@ namespace EMapNavigator
             }
         }
 
-        private void Map_OnGeographicMouseClick(object Sender, GeographicEventArgs E)
+        private void Map_OnClick(object Sender, MapMouseActionEventArgs E)
         {
-            _trackPoints.Add(E.Point);
-            if (_previousMapTrackElement != null) map.RemoveElement(_previousMapTrackElement);
-            _previousMapTrackElement = new MapTrackElement(_trackPoints, new Pen(Brushes.BlueViolet, 2));
-            map.AddElement(_previousMapTrackElement);
+            switch (E.Action)
+            {
+                case MouseAction.LeftClick:
+                    if (SelectingTrack == null) SelectingTrack = new GpsTrack();
+                    SelectingTrack.TrackPoints.Add(E.Point);
+                    if (_previousMapTrackElement != null) Map.RemoveElement(_previousMapTrackElement);
+                    _previousMapTrackElement = new MapTrackElement(SelectingTrack.TrackPoints,
+                                                                   new Pen(Brushes.BlueViolet, 2));
+                    Map.AddElement(_previousMapTrackElement);
+                    break;
+
+                case MouseAction.RightClick:
+                    SelectingTrack = null;
+                    Map.RemoveElement(_previousMapTrackElement);
+                    break;
+            }
         }
     }
 }
