@@ -1,14 +1,19 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using EMapNavigator.MapElements;
+using Geographics;
 using GMapElements;
 using MapVisualization;
+using MapVisualization.Elements;
 using Tracking;
+using Timer = System.Timers.Timer;
 
 namespace EMapNavigator
 {
@@ -34,7 +39,9 @@ namespace EMapNavigator
 
         #endregion
 
+        public IPathRider PathRider { get; set; }
         public GpsTrack SelectingTrack { get; private set; }
+        
         private MapTrackElement _previousMapTrackElement;
         public MainWindow() { InitializeComponent(); }
 
@@ -82,6 +89,27 @@ namespace EMapNavigator
                     Map.RemoveElement(_previousMapTrackElement);
                     break;
             }
+        }
+
+        private void RideBase_OnClick(object Sender, RoutedEventArgs e)
+        {
+            PathRider = new TrackRider(SelectingTrack);
+            step = 0;
+            point = new MapMarkerElement(new EarthPoint());
+            Map.AddElement(point);
+            Timer tm = new Timer(100);
+            tm.Elapsed += (O, Args) => Dispatcher.BeginInvoke((Action)MakeAStep);
+            tm.Start();
+        }
+
+        private double step;
+        private MapMarkerElement point;
+        private void MakeAStep()
+        {
+            step += 700;
+            var epoint = PathRider.PointAt(step);
+            Debug.Print("DIST: {0}", point.Position.DistanceTo(epoint));
+            point.Position = epoint;
         }
     }
 }

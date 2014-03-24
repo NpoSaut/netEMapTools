@@ -43,6 +43,7 @@
     <Compile Include="Formatters\ITrackFormatter.cs" />
     <Compile Include="GpsTrack.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TrackRider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Geographics\Geographics.csproj">
