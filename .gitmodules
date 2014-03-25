@@ -7,3 +7,6 @@
 [submodule "MapViewControl"]
 	path = MapViewControl
 	url = https://github.com/NpoSaut/netMapViewControlLib.git
+[submodule "Can"]
+	path = Can
+	url = https://github.com/NpoSaut/netCanLib.git

@@ -2,18 +2,18 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Windows;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using Communications;
+using Communications.Appi;
+using Communications.Appi.Winusb;
+using EMapNavigator.Emulation;
 using EMapNavigator.MapElements;
 using Geographics;
 using GMapElements;
 using MapVisualization;
-using MapVisualization.Elements;
 using Tracking;
-using Timer = System.Timers.Timer;
 
 namespace EMapNavigator
 {
@@ -82,6 +82,7 @@ namespace EMapNavigator
                     _previousMapTrackElement = new MapTrackElement(SelectingTrack.TrackPoints,
                                                                    new Pen(Brushes.BlueViolet, 2));
                     Map.AddElement(_previousMapTrackElement);
+                    this.Title = SelectingTrack.Length.ToString();
                     break;
 
                 case MouseAction.RightClick:
@@ -91,15 +92,27 @@ namespace EMapNavigator
             }
         }
 
-        private void RideBase_OnClick(object Sender, RoutedEventArgs e)
+        private CanWheel _wheel;
+        private void RideButton_OnClick(object Sender, RoutedEventArgs e)
         {
             PathRider = new TrackRider(SelectingTrack);
             step = 0;
             point = new MapMarkerElement(new EarthPoint());
             Map.AddElement(point);
-            Timer tm = new Timer(100);
-            tm.Elapsed += (O, Args) => Dispatcher.BeginInvoke((Action)MakeAStep);
-            tm.Start();
+
+            var dev = WinusbAppiDev.GetDevices().First().OpenDevice();
+            dev.CanPorts[AppiLine.Can1].BaudRate = BaudRates.CBR_100K;
+            dev.CanPorts[AppiLine.Can2].BaudRate = BaudRates.CBR_100K;
+            _wheel = new CanWheel(dev.CanPorts[AppiLine.Can1]);
+            _wheel.Speed = 15;
+            _wheel.MilageChanged += WheelOnMilageChanged;
+        }
+
+        private void WheelOnMilageChanged(object Sender, EventArgs Args)
+        {
+            var epoint = PathRider.PointAt(_wheel.Milage);
+            Debug.Print("POINT: {0}  | DIST: {1}", epoint, _wheel.Milage);
+            Dispatcher.BeginInvoke((Action<EarthPoint>)(p => point.Position = p), epoint);
         }
 
         private double step;

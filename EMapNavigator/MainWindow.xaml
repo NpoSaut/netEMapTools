@@ -17,7 +17,7 @@
         </Border>
         <ToolBar Grid.Row="1">
             <Button Content="Load Map" Click="Button_Click" />
-            <Button Content="Ride!" Click="RideBase_OnClick" />
+            <Button Content="Ride!" Click="RideButton_OnClick" />
         </ToolBar>
     </Grid>
 </Window>
