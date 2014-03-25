@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Geographics;
 
 namespace Tracking
@@ -15,5 +17,15 @@ namespace Tracking
 
         /// <summary>Точки трека</summary>
         public IList<EarthPoint> TrackPoints { get; private set; }
+
+        public Double Length
+        {
+            get
+            {
+                Double res = 0;
+                for (int i = 1; i < TrackPoints.Count; i++) res += TrackPoints[i - 1].DistanceTo(TrackPoints[i]);
+                return res;
+            }
+        }
     }
 }
