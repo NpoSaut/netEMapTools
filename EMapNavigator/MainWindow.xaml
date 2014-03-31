@@ -2,6 +2,10 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:m="clr-namespace:MapVisualization;assembly=MapVisualization"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:EMapNavigator.ViewModels"
+        mc:Ignorable="d"
         SnapsToDevicePixels="True" TextOptions.TextFormattingMode="Display" Background="{StaticResource {x:Static SystemColors.ControlBrushKey}}"
         Title="MainWindow">
     <Grid>
@@ -10,14 +14,28 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <m:MapView Name="Map" Grid.Row="0" Margin="2" Click="Map_OnClick" />
-        <Border Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Background="#70ffffff" Padding="3,1">
-            <TextBlock>
-                <Run Text="{Binding ElementName=Map, Path=CentralPoint, Mode=OneWay}" />
-            </TextBlock>
-        </Border>
+        <StackPanel Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10">
+            <Border Background="#70ffffff" Padding="3,1" Margin="2">
+                <TextBlock>
+                    <Run Text="{Binding ElementName=Map, Path=CentralPoint, Mode=OneWay}" />
+                </TextBlock>
+            </Border>
+            <Border Background="#70ffffff" Padding="3,1" Margin="2" x:Name="WheelView"
+                    d:DataContext="{d:DesignData viewModels:WheelViewModel}">
+                <StackPanel>
+                    <TextBlock>
+                        Скорость: <Run Text="{Binding Speed, StringFormat={}{0:F1}}" />км/ч
+                    </TextBlock>
+                    <TextBlock>
+                        Дистанция: <Run Text="{Binding Milage, StringFormat={}{0:F1}}" />м
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+        </StackPanel>
         <ToolBar Grid.Row="1">
             <Button Content="Load Map" Click="Button_Click" />
             <Button Content="Ride!" Click="RideButton_OnClick" />
         </ToolBar>
+        <Slider Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="15" Height="200" Maximum="36" Orientation="Vertical" ValueChanged="Slider_ValueChanged" Background="#B2FFFFFF" />
     </Grid>
 </Window>

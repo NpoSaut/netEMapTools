@@ -2,14 +2,17 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Timers;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using BlokFrames;
 using Communications;
 using Communications.Appi;
 using Communications.Appi.Winusb;
 using EMapNavigator.Emulation;
 using EMapNavigator.MapElements;
+using EMapNavigator.ViewModels;
 using Geographics;
 using GMapElements;
 using MapVisualization;
@@ -82,7 +85,7 @@ namespace EMapNavigator
                     _previousMapTrackElement = new MapTrackElement(SelectingTrack.TrackPoints,
                                                                    new Pen(Brushes.BlueViolet, 2));
                     Map.AddElement(_previousMapTrackElement);
-                    this.Title = SelectingTrack.Length.ToString();
+                    Title = string.Format("Длина трека: {0:F1} м", SelectingTrack.Length);
                     break;
 
                 case MouseAction.RightClick:
@@ -92,37 +95,63 @@ namespace EMapNavigator
             }
         }
 
+        private AppiDev _appiDevice;
+
+        public WheelViewModel Wheel { get; private set; }
+
         private CanWheel _wheel;
         private void RideButton_OnClick(object Sender, RoutedEventArgs e)
         {
             PathRider = new TrackRider(SelectingTrack);
-            step = 0;
-            point = new MapMarkerElement(new EarthPoint());
-            Map.AddElement(point);
+            _displayPoint = new MapMarkerElement(new EarthPoint());
+            Map.AddElement(_displayPoint);
 
-            var dev = WinusbAppiDev.GetDevices().First().OpenDevice();
-            dev.CanPorts[AppiLine.Can1].BaudRate = BaudRates.CBR_100K;
-            dev.CanPorts[AppiLine.Can2].BaudRate = BaudRates.CBR_100K;
-            _wheel = new CanWheel(dev.CanPorts[AppiLine.Can1]);
-            _wheel.Speed = 15;
+            _appiDevice = WinusbAppiDev.GetDevices().First().OpenDevice();
+            _appiDevice.CanPorts[AppiLine.Can1].BaudRate = BaudRates.CBR_100K;
+            _appiDevice.CanPorts[AppiLine.Can2].BaudRate = BaudRates.CBR_100K;
+            _wheel = new CanWheel(_appiDevice.CanPorts[AppiLine.Can1]);
             _wheel.MilageChanged += WheelOnMilageChanged;
+
+            Wheel = new WheelViewModel(_wheel);
+            WheelView.DataContext = Wheel;
+
+            var emitLatLonTimer = new Timer(500);
+            emitLatLonTimer.Elapsed += EmitLatLonTimerOnElapsed;
+            emitLatLonTimer.Start();
+        }
+
+        private void EmitLatLonTimerOnElapsed(object Sender, ElapsedEventArgs Args)
+        {
+            EarthPoint localCurrentPoint;
+            lock (_currentPointLocker)
+            {
+                localCurrentPoint = _currentPoint;
+            }
+            var frame = new MmAltLongFrame(localCurrentPoint.Latitude, localCurrentPoint.Longitude);
+            _appiDevice.CanPorts[AppiLine.Can1].Send(frame);
+            
         }
 
         private void WheelOnMilageChanged(object Sender, EventArgs Args)
         {
-            var epoint = PathRider.PointAt(_wheel.Milage);
-            Debug.Print("POINT: {0}  | DIST: {1}", epoint, _wheel.Milage);
-            Dispatcher.BeginInvoke((Action<EarthPoint>)(p => point.Position = p), epoint);
+            lock (_currentPointLocker)
+            {
+                _currentPoint = PathRider.PointAt(_wheel.Milage);
+            }
+            //Debug.Print("POINT: {0}  | DIST: {1}", _currentPoint, _wheel.Milage);
+            Dispatcher.BeginInvoke((Action<EarthPoint>)(p => _displayPoint.Position = p), _currentPoint);
         }
 
-        private double step;
-        private MapMarkerElement point;
-        private void MakeAStep()
+
+        private EarthPoint _currentPoint;
+        private readonly object _currentPointLocker = new object();
+
+        private MapMarkerElement _displayPoint;
+
+        private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            step += 700;
-            var epoint = PathRider.PointAt(step);
-            Debug.Print("DIST: {0}", point.Position.DistanceTo(epoint));
-            point.Position = epoint;
+            Wheel.Speed = e.NewValue;
+            Title = string.Format("Скорость: {0}км/ч", _wheel.Speed);
         }
     }
 }

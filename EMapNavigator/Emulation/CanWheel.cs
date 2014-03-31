@@ -9,7 +9,13 @@ using Communications.Can;
 
 namespace EMapNavigator.Emulation
 {
-    public class CanWheel : IDisposable
+    public interface IWheel {
+        Double Milage { get; }
+        Double Speed { get; set; }
+        event EventHandler MilageChanged;
+    }
+
+    public class CanWheel : IDisposable, IWheel
     {
         public CanPort Port { get; private set; }
 
@@ -57,25 +63,13 @@ namespace EMapNavigator.Emulation
         private void PumpTimerOnElapsed(object Sender, ElapsedEventArgs Args)
         {
             var f = GetPumpingFrame();
-            //Console.WriteLine(f.GetCanFrame());
             Port.Send(f);
         }
 
         public Double Speed { get; set; }
 
-        private Double? TeethCount { get; set; }
+        private int? CogsCount { get; set; }
         private Double? BondageDiameter { get; set; }
-
-        private IpdEmulation.SensorState GetSensorState(int multipler = 1)
-        {
-            return new IpdEmulation.SensorState
-                   {
-                       Channel1Condition = IpdEmulation.ChannelCondition.Good,
-                       Channel2Condition = IpdEmulation.ChannelCondition.Good,
-                       Direction = multipler * Speed > 0 ? IpdEmulation.RorationDirection.Clockwise : IpdEmulation.RorationDirection.Counterclockwise,
-                       Frequncy = 160480 //(int)((Math.Abs(Speed) * 1000 * TeethCount) / (3.6 * Math.PI * BondageDiameter))
-                   };
-        }
 
         private int xxx = -1;
         private IpdEmulation GetPumpingFrame()
@@ -83,15 +77,15 @@ namespace EMapNavigator.Emulation
             xxx = -xxx;
             return new IpdEmulation
                    {
-                       Sensor1State = GetSensorState(0),
-                       Sensor2State = GetSensorState(xxx)
+                       Sensor1State = IpdEmulation.SensorState.Get(Speed*160, CogsCount ?? 42, BondageDiameter ?? 1200, IpdEmulation.SensorState.DpsSensorPlacement.Left),
+                       Sensor2State = IpdEmulation.SensorState.Get(Speed * 160, CogsCount ?? 42, BondageDiameter ?? 1200, IpdEmulation.SensorState.DpsSensorPlacement.Left)
                    };
         }
 
         private void GetParameters()
         {
             //Port.Send(new SysDataQuery());
-            TeethCount = 300;
+            CogsCount = 300;
             BondageDiameter = 714;
         }
 
