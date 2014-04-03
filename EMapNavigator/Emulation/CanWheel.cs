@@ -50,10 +50,10 @@ namespace EMapNavigator.Emulation
             {
                 var f = flow.Read().First();
                 var stateFrame = BlokFrame.GetBlokFrame<IpdState>(f);
-                Debug.Print("ORD: {0}  | SPEED: {1}   | IMP: {2} | {3}", stateFrame.LinearOrdinate, stateFrame.Speed, stateFrame.SpeedPulsesAvailable, f);
+                //Debug.Print("ORD: {0}  | SPEED: {1}   | IMP: {2} | {3}", stateFrame.LinearOrdinate, stateFrame.Speed, stateFrame.SpeedPulsesAvailable, f);
                 if (!Double.IsNaN(oldOrdinate) && Math.Abs(stateFrame.LinearOrdinate - oldOrdinate) < 500) 
                 {
-                    Milage += Math.Abs(stateFrame.LinearOrdinate - oldOrdinate);
+                    Milage += stateFrame.LinearOrdinate - oldOrdinate;
                     OnMilageChanged();
                 }
                 oldOrdinate = stateFrame.LinearOrdinate;
@@ -77,8 +77,8 @@ namespace EMapNavigator.Emulation
             xxx = -xxx;
             return new IpdEmulation
                    {
-                       Sensor1State = IpdEmulation.SensorState.Get(Speed*160, CogsCount ?? 42, BondageDiameter ?? 1200, IpdEmulation.SensorState.DpsSensorPlacement.Left),
-                       Sensor2State = IpdEmulation.SensorState.Get(Speed * 160, CogsCount ?? 42, BondageDiameter ?? 1200, IpdEmulation.SensorState.DpsSensorPlacement.Left)
+                       Sensor1State = IpdEmulation.SensorState.Get(-Speed * 160, CogsCount ?? 42, BondageDiameter ?? 1200, IpdEmulation.SensorState.DpsSensorPlacement.Left),
+                       Sensor2State = IpdEmulation.SensorState.Get(-Speed * 160, CogsCount ?? 42, BondageDiameter ?? 1200, IpdEmulation.SensorState.DpsSensorPlacement.Left)
                    };
         }
 

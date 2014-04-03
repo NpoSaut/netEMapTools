@@ -69,12 +69,7 @@ namespace Tracking
             public Double StartOffset { get; private set; }
             public Double EndOffset { get; private set; }
 
-            public EarthPoint GetMiddlePoint(Double Ratio)
-            {
-                return new EarthPoint(
-                    (1 - Ratio) * StartPoint.Latitude + Ratio * EndPoint.Latitude,
-                    (1 - Ratio) * StartPoint.Longitude + Ratio * EndPoint.Longitude);
-            }
+            public EarthPoint GetMiddlePoint(Double Ratio) { return EarthPoint.MiddlePoint(StartPoint, EndPoint, Ratio); }
         }
     }
 }

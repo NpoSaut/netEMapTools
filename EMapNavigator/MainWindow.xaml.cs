@@ -10,6 +10,7 @@ using BlokFrames;
 using Communications;
 using Communications.Appi;
 using Communications.Appi.Winusb;
+using Communications.Can;
 using EMapNavigator.Emulation;
 using EMapNavigator.MapElements;
 using EMapNavigator.ViewModels;
@@ -46,14 +47,19 @@ namespace EMapNavigator
         public GpsTrack SelectingTrack { get; private set; }
         
         private MapTrackElement _previousMapTrackElement;
-        public MainWindow() { InitializeComponent(); }
+
+        public MainWindow()
+        {
+            InitializeComponent();
+            Map.CentralPoint = new EarthPoint(57.1268, 35.4619);
+        }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             var r = new Random();
 
             GMap gMap;
-            using (var mapStream = new FileStream(Path.Combine("maps", "Екатеринбург.gps"), FileMode.Open))
+            using (var mapStream = new FileStream(Path.Combine("maps", "msk-spb.gps"), FileMode.Open))
             {
                 gMap = GMap.Load(mapStream);
             }
@@ -109,6 +115,9 @@ namespace EMapNavigator
             _appiDevice = WinusbAppiDev.GetDevices().First().OpenDevice();
             _appiDevice.CanPorts[AppiLine.Can1].BaudRate = BaudRates.CBR_100K;
             _appiDevice.CanPorts[AppiLine.Can2].BaudRate = BaudRates.CBR_100K;
+
+            _appiDevice.CanPorts[AppiLine.Can1].Received += PortOnReceived;
+
             _wheel = new CanWheel(_appiDevice.CanPorts[AppiLine.Can1]);
             _wheel.MilageChanged += WheelOnMilageChanged;
 
@@ -151,7 +160,20 @@ namespace EMapNavigator
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             Wheel.Speed = e.NewValue;
-            Title = string.Format("Скорость: {0}км/ч", _wheel.Speed);
+        }
+
+
+
+
+
+        private static readonly int[] DebugDescriptors = BlokFrame.GetDescriptors<MmAltLongFrame>().Values.ToArray();
+
+        private void PortOnReceived(object Sender, CanFramesReceiveEventArgs CanFramesReceiveEventArgs)
+        {
+            foreach (var frame in CanFramesReceiveEventArgs.Frames.Where(f => DebugDescriptors.Contains(f.Descriptor)))
+            {
+                Debug.Print(" ---> {0}", frame);
+            }
         }
     }
 }
