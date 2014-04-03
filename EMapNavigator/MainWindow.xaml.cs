@@ -13,10 +13,12 @@ using Communications.Appi.Winusb;
 using Communications.Can;
 using EMapNavigator.Emulation;
 using EMapNavigator.MapElements;
+using EMapNavigator.MapElements.MapObjectElements;
 using EMapNavigator.ViewModels;
 using Geographics;
 using GMapElements;
 using MapVisualization;
+using MapVisualization.Elements;
 using Tracking;
 
 namespace EMapNavigator
@@ -74,7 +76,31 @@ namespace EMapNavigator
                     if (i + 1 < section.Posts.Count)
                     {
                         GPost nextPost = section.Posts[i + 1];
-                        foreach (GObject gObject in post.Tracks.First().Objects) { }
+                        double dist = post.Point.DistanceTo(nextPost.Point);
+
+                        var track = post.Tracks.FirstOrDefault(t => t.Number == 2);
+
+                        if (track != null)
+                        {
+                            foreach (GObject gObject in track.Objects)
+                            {
+                                double objectRatio = (gObject.Ordinate - post.Ordinate) / dist;
+                                EarthPoint objectPosition = EarthPoint.MiddlePoint(post.Point, nextPost.Point, objectRatio);
+                                MapElement objectElement;
+                                switch (gObject.Type)
+                                {
+                                    case GObjectType.TrafficLight: objectElement = new MapTrafficLightElement(objectPosition, gObject);
+                                        break;
+                                    case GObjectType.Platform:
+                                    case GObjectType.Station:
+                                        objectElement = new MapPlatformElement(objectPosition, gObject);
+                                        break;
+                                    default: objectElement = new MapUnknownObjectElement(objectPosition, gObject);
+                                        break;
+                                }
+                                Map.AddElement(objectElement);
+                            }
+                        }
                     }
                 }
             }

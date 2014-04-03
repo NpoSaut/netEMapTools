@@ -53,6 +53,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="MapElements\MapObjectElements\MapObjectElement.cs" />
+    <Compile Include="MapElements\MapObjectElements\MapPlatformElement.cs" />
+    <Compile Include="MapElements\MapObjectElements\MapTrafficLightElement.cs" />
+    <Compile Include="MapElements\MapObjectElements\MapUnknownObjectElement.cs" />
     <Compile Include="ViewModels\WheelViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Page Include="MainWindow.xaml">
