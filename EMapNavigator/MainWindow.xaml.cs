@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Timers;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using BlokFrames;
@@ -47,38 +49,56 @@ namespace EMapNavigator
 
         public IPathRider PathRider { get; set; }
         public GpsTrack SelectingTrack { get; private set; }
-        
+
+        public ObservableCollection<MapElement> MapElements { get; private set; }
+
         private MapTrackElement _previousMapTrackElement;
 
         public MainWindow()
         {
+            MapElements = new ObservableCollection<MapElement>();
             InitializeComponent();
+            TrackSelector.ItemsSource = Enumerable.Range(1, 29);
+            TrackSelector.SelectedItem = 2;
             Map.CentralPoint = new EarthPoint(57.1268, 35.4619);
+            Map.ElementsSource = MapElements;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var r = new Random();
-
-            GMap gMap;
             using (var mapStream = new FileStream(Path.Combine("maps", "msk-spb.gps"), FileMode.Open))
             {
-                gMap = GMap.Load(mapStream);
+                _gMap = GMap.Load(mapStream);
             }
 
+            PrintPosts(_gMap);
+            PrintObjects(_gMap, (int)TrackSelector.SelectedItem);
+        }
+
+        private void PrintPosts(GMap gMap)
+        {
+            var r = new Random();
             foreach (GSection section in gMap.Sections)
             {
                 var sectionBrush = new SolidColorBrush(_sectionColors[r.Next(_sectionColors.Length)]);
+                foreach (var post in section.Posts)
+                    MapElements.Add(new KilometerPostMapElement(post) { SectionBrush = sectionBrush });
+            }
+        }
+
+        private void PrintObjects(GMap gMap, int trackNumber)
+        {
+            foreach (GSection section in gMap.Sections)
+            {
                 for (int i = 0; i < section.Posts.Count; i++)
                 {
                     GPost post = section.Posts[i];
-                    Map.AddElement(new KilometerPostMapElement(post) { SectionBrush = sectionBrush });
                     if (i + 1 < section.Posts.Count)
                     {
                         GPost nextPost = section.Posts[i + 1];
                         double dist = post.Point.DistanceTo(nextPost.Point);
 
-                        var track = post.Tracks.FirstOrDefault(t => t.Number == 2);
+                        var track = post.Tracks.FirstOrDefault(t => t.Number == trackNumber);
 
                         if (track != null)
                         {
@@ -89,16 +109,18 @@ namespace EMapNavigator
                                 MapElement objectElement;
                                 switch (gObject.Type)
                                 {
-                                    case GObjectType.TrafficLight: objectElement = new MapTrafficLightElement(objectPosition, gObject);
+                                    case GObjectType.TrafficLight:
+                                        objectElement = new MapTrafficLightElement(objectPosition, gObject);
                                         break;
                                     case GObjectType.Platform:
                                     case GObjectType.Station:
                                         objectElement = new MapPlatformElement(objectPosition, gObject);
                                         break;
-                                    default: objectElement = new MapUnknownObjectElement(objectPosition, gObject);
+                                    default:
+                                        objectElement = new MapUnknownObjectElement(objectPosition, gObject);
                                         break;
                                 }
-                                Map.AddElement(objectElement);
+                                MapElements.Add(objectElement);
                             }
                         }
                     }
@@ -113,16 +135,16 @@ namespace EMapNavigator
                 case MouseAction.LeftClick:
                     if (SelectingTrack == null) SelectingTrack = new GpsTrack();
                     SelectingTrack.TrackPoints.Add(E.Point);
-                    if (_previousMapTrackElement != null) Map.RemoveElement(_previousMapTrackElement);
+                    if (_previousMapTrackElement != null) MapElements.Remove(_previousMapTrackElement);
                     _previousMapTrackElement = new MapTrackElement(SelectingTrack.TrackPoints,
                                                                    new Pen(Brushes.BlueViolet, 2));
-                    Map.AddElement(_previousMapTrackElement);
+                    MapElements.Add(_previousMapTrackElement);
                     Title = string.Format("Длина трека: {0:F1} м", SelectingTrack.Length);
                     break;
 
                 case MouseAction.RightClick:
                     SelectingTrack = null;
-                    Map.RemoveElement(_previousMapTrackElement);
+                    MapElements.Remove(_previousMapTrackElement);
                     break;
             }
         }
@@ -136,7 +158,7 @@ namespace EMapNavigator
         {
             PathRider = new TrackRider(SelectingTrack);
             _displayPoint = new MapMarkerElement(new EarthPoint());
-            Map.AddElement(_displayPoint);
+            MapElements.Add(_displayPoint);
 
             _appiDevice = WinusbAppiDev.GetDevices().First().OpenDevice();
             _appiDevice.CanPorts[AppiLine.Can1].BaudRate = BaudRates.CBR_100K;
@@ -193,6 +215,7 @@ namespace EMapNavigator
 
 
         private static readonly int[] DebugDescriptors = BlokFrame.GetDescriptors<MmAltLongFrame>().Values.ToArray();
+        private GMap _gMap;
 
         private void PortOnReceived(object Sender, CanFramesReceiveEventArgs CanFramesReceiveEventArgs)
         {
@@ -200,6 +223,17 @@ namespace EMapNavigator
             {
                 Debug.Print(" ---> {0}", frame);
             }
+        }
+
+        private void TrackSelector_OnSelectionChanged(object Sender, SelectionChangedEventArgs E)
+        {
+            if (_gMap == null) return;
+
+            var elementsToRemove = MapElements.OfType<MapObjectElement>().ToList();
+            foreach (var element in elementsToRemove)
+                MapElements.Remove(element);
+
+            PrintObjects(_gMap, (int)TrackSelector.SelectedItem);
         }
     }
 }
