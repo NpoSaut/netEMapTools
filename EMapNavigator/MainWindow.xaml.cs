@@ -10,10 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using BlokFrames;
-using Communications;
-using Communications.Appi;
-using Communications.Appi.Winusb;
-using Communications.Can;
+using EMapNavigator.Emition;
 using EMapNavigator.Emulation;
 using EMapNavigator.MapElements;
 using EMapNavigator.MapElements.MapObjectElements;
@@ -49,12 +46,67 @@ namespace EMapNavigator
 
         #endregion
 
-        public IPathRider PathRider { get; set; }
-        public GpsTrack SelectingTrack { get; private set; }
+        private static readonly int[] DebugDescriptors = BlokFrame.GetDescriptors<MmAltLongFrame>().Values.ToArray();
+        private readonly object _currentPointLocker = new object();
 
-        public ObservableCollection<MapElement> MapElements { get; private set; }
+        private readonly IList<EarthPoint> _trackPoints = new[]
+                                                          {
+                                                              new EarthPoint(new Radian(0.75802315), new Radian(0.69697016)),
+                                                              new EarthPoint(new Radian(0.75802565), new Radian(0.69696740)),
+                                                              new EarthPoint(new Radian(0.75802810), new Radian(0.69696460)),
+                                                              new EarthPoint(new Radian(0.75803278), new Radian(0.69695887)),
+                                                              new EarthPoint(new Radian(0.75803499), new Radian(0.69695587)),
+                                                              new EarthPoint(new Radian(0.75803499), new Radian(0.69695587)),
+                                                              new EarthPoint(new Radian(0.75803709), new Radian(0.69695277)),
+                                                              new EarthPoint(new Radian(0.75803910), new Radian(0.69694960)),
+                                                              new EarthPoint(new Radian(0.75804104), new Radian(0.69694634)),
+                                                              new EarthPoint(new Radian(0.75804287), new Radian(0.69694299)),
+                                                              new EarthPoint(new Radian(0.75804464), new Radian(0.69693965)),
+                                                              new EarthPoint(new Radian(0.75804633), new Radian(0.69693627)),
+                                                              new EarthPoint(new Radian(0.75804799), new Radian(0.69693292)),
+                                                              new EarthPoint(new Radian(0.75804965), new Radian(0.69692958)),
+                                                              new EarthPoint(new Radian(0.75805128), new Radian(0.69692632)),
+                                                              new EarthPoint(new Radian(0.75805288), new Radian(0.69692307)),
+                                                              new EarthPoint(new Radian(0.75805448), new Radian(0.69691984)),
+                                                              new EarthPoint(new Radian(0.75805607), new Radian(0.69691667)),
+                                                              new EarthPoint(new Radian(0.75805764), new Radian(0.69691352)),
+                                                              new EarthPoint(new Radian(0.75805921), new Radian(0.69691041)),
+                                                              new EarthPoint(new Radian(0.75806079), new Radian(0.69690733)),
+                                                              new EarthPoint(new Radian(0.75806230), new Radian(0.69690427)),
+                                                              new EarthPoint(new Radian(0.75806381), new Radian(0.69690127)),
+                                                              new EarthPoint(new Radian(0.75806532), new Radian(0.69689832)),
+                                                              new EarthPoint(new Radian(0.75806678), new Radian(0.69689538)),
+                                                              new EarthPoint(new Radian(0.75806823), new Radian(0.69689247)),
+                                                              new EarthPoint(new Radian(0.75806965), new Radian(0.69688956)),
+                                                              new EarthPoint(new Radian(0.75807108), new Radian(0.69688665)),
+                                                              new EarthPoint(new Radian(0.75807390), new Radian(0.69688080)),
+                                                              new EarthPoint(new Radian(0.75807530), new Radian(0.69687786)),
+                                                              new EarthPoint(new Radian(0.75807806), new Radian(0.69687202)),
+                                                              new EarthPoint(new Radian(0.75808077), new Radian(0.69686617)),
+                                                              new EarthPoint(new Radian(0.75808211), new Radian(0.69686326)),
+                                                              new EarthPoint(new Radian(0.75808339), new Radian(0.69686035)),
+                                                              new EarthPoint(new Radian(0.75808467), new Radian(0.69685747)),
+                                                              new EarthPoint(new Radian(0.75808580), new Radian(0.69685462)),
+                                                              new EarthPoint(new Radian(0.75808699), new Radian(0.69685174)),
+                                                              new EarthPoint(new Radian(0.75808822), new Radian(0.69684884)),
+                                                              new EarthPoint(new Radian(0.75808944), new Radian(0.69684587)),
+                                                              new EarthPoint(new Radian(0.75809066), new Radian(0.69684293)),
+                                                              new EarthPoint(new Radian(0.75809191), new Radian(0.69683996)),
+                                                              new EarthPoint(new Radian(0.75809316), new Radian(0.69683699)),
+                                                              new EarthPoint(new Radian(0.75809444), new Radian(0.69683405)),
+                                                              new EarthPoint(new Radian(0.75809577), new Radian(0.69683117)),
+                                                              new EarthPoint(new Radian(0.75809714), new Radian(0.69682829)),
+                                                              new EarthPoint(new Radian(0.75809848), new Radian(0.69682544)),
+                                                              new EarthPoint(new Radian(0.75809985), new Radian(0.69682260)),
+                                                              new EarthPoint(new Radian(0.75810121), new Radian(0.69681975))
+                                                          };
 
+        private EarthPoint _currentPoint;
+        private MapMarkerElement _displayPoint;
+        private IEmitter _emitter;
+        private GMap _gMap;
         private MapTrackElement _previousMapTrackElement;
+        private IWheel _wheel;
 
         public MainWindow()
         {
@@ -69,10 +121,15 @@ namespace EMapNavigator
             MapElements.Add(new MapTrackElement(_trackPoints, new Pen(Brushes.MediumVioletRed, 2)));
         }
 
+        public IPathRider PathRider { get; set; }
+        public GpsTrack SelectingTrack { get; private set; }
+
+        public ObservableCollection<MapElement> MapElements { get; private set; }
+        public WheelViewModel Wheel { get; private set; }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-
-            OpenFileDialog dlg = new OpenFileDialog();
+            var dlg = new OpenFileDialog();
             if (dlg.ShowDialog() == true)
             {
                 using (var mapStream = new FileStream(dlg.FileName, FileMode.Open))
@@ -91,7 +148,7 @@ namespace EMapNavigator
             foreach (GSection section in gMap.Sections)
             {
                 var sectionBrush = new SolidColorBrush(_sectionColors[r.Next(_sectionColors.Length)]);
-                foreach (var post in section.Posts)
+                foreach (GPost post in section.Posts)
                     MapElements.Add(new KilometerPostMapElement(post) { SectionBrush = sectionBrush });
             }
         }
@@ -108,7 +165,7 @@ namespace EMapNavigator
                         GPost nextPost = section.Posts[i + 1];
                         double dist = post.Point.DistanceTo(nextPost.Point);
 
-                        var track = post.Tracks.FirstOrDefault(t => t.Number == trackNumber);
+                        GTrack track = post.Tracks.FirstOrDefault(t => t.Number == trackNumber);
 
                         if (track != null)
                         {
@@ -159,24 +216,20 @@ namespace EMapNavigator
             }
         }
 
-        private AppiDev _appiDevice;
-
-        public WheelViewModel Wheel { get; private set; }
-
-        private CanWheel _wheel;
         private void RideButton_OnClick(object Sender, RoutedEventArgs e)
         {
             PathRider = new TrackRider(SelectingTrack);
             _displayPoint = new MapMarkerElement(new EarthPoint());
             MapElements.Add(_displayPoint);
 
-            _appiDevice = WinusbAppiDev.GetDevices().First().OpenDevice();
-            _appiDevice.CanPorts[AppiLine.Can1].BaudRate = BaudRates.CBR_100K;
-            _appiDevice.CanPorts[AppiLine.Can2].BaudRate = BaudRates.CBR_100K;
+            //var appiDeviceFactory = new SingletonAppiDeviceFactory();
+            //var wheelFactory = new CanWheelFactory(appiDeviceFactory);
+            //_emitter = new CanEmitter(appiDeviceFactory.GetDevice());
 
-            _appiDevice.CanPorts[AppiLine.Can1].Received += PortOnReceived;
+            var wheelFactory = new VirtualWheelFactory();
+            _emitter = new LanEmitter();
 
-            _wheel = new CanWheel(_appiDevice.CanPorts[AppiLine.Can1]);
+            _wheel = wheelFactory.GetWheel();
             _wheel.MilageChanged += WheelOnMilageChanged;
 
             Wheel = new WheelViewModel(_wheel);
@@ -195,10 +248,7 @@ namespace EMapNavigator
                 localCurrentPoint = _currentPoint;
             }
             Console.WriteLine("moving on {0}", localCurrentPoint);
-            var frame = new MmAltLongFrame(localCurrentPoint.Latitude, localCurrentPoint.Longitude).GetCanFrame();
-            var fx = CanFrame.NewWithId(0x5c0, frame.Data);
-            _appiDevice.CanPorts[AppiLine.Can1].Send(fx);
-            
+            _emitter.EmitPosition(localCurrentPoint);
         }
 
         private void WheelOnMilageChanged(object Sender, EventArgs Args)
@@ -211,91 +261,14 @@ namespace EMapNavigator
             Dispatcher.BeginInvoke((Action<EarthPoint>)(p => _displayPoint.Position = p), _currentPoint);
         }
 
-
-        private EarthPoint _currentPoint;
-        private readonly object _currentPointLocker = new object();
-
-        private MapMarkerElement _displayPoint;
-
-        private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            Wheel.Speed = e.NewValue;
-        }
-
-
-
-
-
-        private static readonly int[] DebugDescriptors = BlokFrame.GetDescriptors<MmAltLongFrame>().Values.ToArray();
-        private GMap _gMap;
-
-        private readonly IList<EarthPoint> _trackPoints = new[]
-                                                 {
-                                                     new EarthPoint(new Radian(0.75802315), new Radian(0.69697016)),
-                                                     new EarthPoint(new Radian(0.75802565), new Radian(0.69696740)),
-                                                     new EarthPoint(new Radian(0.75802810), new Radian(0.69696460)),
-                                                     new EarthPoint(new Radian(0.75803278), new Radian(0.69695887)),
-                                                     new EarthPoint(new Radian(0.75803499), new Radian(0.69695587)),
-                                                     new EarthPoint(new Radian(0.75803499), new Radian(0.69695587)),
-                                                     new EarthPoint(new Radian(0.75803709), new Radian(0.69695277)),
-                                                     new EarthPoint(new Radian(0.75803910), new Radian(0.69694960)),
-                                                     new EarthPoint(new Radian(0.75804104), new Radian(0.69694634)),
-                                                     new EarthPoint(new Radian(0.75804287), new Radian(0.69694299)),
-                                                     new EarthPoint(new Radian(0.75804464), new Radian(0.69693965)),
-                                                     new EarthPoint(new Radian(0.75804633), new Radian(0.69693627)),
-                                                     new EarthPoint(new Radian(0.75804799), new Radian(0.69693292)),
-                                                     new EarthPoint(new Radian(0.75804965), new Radian(0.69692958)),
-                                                     new EarthPoint(new Radian(0.75805128), new Radian(0.69692632)),
-                                                     new EarthPoint(new Radian(0.75805288), new Radian(0.69692307)),
-                                                     new EarthPoint(new Radian(0.75805448), new Radian(0.69691984)),
-                                                     new EarthPoint(new Radian(0.75805607), new Radian(0.69691667)),
-                                                     new EarthPoint(new Radian(0.75805764), new Radian(0.69691352)),
-                                                     new EarthPoint(new Radian(0.75805921), new Radian(0.69691041)),
-                                                     new EarthPoint(new Radian(0.75806079), new Radian(0.69690733)),
-                                                     new EarthPoint(new Radian(0.75806230), new Radian(0.69690427)),
-                                                     new EarthPoint(new Radian(0.75806381), new Radian(0.69690127)),
-                                                     new EarthPoint(new Radian(0.75806532), new Radian(0.69689832)),
-                                                     new EarthPoint(new Radian(0.75806678), new Radian(0.69689538)),
-                                                     new EarthPoint(new Radian(0.75806823), new Radian(0.69689247)),
-                                                     new EarthPoint(new Radian(0.75806965), new Radian(0.69688956)),
-                                                     new EarthPoint(new Radian(0.75807108), new Radian(0.69688665)),
-                                                     new EarthPoint(new Radian(0.75807390), new Radian(0.69688080)),
-                                                     new EarthPoint(new Radian(0.75807530), new Radian(0.69687786)),
-                                                     new EarthPoint(new Radian(0.75807806), new Radian(0.69687202)),
-                                                     new EarthPoint(new Radian(0.75808077), new Radian(0.69686617)),
-                                                     new EarthPoint(new Radian(0.75808211), new Radian(0.69686326)),
-                                                     new EarthPoint(new Radian(0.75808339), new Radian(0.69686035)),
-                                                     new EarthPoint(new Radian(0.75808467), new Radian(0.69685747)),
-                                                     new EarthPoint(new Radian(0.75808580), new Radian(0.69685462)),
-                                                     new EarthPoint(new Radian(0.75808699), new Radian(0.69685174)),
-                                                     new EarthPoint(new Radian(0.75808822), new Radian(0.69684884)),
-                                                     new EarthPoint(new Radian(0.75808944), new Radian(0.69684587)),
-                                                     new EarthPoint(new Radian(0.75809066), new Radian(0.69684293)),
-                                                     new EarthPoint(new Radian(0.75809191), new Radian(0.69683996)),
-                                                     new EarthPoint(new Radian(0.75809316), new Radian(0.69683699)),
-                                                     new EarthPoint(new Radian(0.75809444), new Radian(0.69683405)),
-                                                     new EarthPoint(new Radian(0.75809577), new Radian(0.69683117)),
-                                                     new EarthPoint(new Radian(0.75809714), new Radian(0.69682829)),
-                                                     new EarthPoint(new Radian(0.75809848), new Radian(0.69682544)),
-                                                     new EarthPoint(new Radian(0.75809985), new Radian(0.69682260)),
-                                                     new EarthPoint(new Radian(0.75810121), new Radian(0.69681975))
-                                                 };
-
-
-        private void PortOnReceived(object Sender, CanFramesReceiveEventArgs CanFramesReceiveEventArgs)
-        {
-            foreach (var frame in CanFramesReceiveEventArgs.Frames.Where(f => DebugDescriptors.Contains(f.Descriptor)))
-            {
-                Debug.Print(" ---> {0}", frame);
-            }
-        }
+        private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) { Wheel.Speed = e.NewValue; }
 
         private void TrackSelector_OnSelectionChanged(object Sender, SelectionChangedEventArgs E)
         {
             if (_gMap == null) return;
 
-            var elementsToRemove = MapElements.OfType<MapObjectElement>().ToList();
-            foreach (var element in elementsToRemove)
+            List<MapObjectElement> elementsToRemove = MapElements.OfType<MapObjectElement>().ToList();
+            foreach (MapObjectElement element in elementsToRemove)
                 MapElements.Remove(element);
 
             PrintObjects(_gMap, (int)TrackSelector.SelectedItem);

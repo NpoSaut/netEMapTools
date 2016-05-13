@@ -53,6 +53,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Can\IAppiDeviceFactory.cs" />
+    <Compile Include="Can\SingletonAppiDeviceFactory.cs" />
+    <Compile Include="Emition\CanEmitter.cs" />
+    <Compile Include="Emition\LanEmitter.cs" />
+    <Compile Include="Emition\IEmitter.cs" />
+    <Compile Include="Emulation\CanWheelFactory.cs" />
+    <Compile Include="Emulation\IWheelFactory.cs" />
+    <Compile Include="Emulation\IWheel.cs" />
+    <Compile Include="Emulation\VirtualWheel.cs" />
+    <Compile Include="Emulation\VirtualWheelFactory.cs" />
     <Compile Include="MapElements\MapObjectElements\MapObjectElement.cs" />
     <Compile Include="MapElements\MapObjectElements\MapPlatformElement.cs" />
     <Compile Include="MapElements\MapObjectElements\MapTrafficLightElement.cs" />
