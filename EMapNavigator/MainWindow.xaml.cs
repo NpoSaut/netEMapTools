@@ -248,7 +248,7 @@ namespace EMapNavigator
                 localCurrentPoint = _currentPoint;
             }
             Console.WriteLine("moving on {0}", localCurrentPoint);
-            _emitter.EmitPosition(localCurrentPoint);
+            _emitter.EmitPosition(localCurrentPoint, _wheel.Speed);
         }
 
         private void WheelOnMilageChanged(object Sender, EventArgs Args)

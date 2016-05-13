@@ -10,7 +10,7 @@ namespace EMapNavigator.Emition
         private readonly AppiDev _appiDevice;
         public CanEmitter(AppiDev AppiDevice) { _appiDevice = AppiDevice; }
 
-        public void EmitPosition(EarthPoint Position)
+        public void EmitPosition(EarthPoint Position, double Speed)
         {
             CanFrame frame = new MmAltLongFrame(Position.Latitude, Position.Longitude).GetCanFrame();
             CanFrame fx = CanFrame.NewWithId(0x5c0, frame.Data);

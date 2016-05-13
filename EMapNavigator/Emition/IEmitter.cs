@@ -4,6 +4,6 @@ namespace EMapNavigator.Emition
 {
     public interface IEmitter
     {
-        void EmitPosition(EarthPoint Position);
+        void EmitPosition(EarthPoint Position, double Speed);
     }
 }
