@@ -13,7 +13,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <m:MapView Name="Map" Grid.Row="0" Margin="2" Click="Map_OnClick" />
+        <m:MapView Name="Map" Grid.Row="0" Margin="2" Click="Map_OnClick" ZoomLevel="16" />
         <StackPanel Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10">
             <Border Background="#70ffffff" Padding="3,1" Margin="2">
                 <TextBlock>

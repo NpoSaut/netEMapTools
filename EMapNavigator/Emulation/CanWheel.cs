@@ -50,7 +50,7 @@ namespace EMapNavigator.Emulation
             {
                 var f = flow.Read().First();
                 var stateFrame = BlokFrame.GetBlokFrame<IpdState>(f);
-                //Debug.Print("ORD: {0}  | SPEED: {1}   | IMP: {2} | {3}", stateFrame.LinearOrdinate, stateFrame.Speed, stateFrame.SpeedPulsesAvailable, f);
+                Debug.Print("ORD: {0}  | SPEED: {1}   | IMP: {2} | {3}", stateFrame.LinearOrdinate, stateFrame.Speed, stateFrame.SpeedPulsesAvailable, f);
                 if (!Double.IsNaN(oldOrdinate) && Math.Abs(stateFrame.LinearOrdinate - oldOrdinate) < 500) 
                 {
                     Milage += stateFrame.LinearOrdinate - oldOrdinate;
