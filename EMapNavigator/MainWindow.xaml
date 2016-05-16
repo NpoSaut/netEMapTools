@@ -35,8 +35,12 @@
         <ComboBox x:Name="TrackSelector" Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="15" IsReadOnly="True" SelectionChanged="TrackSelector_OnSelectionChanged" />
         <ToolBar Grid.Row="1">
             <Button Content="Load Map" Click="Button_Click" />
+            <Separator />
+            <Button Content="Save Track" Click="SaveTrackButton_Click" />
+            <Button Content="Load Track" Click="LoadTrackButton_Click" />
+            <Separator />
             <Button Content="Ride!" Click="RideButton_OnClick" />
         </ToolBar>
-        <Slider Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="15" Height="200" Maximum="36" Orientation="Vertical" ValueChanged="Slider_ValueChanged" Background="#B2FFFFFF" />
+        <Slider Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="15" Height="200" Maximum="136" Orientation="Vertical" ValueChanged="Slider_ValueChanged" Background="#B2FFFFFF" />
     </Grid>
 </Window>

@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Xml.Linq;
 using BlokFrames;
 using EMapNavigator.Emition;
 using EMapNavigator.Emulation;
@@ -200,20 +201,32 @@ namespace EMapNavigator
             switch (E.Action)
             {
                 case MouseAction.LeftClick:
-                    if (SelectingTrack == null) SelectingTrack = new GpsTrack();
+                    if (SelectingTrack == null)
+                        SelectingTrack = new GpsTrack();
                     SelectingTrack.TrackPoints.Add(E.Point);
-                    if (_previousMapTrackElement != null) MapElements.Remove(_previousMapTrackElement);
-                    _previousMapTrackElement = new MapTrackElement(SelectingTrack.TrackPoints,
-                                                                   new Pen(Brushes.BlueViolet, 2));
-                    MapElements.Add(_previousMapTrackElement);
-                    Title = string.Format("Длина трека: {0:F1} м", SelectingTrack.Length);
+                    RefreshTrack();
                     break;
 
                 case MouseAction.RightClick:
                     SelectingTrack = null;
-                    MapElements.Remove(_previousMapTrackElement);
+                    RefreshTrack();
                     break;
             }
+        }
+
+        private void RefreshTrack()
+        {
+            if (_previousMapTrackElement != null)
+                MapElements.Remove(_previousMapTrackElement);
+            if (SelectingTrack != null)
+            {
+                _previousMapTrackElement = new MapTrackElement(SelectingTrack.TrackPoints,
+                                                               new Pen(Brushes.BlueViolet, 2));
+                MapElements.Add(_previousMapTrackElement);
+                Title = string.Format("Длина трека: {0:F1} м", SelectingTrack.Length);
+            }
+            else
+                _previousMapTrackElement = null;
         }
 
         private void RideButton_OnClick(object Sender, RoutedEventArgs e)
@@ -272,6 +285,30 @@ namespace EMapNavigator
                 MapElements.Remove(element);
 
             PrintObjects(_gMap, (int)TrackSelector.SelectedItem);
+        }
+
+        private void SaveTrackButton_Click(object Sender, RoutedEventArgs e)
+        {
+            new XDocument(
+                new XElement("Track",
+                             SelectingTrack.TrackPoints.Select(p =>
+                                                               new XElement("Point",
+                                                                            new XAttribute("Latitude", p.Latitude.Value),
+                                                                            new XAttribute("Longitude", p.Longitude.Value)))))
+                .Save("track.xml");
+        }
+
+        private void LoadTrackButton_Click(object Sender, RoutedEventArgs e)
+        {
+            if (!File.Exists("track.xml"))
+                return;
+            XDocument doc = XDocument.Load("track.xml");
+            SelectingTrack = new GpsTrack(
+                doc.Root.Elements("Point")
+                   .Select(XPoint => new EarthPoint((double)XPoint.Attribute("Latitude"),
+                                                    (double)XPoint.Attribute("Longitude")))
+                   .ToList());
+            RefreshTrack();
         }
     }
 }
