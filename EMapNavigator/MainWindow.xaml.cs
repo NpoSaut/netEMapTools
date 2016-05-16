@@ -232,6 +232,8 @@ namespace EMapNavigator
         private void RideButton_OnClick(object Sender, RoutedEventArgs e)
         {
             PathRider = new TrackRider(SelectingTrack);
+            if (_displayPoint != null)
+                MapElements.Remove(_displayPoint);
             _displayPoint = new MapMarkerElement(new EarthPoint());
             MapElements.Add(_displayPoint);
 
