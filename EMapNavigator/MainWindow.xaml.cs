@@ -120,6 +120,8 @@ namespace EMapNavigator
             Map.ZoomLevel = 14;
             Map.ElementsSource = MapElements;
             MapElements.Add(new MapTrackElement(_trackPoints, new Pen(Brushes.MediumVioletRed, 2)));
+
+            
         }
 
         public IPathRider PathRider { get; set; }

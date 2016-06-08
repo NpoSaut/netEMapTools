@@ -6,34 +6,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:EMapNavigator.ViewModels"
         mc:Ignorable="d"
-        SnapsToDevicePixels="True" TextOptions.TextFormattingMode="Display" Background="{StaticResource {x:Static SystemColors.ControlBrushKey}}"
+        SnapsToDevicePixels="True" TextOptions.TextFormattingMode="Display"
+        Background="{StaticResource {x:Static SystemColors.ControlBrushKey}}"
         Title="MainWindow">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <m:MapView Name="Map" Grid.Row="0" Margin="2" Click="Map_OnClick" ZoomLevel="16" />
-        <StackPanel Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10">
-            <Border Background="#70ffffff" Padding="3,1" Margin="2">
-                <TextBlock>
-                    <Run Text="{Binding ElementName=Map, Path=CentralPoint, Mode=OneWay}" />
-                </TextBlock>
-            </Border>
-            <Border Background="#70ffffff" Padding="3,1" Margin="2" x:Name="WheelView"
-                    d:DataContext="{d:DesignData viewModels:WheelViewModel}">
-                <StackPanel>
-                    <TextBlock>
-                        Скорость: <Run Text="{Binding Speed, StringFormat={}{0:F1}}" />км/ч
-                    </TextBlock>
-                    <TextBlock>
-                        Дистанция: <Run Text="{Binding Milage, StringFormat={}{0:F1}}" />м
-                    </TextBlock>
-                </StackPanel>
-            </Border>
-        </StackPanel>
-        <ComboBox x:Name="TrackSelector" Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="15" IsReadOnly="True" SelectionChanged="TrackSelector_OnSelectionChanged" />
-        <ToolBar Grid.Row="1">
+    <DockPanel>
+        <ToolBar DockPanel.Dock="Bottom">
             <Button Content="Load Map" Click="Button_Click" />
             <Separator />
             <Button Content="Save Track" Click="SaveTrackButton_Click" />
@@ -41,6 +18,31 @@
             <Separator />
             <Button Content="Ride!" Click="RideButton_OnClick" />
         </ToolBar>
-        <Slider Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="15" Height="200" Maximum="136" Orientation="Vertical" ValueChanged="Slider_ValueChanged" Background="#B2FFFFFF" />
-    </Grid>
+        <ContentPresenter DockPanel.Dock="Right" />
+        <Grid>
+            <m:MapView Name="Map" Grid.Row="0" Margin="2" Click="Map_OnClick" ZoomLevel="16" />
+            <StackPanel Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10">
+                <Border Background="#70ffffff" Padding="3,1" Margin="2">
+                    <TextBlock>
+                        <Run Text="{Binding ElementName=Map, Path=CentralPoint, Mode=OneWay}" />
+                    </TextBlock>
+                </Border>
+                <Border Background="#70ffffff" Padding="3,1" Margin="2" x:Name="WheelView"
+                        d:DataContext="{d:DesignData viewModels:WheelViewModel}">
+                    <StackPanel>
+                        <TextBlock>
+                            Скорость: <Run Text="{Binding Speed, StringFormat={}{0:F1}}" />км/ч
+                        </TextBlock>
+                        <TextBlock>
+                            Дистанция: <Run Text="{Binding Milage, StringFormat={}{0:F1}}" />м
+                        </TextBlock>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+            <ComboBox x:Name="TrackSelector" Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Right"
+                      Margin="15" IsReadOnly="True" SelectionChanged="TrackSelector_OnSelectionChanged" />
+            <Slider Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="15" Height="200"
+                    Maximum="136" Orientation="Vertical" ValueChanged="Slider_ValueChanged" Background="#B2FFFFFF" />
+        </Grid>
+    </DockPanel>
 </Window>
