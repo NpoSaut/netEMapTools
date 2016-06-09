@@ -11,10 +11,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Xml.Linq;
 using BlokFrames;
+using BlokMap.MapElements.MapObjectElements;
 using EMapNavigator.Emition;
 using EMapNavigator.Emulation;
 using EMapNavigator.MapElements;
-using EMapNavigator.MapElements.MapObjectElements;
 using EMapNavigator.ViewModels;
 using Geographics;
 using GMapElements;
@@ -28,25 +28,6 @@ namespace EMapNavigator
     /// <summary>Логика взаимодействия для MainWindow.xaml</summary>
     public partial class MainWindow : Window
     {
-        #region Цвета для сегментов
-
-        private readonly Color[] _sectionColors =
-        {
-            Color.FromRgb(255, 255, 102),
-            Color.FromRgb(255, 204, 102),
-            Color.FromRgb(255, 204, 153),
-            Color.FromRgb(255, 153, 153),
-            Color.FromRgb(255, 102, 51),
-            Color.FromRgb(255, 51, 51),
-            Color.FromRgb(255, 102, 204),
-            Color.FromRgb(153, 102, 255),
-            Color.FromRgb(102, 153, 255),
-            Color.FromRgb(102, 204, 204),
-            Color.FromRgb(0, 255, 51)
-        };
-
-        #endregion
-
         private static readonly int[] DebugDescriptors = BlokFrame.GetDescriptors<MmAltLongFrame>().Values.ToArray();
         private readonly object _currentPointLocker = new object();
 
@@ -113,12 +94,12 @@ namespace EMapNavigator
         {
             MapElements = new ObservableCollection<MapElement>();
             InitializeComponent();
-            TrackSelector.ItemsSource = Enumerable.Range(1, 29);
-            TrackSelector.SelectedItem = 2;
+            //TrackSelector.ItemsSource = Enumerable.Range(1, 29);
+            //TrackSelector.SelectedItem = 2;
             //Map.CentralPoint = new EarthPoint(new Radian(0.75806079), new Radian(0.69690733));
-            Map.CentralPoint = new EarthPoint(new Degree(56.8779), new Degree(60.5905));
-            Map.ZoomLevel = 14;
-            Map.ElementsSource = MapElements;
+            //Map.CentralPoint = new EarthPoint(new Degree(56.8779), new Degree(60.5905));
+            //Map.ZoomLevel = 14;
+            //Map.ElementsSource = MapElements;
             MapElements.Add(new MapTrackElement(_trackPoints, new Pen(Brushes.MediumVioletRed, 2)));
         }
 
@@ -127,74 +108,6 @@ namespace EMapNavigator
 
         public ObservableCollection<MapElement> MapElements { get; private set; }
         public WheelViewModel Wheel { get; private set; }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            var dlg = new OpenFileDialog();
-            if (dlg.ShowDialog() == true)
-            {
-                using (var mapStream = new FileStream(dlg.FileName, FileMode.Open))
-                {
-                    _gMap = GMap.Load(mapStream);
-                }
-
-                PrintPosts(_gMap);
-                PrintObjects(_gMap, (int)TrackSelector.SelectedItem);
-            }
-        }
-
-        private void PrintPosts(GMap gMap)
-        {
-            var r = new Random();
-            foreach (GSection section in gMap.Sections)
-            {
-                var sectionBrush = new SolidColorBrush(_sectionColors[r.Next(_sectionColors.Length)]);
-                foreach (GPost post in section.Posts)
-                    MapElements.Add(new KilometerPostMapElement(post) { SectionBrush = sectionBrush });
-            }
-        }
-
-        private void PrintObjects(GMap gMap, int trackNumber)
-        {
-            foreach (GSection section in gMap.Sections)
-            {
-                for (int i = 0; i < section.Posts.Count; i++)
-                {
-                    GPost post = section.Posts[i];
-                    if (i + 1 < section.Posts.Count)
-                    {
-                        GPost nextPost = section.Posts[i + 1];
-                        double dist = post.Point.DistanceTo(nextPost.Point);
-
-                        GTrack track = post.Tracks.FirstOrDefault(t => t.Number == trackNumber);
-
-                        if (track != null)
-                        {
-                            foreach (GObject gObject in track.Objects)
-                            {
-                                double objectRatio = (gObject.Ordinate - post.Ordinate) / dist;
-                                EarthPoint objectPosition = EarthPoint.MiddlePoint(post.Point, nextPost.Point, objectRatio);
-                                MapElement objectElement;
-                                switch (gObject.Type)
-                                {
-                                    case GObjectType.TrafficLight:
-                                        objectElement = new MapTrafficLightElement(objectPosition, gObject);
-                                        break;
-                                    case GObjectType.Platform:
-                                    case GObjectType.Station:
-                                        objectElement = new MapPlatformElement(objectPosition, gObject);
-                                        break;
-                                    default:
-                                        objectElement = new MapUnknownObjectElement(objectPosition, gObject);
-                                        break;
-                                }
-                                MapElements.Add(objectElement);
-                            }
-                        }
-                    }
-                }
-            }
-        }
 
         private void Map_OnClick(object Sender, MapMouseActionEventArgs E)
         {
@@ -248,7 +161,7 @@ namespace EMapNavigator
             _wheel.MilageChanged += WheelOnMilageChanged;
 
             Wheel = new WheelViewModel(_wheel);
-            WheelView.DataContext = Wheel;
+            //WheelView.DataContext = Wheel;
 
             var emitLatLonTimer = new Timer(500);
             emitLatLonTimer.Elapsed += EmitLatLonTimerOnElapsed;
@@ -286,7 +199,7 @@ namespace EMapNavigator
             foreach (MapObjectElement element in elementsToRemove)
                 MapElements.Remove(element);
 
-            PrintObjects(_gMap, (int)TrackSelector.SelectedItem);
+            //PrintObjects(_gMap, 1);
         }
 
         private void SaveTrackButton_Click(object Sender, RoutedEventArgs e)

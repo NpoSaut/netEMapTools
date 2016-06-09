@@ -1,12 +1,10 @@
-using System;
 using System.Globalization;
-using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using Geographics;
 using GMapElements;
 
-namespace EMapNavigator.MapElements.MapObjectElements
+namespace BlokMap.MapElements.MapObjectElements
 {
     public class MapTrafficLightElement : MapObjectElement
     {

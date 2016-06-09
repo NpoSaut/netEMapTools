@@ -5,7 +5,7 @@ using System.Windows.Media;
 using Geographics;
 using GMapElements;
 
-namespace EMapNavigator.MapElements.MapObjectElements
+namespace BlokMap.MapElements.MapObjectElements
 {
     public class MapUnknownObjectElement : MapObjectElement
     {
@@ -23,9 +23,11 @@ namespace EMapNavigator.MapElements.MapObjectElements
             dc.DrawLine(accentPen, new Point(-0.5 * Size, -0.5 * Size), new Point(0.5 * Size, 0.5 * Size));
             dc.DrawLine(accentPen, new Point(0.5 * Size, -0.5 * Size), new Point(-0.5 * Size, 0.5 * Size));
 
-            var nameLabel = new FormattedText(String.Format("{0} \"{1}\"", Target.Type, Target.Name), CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Verdana"), 10, Brushes.Black);
-            var ordinateLabel = new FormattedText(OrdinateString, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Verdana"), 8, Brushes.Blue);
-            
+            var nameLabel = new FormattedText(String.Format("{0} \"{1}\"", Target.Type, Target.Name), CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
+                                              new Typeface("Verdana"), 10, Brushes.Black);
+            var ordinateLabel = new FormattedText(OrdinateString, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Verdana"), 8,
+                                                  Brushes.Blue);
+
             dc.PushTransform(new TranslateTransform(-0.5 * Math.Max(nameLabel.Width, ordinateLabel.Width), 0.5 * Size + 3));
             PrintStack(dc, nameLabel, ordinateLabel);
             dc.Pop();

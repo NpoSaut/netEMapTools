@@ -5,7 +5,7 @@ using Geographics;
 using GMapElements;
 using MapVisualization.Elements;
 
-namespace EMapNavigator.MapElements.MapObjectElements
+namespace BlokMap.MapElements.MapObjectElements
 {
     public abstract class MapObjectElement : MapPointElement
     {
@@ -28,7 +28,7 @@ namespace EMapNavigator.MapElements.MapObjectElements
 
         protected string OrdinateString
         {
-            get { return string.Format("{0:N0}", Target.Ordinate); }
+            get { return string.Format((string)"{0:N0}", (object)Target.Ordinate); }
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using BlokMap.Modules;
 using EMapNavigator.Modules;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
@@ -15,7 +16,13 @@ namespace EMapNavigator
         {
             var mc = (ModuleCatalog)ModuleCatalog;
 
-            mc.AddModule(typeof (MainModule));
+            mc.AddModule(typeof (MappingServicesModule));
+            mc.AddModule(typeof (BlokMapServicesModule));
+            mc.AddModule(typeof (BlokMapEmulatorServicesModule));
+
+            mc.AddModule(typeof (MappingInterfaceModule));
+            mc.AddModule(typeof (BlokMapInterfaceModule));
+            mc.AddModule(typeof (MainInterfaceModule));
 
             base.ConfigureModuleCatalog();
         }

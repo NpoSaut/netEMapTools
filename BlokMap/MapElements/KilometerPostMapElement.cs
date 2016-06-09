@@ -7,7 +7,7 @@ using System.Windows.Media;
 using GMapElements;
 using MapVisualization.Elements;
 
-namespace EMapNavigator.MapElements
+namespace BlokMap.MapElements
 {
     public class KilometerPostMapElement : MapPointElement
     {
@@ -32,7 +32,7 @@ namespace EMapNavigator.MapElements
 
             dc.PushTransform(new TranslateTransform(0, -flagHeight));
 
-            dc.DrawRectangle(Brushes.White, new Pen(mainBrush, 1), new Rect(-0.5, -0.5, Math.Round(postLabel.Width) + 5, Math.Round(postLabel.Height) + 2));
+            dc.DrawRectangle(Brushes.White, new Pen(mainBrush, 1), new Rect(-0.5, -0.5, Math.Round((double)postLabel.Width) + 5, Math.Round((double)postLabel.Height) + 2));
             dc.DrawText(postLabel, new Point(2,0));
             dc.DrawLine(new Pen(mainBrush, 2), new Point(0, 0), new Point(0, flagHeight));
 
@@ -72,7 +72,7 @@ namespace EMapNavigator.MapElements
 
         protected double PrintTrack(DrawingContext dc, GTrack Track)
         {
-            var postLabel = new FormattedText(string.Format("Путь {0}", Track.Number), CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Verdana"), 10, mainBrush);
+            var postLabel = new FormattedText(string.Format((string)"Путь {0}", (object)Track.Number), CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Verdana"), 10, mainBrush);
             dc.DrawText(postLabel, new Point());
             return postLabel.Height;
         }
