@@ -1,6 +1,7 @@
 using System;
 using System.Windows.Media;
 using MapViewer.Mapping;
+using MapVisualization.Elements;
 using Tracking.MapElements;
 
 namespace Tracking.Presenting
@@ -13,6 +14,7 @@ namespace Tracking.Presenting
         public IDisposable DisplayTrack(GpsTrack Track)
         {
             var trackMapElement = new MapTrackElement(Track.TrackPoints, new Pen(Brushes.DarkOrchid, 2));
+
             _mappingService.Display(trackMapElement);
             return new TrackDisplaying(trackMapElement, _mappingService);
         }
@@ -20,9 +22,9 @@ namespace Tracking.Presenting
         private class TrackDisplaying : IDisposable
         {
             private readonly IMappingService _mappingService;
-            private readonly MapTrackElement _trackMapElement;
+            private readonly MapElement _trackMapElement;
 
-            public TrackDisplaying(MapTrackElement TrackMapElement, IMappingService MappingService)
+            public TrackDisplaying(MapElement TrackMapElement, IMappingService MappingService)
             {
                 _trackMapElement = TrackMapElement;
                 _mappingService = MappingService;

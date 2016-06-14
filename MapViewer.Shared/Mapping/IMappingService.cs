@@ -1,4 +1,6 @@
-﻿using MapVisualization.Elements;
+﻿using System;
+using MapVisualization;
+using MapVisualization.Elements;
 
 namespace MapViewer.Mapping
 {
@@ -6,5 +8,6 @@ namespace MapViewer.Mapping
     {
         void Display(MapElement Element);
         void Remove(MapElement Element);
+        IObservable<MapMouseActionEventArgs> Clicks { get; }
     }
 }

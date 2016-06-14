@@ -26,6 +26,11 @@ namespace Tracking.MapElements
         /// <param name="Zoom">Индекс масштаба рисования</param>
         protected override void Draw(DrawingContext dc, int Zoom)
         {
+            if (Points.Count == 1)
+            {
+                dc.DrawEllipse(TrackPen.Brush, null, Projector.Project(Points[0], Zoom), TrackPen.Thickness * 1.5, TrackPen.Thickness * 1.5);
+                return;
+            }
             for (int i = 0; i < Points.Count - 1; i++)
             {
                 dc.DrawLine(TrackPen,

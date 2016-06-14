@@ -8,5 +8,6 @@
              mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="200"
              d:DataContext="{d:DesignInstance viewModels:MapViewModel}">
     <mapVisualization:MapView CentralPoint="{Binding MapCenter}" ZoomLevel="{Binding ZoomLevel}"
-                              ElementsSource="{Binding Elements}" />
+                              ElementsSource="{Binding Elements}"
+                              ClickCommand="{Binding MapClickedCommand}" />
 </UserControl>
