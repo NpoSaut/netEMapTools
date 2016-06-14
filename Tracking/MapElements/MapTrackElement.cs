@@ -3,10 +3,15 @@ using System.Windows.Media;
 using Geographics;
 using MapVisualization.Elements;
 
-namespace EMapNavigator.MapElements
+namespace Tracking.MapElements
 {
     public class MapTrackElement : MapPathElement
     {
+        /// <summary>Создаёт новый многоточечный объект на карте</summary>
+        /// <param name="Points">Точки, входящие в состав объекта</param>
+        /// <param name="TrackPen">Карандаш для рисования трека</param>
+        public MapTrackElement(IList<EarthPoint> Points, Pen TrackPen) : base(Points) { this.TrackPen = TrackPen; }
+
         public Pen TrackPen { get; set; }
 
         /// <summary>Z-индекс элемента на карте</summary>
@@ -15,13 +20,6 @@ namespace EMapNavigator.MapElements
         {
             get { return -1; }
         }
-
-        /// <summary>
-        /// Создаёт новый многоточечный объект на карте
-        /// </summary>
-        /// <param name="Points">Точки, входящие в состав объекта</param>
-        /// <param name="TrackPen">Карандаш для рисования трека</param>
-        public MapTrackElement(IList<EarthPoint> Points, Pen TrackPen) : base(Points) { this.TrackPen = TrackPen; }
 
         /// <summary>Отрисовывает объект в указанном контексте рисования</summary>
         /// <param name="dc">Контекст рисования</param>

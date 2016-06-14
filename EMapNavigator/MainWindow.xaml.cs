@@ -20,8 +20,8 @@ using Geographics;
 using GMapElements;
 using MapVisualization;
 using MapVisualization.Elements;
-using Microsoft.Win32;
 using Tracking;
+using Tracking.MapElements;
 
 namespace EMapNavigator
 {
@@ -31,76 +31,16 @@ namespace EMapNavigator
         private static readonly int[] DebugDescriptors = BlokFrame.GetDescriptors<MmAltLongFrame>().Values.ToArray();
         private readonly object _currentPointLocker = new object();
 
-        private readonly IList<EarthPoint> _trackPoints = new[]
-                                                          {
-                                                              new EarthPoint(new Radian(0.75802315), new Radian(0.69697016)),
-                                                              new EarthPoint(new Radian(0.75802565), new Radian(0.69696740)),
-                                                              new EarthPoint(new Radian(0.75802810), new Radian(0.69696460)),
-                                                              new EarthPoint(new Radian(0.75803278), new Radian(0.69695887)),
-                                                              new EarthPoint(new Radian(0.75803499), new Radian(0.69695587)),
-                                                              new EarthPoint(new Radian(0.75803499), new Radian(0.69695587)),
-                                                              new EarthPoint(new Radian(0.75803709), new Radian(0.69695277)),
-                                                              new EarthPoint(new Radian(0.75803910), new Radian(0.69694960)),
-                                                              new EarthPoint(new Radian(0.75804104), new Radian(0.69694634)),
-                                                              new EarthPoint(new Radian(0.75804287), new Radian(0.69694299)),
-                                                              new EarthPoint(new Radian(0.75804464), new Radian(0.69693965)),
-                                                              new EarthPoint(new Radian(0.75804633), new Radian(0.69693627)),
-                                                              new EarthPoint(new Radian(0.75804799), new Radian(0.69693292)),
-                                                              new EarthPoint(new Radian(0.75804965), new Radian(0.69692958)),
-                                                              new EarthPoint(new Radian(0.75805128), new Radian(0.69692632)),
-                                                              new EarthPoint(new Radian(0.75805288), new Radian(0.69692307)),
-                                                              new EarthPoint(new Radian(0.75805448), new Radian(0.69691984)),
-                                                              new EarthPoint(new Radian(0.75805607), new Radian(0.69691667)),
-                                                              new EarthPoint(new Radian(0.75805764), new Radian(0.69691352)),
-                                                              new EarthPoint(new Radian(0.75805921), new Radian(0.69691041)),
-                                                              new EarthPoint(new Radian(0.75806079), new Radian(0.69690733)),
-                                                              new EarthPoint(new Radian(0.75806230), new Radian(0.69690427)),
-                                                              new EarthPoint(new Radian(0.75806381), new Radian(0.69690127)),
-                                                              new EarthPoint(new Radian(0.75806532), new Radian(0.69689832)),
-                                                              new EarthPoint(new Radian(0.75806678), new Radian(0.69689538)),
-                                                              new EarthPoint(new Radian(0.75806823), new Radian(0.69689247)),
-                                                              new EarthPoint(new Radian(0.75806965), new Radian(0.69688956)),
-                                                              new EarthPoint(new Radian(0.75807108), new Radian(0.69688665)),
-                                                              new EarthPoint(new Radian(0.75807390), new Radian(0.69688080)),
-                                                              new EarthPoint(new Radian(0.75807530), new Radian(0.69687786)),
-                                                              new EarthPoint(new Radian(0.75807806), new Radian(0.69687202)),
-                                                              new EarthPoint(new Radian(0.75808077), new Radian(0.69686617)),
-                                                              new EarthPoint(new Radian(0.75808211), new Radian(0.69686326)),
-                                                              new EarthPoint(new Radian(0.75808339), new Radian(0.69686035)),
-                                                              new EarthPoint(new Radian(0.75808467), new Radian(0.69685747)),
-                                                              new EarthPoint(new Radian(0.75808580), new Radian(0.69685462)),
-                                                              new EarthPoint(new Radian(0.75808699), new Radian(0.69685174)),
-                                                              new EarthPoint(new Radian(0.75808822), new Radian(0.69684884)),
-                                                              new EarthPoint(new Radian(0.75808944), new Radian(0.69684587)),
-                                                              new EarthPoint(new Radian(0.75809066), new Radian(0.69684293)),
-                                                              new EarthPoint(new Radian(0.75809191), new Radian(0.69683996)),
-                                                              new EarthPoint(new Radian(0.75809316), new Radian(0.69683699)),
-                                                              new EarthPoint(new Radian(0.75809444), new Radian(0.69683405)),
-                                                              new EarthPoint(new Radian(0.75809577), new Radian(0.69683117)),
-                                                              new EarthPoint(new Radian(0.75809714), new Radian(0.69682829)),
-                                                              new EarthPoint(new Radian(0.75809848), new Radian(0.69682544)),
-                                                              new EarthPoint(new Radian(0.75809985), new Radian(0.69682260)),
-                                                              new EarthPoint(new Radian(0.75810121), new Radian(0.69681975))
-                                                          };
-
         private EarthPoint _currentPoint;
         private MapMarkerElement _displayPoint;
         private IEmitter _emitter;
         private GMap _gMap;
-        private MapTrackElement _previousMapTrackElement;
         private IWheel _wheel;
 
         public MainWindow()
         {
             MapElements = new ObservableCollection<MapElement>();
             InitializeComponent();
-            //TrackSelector.ItemsSource = Enumerable.Range(1, 29);
-            //TrackSelector.SelectedItem = 2;
-            //Map.CentralPoint = new EarthPoint(new Radian(0.75806079), new Radian(0.69690733));
-            //Map.CentralPoint = new EarthPoint(new Degree(56.8779), new Degree(60.5905));
-            //Map.ZoomLevel = 14;
-            //Map.ElementsSource = MapElements;
-            MapElements.Add(new MapTrackElement(_trackPoints, new Pen(Brushes.MediumVioletRed, 2)));
         }
 
         public IPathRider PathRider { get; set; }
@@ -129,17 +69,15 @@ namespace EMapNavigator
 
         private void RefreshTrack()
         {
-            if (_previousMapTrackElement != null)
-                MapElements.Remove(_previousMapTrackElement);
-            if (SelectingTrack != null)
-            {
-                _previousMapTrackElement = new MapTrackElement(SelectingTrack.TrackPoints,
-                                                               new Pen(Brushes.BlueViolet, 2));
-                MapElements.Add(_previousMapTrackElement);
-                Title = string.Format("Длина трека: {0:F1} м", SelectingTrack.Length);
-            }
-            else
-                _previousMapTrackElement = null;
+            //if (_previousMapTrackElement != null)
+            //    MapElements.Remove(_previousMapTrackElement);
+            //if (SelectingTrack != null)
+            //{
+            //    new MapTrackElement(SelectingTrack.TrackPoints,
+            //                        new Pen(Brushes.BlueViolet, 2));
+            //    MapElements.Add(_previousMapTrackElement);
+            //    Title = string.Format("Длина трека: {0:F1} м", SelectingTrack.Length);
+            //}
         }
 
         private void RideButton_OnClick(object Sender, RoutedEventArgs e)

@@ -157,7 +157,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MapElements\MapMarkerElement.cs" />
-    <Compile Include="MapElements\MapTrackElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

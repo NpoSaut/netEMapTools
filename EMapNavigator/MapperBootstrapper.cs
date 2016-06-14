@@ -5,6 +5,7 @@ using EMapNavigator.Modules;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
 using Prism.Unity;
+using Tracking.Modules;
 
 namespace EMapNavigator
 {
@@ -19,10 +20,12 @@ namespace EMapNavigator
             mc.AddModule(typeof (MappingServicesModule));
             mc.AddModule(typeof (BlokMapServicesModule));
             mc.AddModule(typeof (BlokMapEmulatorServicesModule));
+            mc.AddModule(typeof (TrackingServicesModule));
 
             mc.AddModule(typeof (MappingInterfaceModule));
             mc.AddModule(typeof (BlokMapInterfaceModule));
             mc.AddModule(typeof (MainInterfaceModule));
+            mc.AddModule(typeof (TrackingInterfaceModule));
 
             base.ConfigureModuleCatalog();
         }
