@@ -1,32 +1,21 @@
 ﻿using System.IO;
+using System.Threading.Tasks;
 using GMapElements;
-using Microsoft.Win32;
 
 namespace BlokMap
 {
     public class MapLoadingService : IMapLoadingService
     {
-        private readonly MapPresenter _mapPresenter;
-
-        public MapLoadingService(MapPresenter MapPresenter) { _mapPresenter = MapPresenter; }
-
-        public void LoadBlokMap()
+        public async Task<GMap> LoadBlokMap(string FileName)
         {
-            var dlg = new OpenFileDialog();
-            if (dlg.ShowDialog() == true)
-                Load(dlg.FileName);
-        }
-
-        private void Load(string FileName)
-        {
-            GMap gMap;
-            using (var mapStream = new FileStream(FileName, FileMode.Open))
-            {
-                gMap = GMap.Load(mapStream);
-            }
-
-            _mapPresenter.PrintPosts(gMap);
-            _mapPresenter.PrintObjects(gMap, 1);
+            return await
+                   Task.Run(() =>
+                            {
+                                using (var mapStream = new FileStream(FileName, FileMode.Open))
+                                {
+                                    return GMap.Load(mapStream);
+                                }
+                            });
         }
     }
 }
