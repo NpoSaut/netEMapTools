@@ -5,9 +5,9 @@ using ReactiveUI;
 
 namespace MsulEmulation.ViewModels
 {
-    public class MsulParametersViewModel : ReactiveObject
+    public class MsulEmulationParametersViewModel : ReactiveObject
     {
-        public MsulParametersViewModel()
+        public MsulEmulationParametersViewModel()
         {
             TimeShift = TimeSpan.FromHours(15) - DateTime.Now.TimeOfDay;
             Time = DateTime.Now + TimeShift;

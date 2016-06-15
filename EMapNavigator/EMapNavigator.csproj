@@ -219,6 +219,10 @@
       <Project>{4B6E0840-94A8-4CCD-AAB8-C4C24383229E}</Project>
       <Name>MapViewer.Shared</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MsulEmulation\MsulEmulation.csproj">
+      <Project>{BB9BE2B4-DE1A-471D-A915-44C1E49D6C96}</Project>
+      <Name>MsulEmulation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Tracking\Tracking.csproj">
       <Project>{D8EA3F6F-A88B-475A-89DF-3B1CA6C5AD8D}</Project>
       <Name>Tracking</Name>

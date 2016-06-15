@@ -13,7 +13,7 @@ namespace Tracking.Presenting
 
         public IDisposable DisplayTrack(GpsTrack Track)
         {
-            var trackMapElement = new MapTrackElement(Track.TrackPoints, new Pen(Brushes.DarkOrchid, 2));
+            var trackMapElement = new MapTrackElement(Track.TrackPoints, new Pen(Brushes.Red, 2));
 
             _mappingService.Display(trackMapElement);
             return new TrackDisplaying(trackMapElement, _mappingService);
