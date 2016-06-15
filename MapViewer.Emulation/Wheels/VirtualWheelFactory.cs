@@ -1,4 +1,4 @@
-﻿namespace EMapNavigator.Emulation
+﻿namespace MapViewer.Emulation.Wheels
 {
     public class VirtualWheelFactory : IWheelFactory
     {

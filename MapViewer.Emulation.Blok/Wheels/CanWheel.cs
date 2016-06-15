@@ -1,16 +1,20 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using System.Timers;
 using BlokFrames;
 using Communications.Can;
+using MapViewer.Emulation.Wheels;
 
-namespace EMapNavigator.Emulation
+namespace MapViewer.Emulation.Blok.Wheels
 {
     public class CanWheel : IDisposable, IWheel
     {
+        private readonly Subject<double> _milage;
         private readonly Timer _pumpTimer;
+        private double _milageValue;
         private int xxx = -1;
 
         public CanWheel(CanPort Port)
@@ -24,6 +28,9 @@ namespace EMapNavigator.Emulation
             _pumpTimer = new Timer(100);
             _pumpTimer.Elapsed += PumpTimerOnElapsed;
             _pumpTimer.Start();
+
+            _milageValue = 0;
+            _milage = new Subject<double>();
         }
 
         public CanPort Port { get; private set; }
@@ -31,15 +38,12 @@ namespace EMapNavigator.Emulation
         private Double? BondageDiameter { get; set; }
         public void Dispose() { _pumpTimer.Dispose(); }
 
-        public Double Milage { get; set; }
-        public event EventHandler MilageChanged;
-        public Double Speed { get; set; }
-
-        protected virtual void OnMilageChanged()
+        public IObservable<double> Milage
         {
-            EventHandler handler = MilageChanged;
-            if (handler != null) handler(this, EventArgs.Empty);
+            get { return _milage; }
         }
+
+        public Double Speed { get; set; }
 
         private void ListenForIpdState(object Obj)
         {
@@ -52,8 +56,8 @@ namespace EMapNavigator.Emulation
                 Debug.Print("ORD: {0}  | SPEED: {1}   | IMP: {2} | {3}", stateFrame.LinearOrdinate, stateFrame.Speed, stateFrame.SpeedPulsesAvailable, f);
                 if (!Double.IsNaN(oldOrdinate) && Math.Abs(stateFrame.LinearOrdinate - oldOrdinate) < 500)
                 {
-                    Milage += stateFrame.LinearOrdinate - oldOrdinate;
-                    OnMilageChanged();
+                    _milageValue += stateFrame.LinearOrdinate - oldOrdinate;
+                    _milage.OnNext(_milageValue);
                 }
                 oldOrdinate = stateFrame.LinearOrdinate;
             }

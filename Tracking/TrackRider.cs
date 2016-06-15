@@ -1,16 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
-using System.Net;
 using Geographics;
 
 namespace Tracking
 {
-    public interface IPathRider {
-        EarthPoint PointAt(Double Offset);
-    }
-
     /// <summary>Обеспечивает возможность навигации по треку</summary>
     public class TrackRider : IPathRider
     {
@@ -23,6 +17,13 @@ namespace Tracking
         public GpsTrack Track { get; private set; }
 
         private IList<TrackSegment> TrackSegments { get; set; }
+
+        public EarthPoint PointAt(Double Offset)
+        {
+            TrackSegment segment = SegmentAt(Offset);
+            double localOffset = Offset - segment.StartOffset;
+            return segment.GetMiddlePoint(localOffset / segment.Length);
+        }
 
         /// <summary>Нарезает трек на сегменты</summary>
         private static IList<TrackSegment> SliceForSegments(GpsTrack Track)
@@ -38,17 +39,7 @@ namespace Tracking
             return res;
         }
 
-        private TrackSegment SegmentAt(Double Offset)
-        {
-            return TrackSegments.First(seg => seg.StartOffset <= Offset && Offset < seg.EndOffset);
-        }
-
-        public EarthPoint PointAt(Double Offset)
-        {
-            var segment = SegmentAt(Offset);
-            var localOffset = Offset - segment.StartOffset;
-            return segment.GetMiddlePoint(localOffset / segment.Length);
-        }
+        private TrackSegment SegmentAt(Double Offset) { return TrackSegments.First(seg => seg.StartOffset <= Offset && Offset < seg.EndOffset); }
 
         /// <summary>Сегмент трека - участок между двумя точками трека</summary>
         private class TrackSegment
@@ -65,7 +56,7 @@ namespace Tracking
             public EarthPoint StartPoint { get; private set; }
             public EarthPoint EndPoint { get; private set; }
             public Double Length { get; private set; }
-            
+
             public Double StartOffset { get; private set; }
             public Double EndOffset { get; private set; }
 

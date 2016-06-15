@@ -1,5 +1,5 @@
 ﻿using System;
-using EMapNavigator.Emulation;
+using MapViewer.Emulation.Wheels;
 
 namespace EMapNavigator.ViewModels
 {
@@ -29,8 +29,8 @@ namespace EMapNavigator.ViewModels
         {
             this.Wheel = Wheel;
             this.Speed = Wheel.Speed;
-            this.Milage = Wheel.Milage;
-            Wheel.MilageChanged += (Sender, Args) => this.Milage = Wheel.Milage;
+            //this.Milage = Wheel.Milage;
+            //Wheel.MilageChanged += (Sender, Args) => this.Milage = Wheel.Milage;
         }
 
         public Double Milage

@@ -74,6 +74,7 @@
     <Compile Include="SharedModule.cs" />
     <Compile Include="UnityContainerInterfaceModule.cs" />
     <Compile Include="UnityContainerModule.cs" />
+    <Compile Include="ViewModels\ISpeedControlViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

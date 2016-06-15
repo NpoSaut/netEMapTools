@@ -10,11 +10,11 @@ using System.Windows.Media;
 using BlokFrames;
 using BlokMap.MapElements.MapObjectElements;
 using EMapNavigator.Emition;
-using EMapNavigator.Emulation;
 using EMapNavigator.MapElements;
 using EMapNavigator.ViewModels;
 using Geographics;
 using GMapElements;
+using MapViewer.Emulation.Wheels;
 using MapVisualization.Elements;
 using Tracking;
 using Tracking.MapElements;
@@ -60,10 +60,10 @@ namespace EMapNavigator
             var wheelFactory = new VirtualWheelFactory();
             _emitter = new LanEmitter();
 
-            _wheel = wheelFactory.GetWheel();
-            _wheel.MilageChanged += WheelOnMilageChanged;
+            //_wheel = wheelFactory.GetWheel();
+            //_wheel.MilageChanged += WheelOnMilageChanged;
 
-            Wheel = new WheelViewModel(_wheel);
+            //Wheel = new WheelViewModel(_wheel);
             //WheelView.DataContext = Wheel;
 
             var emitLatLonTimer = new Timer(500);
@@ -86,7 +86,7 @@ namespace EMapNavigator
         {
             lock (_currentPointLocker)
             {
-                _currentPoint = PathRider.PointAt(_wheel.Milage);
+                //_currentPoint = PathRider.PointAt(_wheel.Milage);
             }
             Debug.Print("POINT: {0}  | DIST: {1}", _currentPoint, _wheel.Milage);
             Dispatcher.BeginInvoke((Action<EarthPoint>)(p => _displayPoint.Position = p), _currentPoint);

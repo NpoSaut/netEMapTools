@@ -13,8 +13,13 @@
     <DockPanel>
         <ItemsControl DockPanel.Dock="Top" regions:RegionManager.RegionName="MainToolbar">
             <ItemsControl.Resources>
-                <Style TargetType="Button">
+                <Style TargetType="Control">
                     <Setter Property="Margin" Value="2" />
+                </Style>
+                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Control}}">
+                    <Setter Property="Padding" Value="6, 2" />
+                </Style>
+                <Style TargetType="ToggleButton" BasedOn="{StaticResource {x:Type Control}}">
                     <Setter Property="Padding" Value="6, 2" />
                 </Style>
             </ItemsControl.Resources>

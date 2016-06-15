@@ -27,6 +27,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlokMap", "BlokMap\BlokMap.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapViewer.Shared", "MapViewer.Shared\MapViewer.Shared.csproj", "{4B6E0840-94A8-4CCD-AAB8-C4C24383229E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapViewer.Emulation", "MapViewer.Emulation\MapViewer.Emulation.csproj", "{45DBB5B9-9527-4394-AD47-59EE02BD0E5E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapViewer.Emulation.Blok", "MapViewer.Emulation.Blok\MapViewer.Emulation.Blok.csproj", "{F88BA4DE-2663-44C1-A953-F0D5E49396A1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +81,14 @@ Global
 		{4B6E0840-94A8-4CCD-AAB8-C4C24383229E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B6E0840-94A8-4CCD-AAB8-C4C24383229E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B6E0840-94A8-4CCD-AAB8-C4C24383229E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45DBB5B9-9527-4394-AD47-59EE02BD0E5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45DBB5B9-9527-4394-AD47-59EE02BD0E5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45DBB5B9-9527-4394-AD47-59EE02BD0E5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45DBB5B9-9527-4394-AD47-59EE02BD0E5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F88BA4DE-2663-44C1-A953-F0D5E49396A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F88BA4DE-2663-44C1-A953-F0D5E49396A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F88BA4DE-2663-44C1-A953-F0D5E49396A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F88BA4DE-2663-44C1-A953-F0D5E49396A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

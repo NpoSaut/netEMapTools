@@ -1,7 +1,8 @@
 ﻿using Communications.Appi;
 using EMapNavigator.Can;
+using MapViewer.Emulation.Wheels;
 
-namespace EMapNavigator.Emulation
+namespace MapViewer.Emulation.Blok.Wheels
 {
     public class CanWheelFactory : IWheelFactory
     {

@@ -15,7 +15,8 @@ namespace Tracking.ViewModels
 {
     public class TrackingControlViewModel : ReactiveObject
     {
-        private const string _fileTypes = "GPX File (*.gpx)|*.gpx|AnyFile (*.*)|*.*";
+        private const string FileTypes = "GPX File (*.gpx)|*.gpx|AnyFile (*.*)|*.*";
+
         private readonly ITrackFormatter _trackFormatter;
         private readonly ITrackPresenter _trackPresenter;
         private IMappingService _mappingService;
@@ -66,7 +67,7 @@ namespace Tracking.ViewModels
 
         private async Task SaveTrackImpl(object _)
         {
-            var dlg = new SaveFileDialog { DefaultExt = "gpx", Filter = _fileTypes, FilterIndex = 0 };
+            var dlg = new SaveFileDialog { DefaultExt = "gpx", Filter = FileTypes, FilterIndex = 0 };
             if (dlg.ShowDialog() != true)
                 return;
 
@@ -81,7 +82,7 @@ namespace Tracking.ViewModels
 
         private async Task LoadTrackImpl(object _)
         {
-            var dlg = new OpenFileDialog { DefaultExt = "gpx", Filter = _fileTypes, FilterIndex = 0 };
+            var dlg = new OpenFileDialog { DefaultExt = "gpx", Filter = FileTypes, FilterIndex = 0 };
             if (dlg.ShowDialog() != true)
                 return;
 
