@@ -11,6 +11,7 @@ namespace MsulEmulation.ViewModels
     public class MsulEmulationParametersViewModel : ReactiveObject
     {
         private readonly ObservableAsPropertyHelper<double> _speed;
+        private readonly ObservableAsPropertyHelper<DateTime> _time;
         private double _altitude;
         private bool _emergencyStop;
         private bool _leftDoorLocked;
@@ -20,19 +21,17 @@ namespace MsulEmulation.ViewModels
         private EarthPoint _position;
         private bool _rightDoorLocked;
         private bool _rightDoorOpened;
-        private DateTime _time;
         private TimeSpan _timeShift;
         private int _trainNumber;
 
         public MsulEmulationParametersViewModel(IWheel Wheel)
         {
             TimeShift = TimeSpan.FromHours(15) - DateTime.Now.TimeOfDay;
-            Time = DateTime.Now + TimeShift;
 
             TrainNumber = 777;
             OutdoorTemperature = -18.4;
             EmergencyStop = false;
-            LeftDoorLocked = false;
+            LeftDoorLocked = true;
             RightDoorLocked = false;
             LeftDoorOpened = false;
             RightDoorOpened = false;
@@ -48,6 +47,10 @@ namespace MsulEmulation.ViewModels
                     new CarriageParametersViewModel(5, CarriageKind.TractionHead)
                 };
 
+            Observable.Interval(TimeSpan.FromSeconds(1))
+                      .Select(i => DateTime.Now + TimeShift)
+                      .ToProperty(this, x => x.Time, out _time);
+
             Observable.FromEvent(a => Wheel.SpeedChanged += (s, e) => a(), a => { })
                       .Select(_ => Wheel.Speed)
                       .ToProperty(this, x => x.Speed, out _speed);
@@ -55,8 +58,7 @@ namespace MsulEmulation.ViewModels
 
         public DateTime Time
         {
-            get { return _time; }
-            set { this.RaiseAndSetIfChanged(ref _time, value); }
+            get { return _time.Value; }
         }
 
         public TimeSpan TimeShift
@@ -131,7 +133,5 @@ namespace MsulEmulation.ViewModels
         }
 
         public IList<CarriageParametersViewModel> Carriages { get; private set; }
-
-        private DateTime CorrectTime() { return Time = DateTime.Now + TimeShift; }
     }
 }
