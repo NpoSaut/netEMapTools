@@ -10,6 +10,8 @@ namespace MapViewer.Emulation.Wheels
 
         private double _disstance;
 
+        private double _speed;
+
         public VirtualWheel()
         {
             _disstance = 0;
@@ -21,7 +23,21 @@ namespace MapViewer.Emulation.Wheels
             milage.Connect();
         }
 
-        public double Speed { get; set; }
+        public event EventHandler SpeedChanged;
+
+        public double Speed
+        {
+            get { return _speed; }
+            set
+            {
+                if (_speed != value)
+                {
+                    _speed = value;
+                    if (SpeedChanged != null) SpeedChanged(this, new EventArgs());
+                }
+            }
+        }
+
         public IObservable<double> Milage { get; private set; }
 
         private double IncreaseDisstance()

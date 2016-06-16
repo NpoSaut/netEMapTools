@@ -18,7 +18,9 @@
             <Style TargetType="ToggleButton" BasedOn="{StaticResource {x:Type FrameworkElement}}">
                 <Setter Property="Padding" Value="8, 2" />
             </Style>
-            <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type FrameworkElement}}" />
+            <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type FrameworkElement}}">
+                <Setter Property="Padding" Value="2" />
+            </Style>
             <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type FrameworkElement}}" />
             <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type FrameworkElement}}">
                 <Setter Property="VerticalAlignment" Value="Center" />
@@ -33,19 +35,24 @@
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
+            <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="60" />
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="Температура воздуха" />
-        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding OutdoorTemperature}" />
+        <HeaderedContentControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Header="Номер поезда">
+            <TextBox Text="{Binding TrainNumber}" />
+        </HeaderedContentControl>
 
-        <ToggleButton Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Температура воздуха" />
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding OutdoorTemperature}" />
+
+        <ToggleButton Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
                       Content="Аварийная остановка" IsChecked="{Binding EmergencyStop}" />
 
-        <GroupBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Header="Блокировка дверей">
+        <GroupBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Header="Блокировка дверей">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
@@ -56,7 +63,7 @@
             </Grid>
         </GroupBox>
 
-        <GroupBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Header="Открытие дверей">
+        <GroupBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Header="Открытие дверей">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
@@ -67,14 +74,14 @@
             </Grid>
         </GroupBox>
 
-        <ToggleButton Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
+        <ToggleButton Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"
                       Content="Освещение" IsChecked="{Binding LightOn}" />
 
-        <TextBlock Grid.Row="5" Grid.Column="0" Text="Номер вагона:" />
-        <ComboBox Grid.Row="5" Grid.Column="1" Name="CarriageSelector"
+        <TextBlock Grid.Row="6" Grid.Column="0" Text="Номер вагона:" />
+        <ComboBox Grid.Row="6" Grid.Column="1" Name="CarriageSelector"
                   ItemsSource="{Binding Carriages}" SelectedIndex="0" DisplayMemberPath="Number" />
 
-        <ContentPresenter Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"
+        <ContentPresenter Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2"
                           Content="{Binding ElementName=CarriageSelector, Path=SelectedItem}">
             <ContentPresenter.Resources>
                 <DataTemplate DataType="{x:Type viewModels:CarriageParametersViewModel}">

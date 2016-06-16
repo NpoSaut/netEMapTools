@@ -38,6 +38,8 @@ namespace MapViewer.Emulation.Blok.Wheels
         private Double? BondageDiameter { get; set; }
         public void Dispose() { _pumpTimer.Dispose(); }
 
+        public event EventHandler SpeedChanged;
+
         public IObservable<double> Milage
         {
             get { return _milage; }

@@ -5,6 +5,11 @@ namespace MsulEmulation.ViewModels
 {
     public class CarriageParametersViewModel : ReactiveObject
     {
+        private bool _emergencyValueReleased;
+        private double _indoorTemperature;
+        private bool _toilet1Occupied;
+        private bool _toilet2Occupied;
+
         public CarriageParametersViewModel(int Number, CarriageKind Kind)
         {
             this.Number = Number;
@@ -17,9 +22,29 @@ namespace MsulEmulation.ViewModels
 
         public int Number { get; set; }
         public CarriageKind Kind { get; private set; }
-        public double IndoorTemperature { get; set; }
-        public bool EmergencyValueReleased { get; set; }
-        public bool Toilet1Occupied { get; set; }
-        public bool Toilet2Occupied { get; set; }
+
+        public double IndoorTemperature
+        {
+            get { return _indoorTemperature; }
+            set { this.RaiseAndSetIfChanged(ref _indoorTemperature, value); }
+        }
+
+        public bool EmergencyValueReleased
+        {
+            get { return _emergencyValueReleased; }
+            set { this.RaiseAndSetIfChanged(ref _emergencyValueReleased, value); }
+        }
+
+        public bool Toilet1Occupied
+        {
+            get { return _toilet1Occupied; }
+            set { this.RaiseAndSetIfChanged(ref _toilet1Occupied, value); }
+        }
+
+        public bool Toilet2Occupied
+        {
+            get { return _toilet2Occupied; }
+            set { this.RaiseAndSetIfChanged(ref _toilet2Occupied, value); }
+        }
     }
 }
