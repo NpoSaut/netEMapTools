@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using MsulEmulation.Entities;
 using MsulEmulation.ViewModels;
 
@@ -21,6 +22,12 @@ namespace MsulEmulation.Encoding
         private readonly DateTime _zeroTime = new DateTime(1970, 1, 1);
 
         public MsulMessage GetMessage(MsulEmulationParametersViewModel ViewModel)
+        {
+            return new MsulMessage(GetCommonData(ViewModel),
+                                   ViewModel.Carriages.Select(GetCarriageData).ToList());
+        }
+
+        private byte[] GetCommonData(MsulEmulationParametersViewModel ViewModel)
         {
             using (var ms = new MemoryStream())
             {
@@ -44,7 +51,15 @@ namespace MsulEmulation.Encoding
                                     (ViewModel.RightDoorOpened ? 1 : 0) << 4 |
                                     (ViewModel.LightOn ? 1 : 0) << 5));
                 writer.Write((Byte)1);
+                return ms.ToArray();
+            }
+        }
 
+        private byte[] GetCarriageData(CarriageParametersViewModel carriage)
+        {
+            using (var ms = new MemoryStream())
+            {
+                var writer = new BinaryWriter(ms);
                 writer.Write((Byte)carriage.Number);
                 writer.Write(_carriageKinds[carriage.Kind]);
                 writer.Write(EncodeTemperature(carriage.IndoorTemperature));
@@ -53,10 +68,7 @@ namespace MsulEmulation.Encoding
                                     (carriage.Toilet2Occupied ? 0 : 1) << 2));
                 writer.Write((Byte)0);
                 writer.Write((Byte)0);
-
-                byte[] xxx = ms.ToArray();
-
-                return new MsulMessage(ms.ToArray());
+                return ms.ToArray();
             }
         }
 
