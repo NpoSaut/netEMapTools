@@ -34,8 +34,7 @@
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -77,18 +76,14 @@
         <ToggleButton Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"
                       Content="Освещение" IsChecked="{Binding LightOn}" />
 
-        <TextBlock Grid.Row="6" Grid.Column="0" Text="Номер вагона:" />
-        <ComboBox Grid.Row="6" Grid.Column="1" Name="CarriageSelector"
-                  ItemsSource="{Binding Carriages}" SelectedIndex="0" DisplayMemberPath="Number" />
-
-        <ContentPresenter Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2"
-                          Content="{Binding ElementName=CarriageSelector, Path=SelectedItem}">
-            <ContentPresenter.Resources>
+        <ItemsControl Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"
+                      ItemsSource="{Binding Carriages}">
+            <ItemsControl.Resources>
                 <DataTemplate DataType="{x:Type viewModels:CarriageParametersViewModel}">
                     <views:CarriageParametersModel />
                 </DataTemplate>
-            </ContentPresenter.Resources>
-        </ContentPresenter>
+            </ItemsControl.Resources>
+        </ItemsControl>
 
     </Grid>
 </UserControl>
