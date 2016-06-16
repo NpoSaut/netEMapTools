@@ -11,7 +11,7 @@ namespace MsulEmulation.Emit
 
         public IObservable<MsulMessage> Emit(IObservable<MsulMessage> Messages)
         {
-            var client = new UdpClient(125);
+            var client = new UdpClient(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 125));
             return Observable.Interval(_messageInterval)
                              .CombineLatest(Messages, (i, m) => m)
                              .Sample(_messageInterval)

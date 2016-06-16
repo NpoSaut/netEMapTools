@@ -26,14 +26,17 @@ namespace MsulEmulation.Encoding
             {
                 var writer = new BinaryWriter(ms);
 
+                writer.Write((Byte)1);
+                writer.Write((Byte)1);
+                writer.Write((Byte)ViewModel.Carriages.Count);
                 writer.Write((UInt32)(ViewModel.Time - _zeroTime).TotalSeconds);
                 writer.Write((UInt16)ViewModel.TrainNumber);
                 writer.Write((Byte)ViewModel.Speed);
                 writer.Write(EncodeTemperature(ViewModel.OutdoorTemperature));
                 writer.Write((Int32)(ViewModel.Position.Latitude.Value * LatitudeFactor));
                 writer.Write((Int32)(ViewModel.Position.Longitude.Value * LatitudeFactor));
-                writer.Write((Int32)ViewModel.Altitude);
-                writer.Write(10);
+                writer.Write((Int16)ViewModel.Altitude);
+                writer.Write((Byte)10);
                 writer.Write((Byte)((ViewModel.EmergencyStop ? 1 : 0) << 0 |
                                     (ViewModel.LeftDoorLocked ? 0 : 1) << 1 |
                                     (ViewModel.RightDoorLocked ? 0 : 1) << 2 |
@@ -42,17 +45,16 @@ namespace MsulEmulation.Encoding
                                     (ViewModel.LightOn ? 1 : 0) << 5));
                 writer.Write((Byte)1);
 
-                foreach (CarriageParametersViewModel carriage in ViewModel.Carriages)
-                {
-                    writer.Write((Byte)carriage.Number);
-                    writer.Write(_carriageKinds[carriage.Kind]);
-                    writer.Write(EncodeTemperature(carriage.IndoorTemperature));
-                    writer.Write((Byte)((carriage.EmergencyValueReleased ? 1 : 0) << 0 |
-                                        (carriage.Toilet1Occupied ? 0 : 1) << 1 |
-                                        (carriage.Toilet2Occupied ? 0 : 1) << 2));
-                    writer.Write((Byte)0);
-                    writer.Write((Byte)0);
-                }
+                writer.Write((Byte)carriage.Number);
+                writer.Write(_carriageKinds[carriage.Kind]);
+                writer.Write(EncodeTemperature(carriage.IndoorTemperature));
+                writer.Write((Byte)((carriage.EmergencyValueReleased ? 1 : 0) << 0 |
+                                    (carriage.Toilet1Occupied ? 0 : 1) << 1 |
+                                    (carriage.Toilet2Occupied ? 0 : 1) << 2));
+                writer.Write((Byte)0);
+                writer.Write((Byte)0);
+
+                byte[] xxx = ms.ToArray();
 
                 return new MsulMessage(ms.ToArray());
             }

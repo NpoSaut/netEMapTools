@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reactive.Linq;
 using Geographics;
-using MapViewer.Emulation.ViewModels;
+using MapViewer.Emulation.Wheels;
 using MsulEmulation.Entities;
 using ReactiveUI;
 
@@ -10,7 +11,6 @@ namespace MsulEmulation.ViewModels
     public class MsulEmulationParametersViewModel : ReactiveObject
     {
         private readonly ObservableAsPropertyHelper<double> _speed;
-        private readonly SpeedControlViewModel _speedControl;
         private double _altitude;
         private bool _emergencyStop;
         private bool _leftDoorLocked;
@@ -24,9 +24,8 @@ namespace MsulEmulation.ViewModels
         private TimeSpan _timeShift;
         private int _trainNumber;
 
-        public MsulEmulationParametersViewModel(SpeedControlViewModel SpeedControl)
+        public MsulEmulationParametersViewModel(IWheel Wheel)
         {
-            _speedControl = SpeedControl;
             TimeShift = TimeSpan.FromHours(15) - DateTime.Now.TimeOfDay;
             Time = DateTime.Now + TimeShift;
 
@@ -49,8 +48,9 @@ namespace MsulEmulation.ViewModels
                     new CarriageParametersViewModel(5, CarriageKind.TractionHead)
                 };
 
-            this.WhenAnyValue(x => x._speedControl.Speed)
-                .ToProperty(this, x => x.Speed, out _speed);
+            Observable.FromEvent(a => Wheel.SpeedChanged += (s, e) => a(), a => { })
+                      .Select(_ => Wheel.Speed)
+                      .ToProperty(this, x => x.Speed, out _speed);
         }
 
         public DateTime Time
