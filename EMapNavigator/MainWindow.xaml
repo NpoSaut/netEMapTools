@@ -29,28 +29,29 @@
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
         </ItemsControl>
-        <Border DockPanel.Dock="Right" BorderThickness="1,0,0,0" BorderBrush="#FF8D3300" Padding="3">
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                <ItemsControl regions:RegionManager.RegionName="Emulators" />
-            </ScrollViewer>
+        <ScrollViewer DockPanel.Dock="Right" Margin="3"
+                      VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <ItemsControl regions:RegionManager.RegionName="Emulators" />
+        </ScrollViewer>
+        <Border BorderThickness="0,1,1,0" BorderBrush="#FF8D3300">
+            <Grid>
+                <ContentControl regions:RegionManager.RegionName="Map" />
+                <Rectangle VerticalAlignment="Top" Height="7">
+                    <Rectangle.Fill>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#33000000" Offset="0.01" />
+                            <GradientStop Color="#00000000" Offset="1" />
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <ItemsControl regions:RegionManager.RegionName="MapOverlay">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Grid />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </Grid>
         </Border>
-        <Grid>
-            <ContentControl regions:RegionManager.RegionName="Map" />
-            <Rectangle VerticalAlignment="Top" Height="7">
-                <Rectangle.Fill>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="#33000000" Offset="0.01" />
-                        <GradientStop Color="#00000000" Offset="1" />
-                    </LinearGradientBrush>
-                </Rectangle.Fill>
-            </Rectangle>
-            <ItemsControl regions:RegionManager.RegionName="MapOverlay">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <Grid />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-            </ItemsControl>
-        </Grid>
     </DockPanel>
 </Window>
