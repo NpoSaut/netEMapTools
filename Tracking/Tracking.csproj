@@ -100,13 +100,16 @@
     <Compile Include="Formatters\ITrackFormatter.cs" />
     <Compile Include="GpsTrack.cs" />
     <Compile Include="IPathRider.cs" />
+    <Compile Include="IPathRiderProvider.cs" />
+    <Compile Include="MapElements\PositionMapElement.cs" />
     <Compile Include="MapElements\MapTrackElement.cs" />
     <Compile Include="Modules\TrackingInterfaceModule.cs" />
     <Compile Include="Modules\TrackingServicesModule.cs" />
+    <Compile Include="PositionPresenter.cs" />
     <Compile Include="Presenting\ITrackPresenter.cs" />
     <Compile Include="Presenting\TrackPresenter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TrackRider.cs" />
+    <Compile Include="TrackPathRider.cs" />
     <Compile Include="ViewModels\TrackingControlViewModel.cs" />
     <Compile Include="Views\TrackingControlView.xaml.cs">
       <DependentUpon>TrackingControlView.xaml</DependentUpon>
@@ -120,6 +123,10 @@
     <ProjectReference Include="..\MapViewControl\MapVisualization.csproj">
       <Project>{E4D20511-9FEB-4102-BEE2-208B124C60C4}</Project>
       <Name>MapVisualization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MapViewer.Emulation\MapViewer.Emulation.csproj">
+      <Project>{45DBB5B9-9527-4394-AD47-59EE02BD0E5E}</Project>
+      <Name>MapViewer.Emulation</Name>
     </ProjectReference>
     <ProjectReference Include="..\MapViewer.Shared\MapViewer.Shared.csproj">
       <Project>{4B6E0840-94A8-4CCD-AAB8-C4C24383229E}</Project>

@@ -10,7 +10,6 @@ using System.Windows.Media;
 using BlokFrames;
 using BlokMap.MapElements.MapObjectElements;
 using EMapNavigator.Emition;
-using EMapNavigator.MapElements;
 using EMapNavigator.ViewModels;
 using Geographics;
 using GMapElements;
@@ -28,7 +27,7 @@ namespace EMapNavigator
         private readonly object _currentPointLocker = new object();
 
         private EarthPoint _currentPoint;
-        private MapMarkerElement _displayPoint;
+        private PositionMapElement _displayPoint;
         private IEmitter _emitter;
         private GMap _gMap;
         private IWheel _wheel;
@@ -47,10 +46,10 @@ namespace EMapNavigator
 
         private void RideButton_OnClick(object Sender, RoutedEventArgs e)
         {
-            PathRider = new TrackRider(SelectingTrack);
+            PathRider = new TrackPathRider(SelectingTrack);
             if (_displayPoint != null)
                 MapElements.Remove(_displayPoint);
-            _displayPoint = new MapMarkerElement(new EarthPoint());
+            _displayPoint = new PositionMapElement(new EarthPoint());
             MapElements.Add(_displayPoint);
 
             //var appiDeviceFactory = new SingletonAppiDeviceFactory();

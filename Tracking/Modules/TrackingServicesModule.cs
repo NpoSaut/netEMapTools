@@ -2,6 +2,7 @@
 using Microsoft.Practices.Unity;
 using Tracking.Formatters;
 using Tracking.Presenting;
+using Tracking.ViewModels;
 
 namespace Tracking.Modules
 {
@@ -12,9 +13,10 @@ namespace Tracking.Modules
         public override void Initialize()
         {
             Container
-                .RegisterType<IPathRider, TrackRider>(new ContainerControlledLifetimeManager())
+                .RegisterType<IPathRider, TrackPathRider>(new ContainerControlledLifetimeManager())
                 .RegisterType<ITrackFormatter, GpxTrackFormatter>(new ContainerControlledLifetimeManager())
-                .RegisterType<ITrackPresenter, TrackPresenter>(new ContainerControlledLifetimeManager());
+                .RegisterType<ITrackPresenter, TrackPresenter>(new ContainerControlledLifetimeManager())
+                .RegisterType<IPathRiderProvider, TrackingControlViewModel>(new ContainerControlledLifetimeManager());
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using System.Reactive.Linq;
 using System.Windows.Input;
+using MapViewer.Mapping;
 using MsulEmulation.Emit;
 using ReactiveUI;
+using Tracking;
 
 namespace MsulEmulation.ViewModels
 {
@@ -11,8 +13,10 @@ namespace MsulEmulation.ViewModels
         private readonly MsulEmulationSource _emulationSource;
         private readonly ReactiveCommand<object> _stop;
         private bool _emulationEnabled;
+        private PositionPresenter _positionPresenter;
 
-        public MsulEmulationViewModel(MsulEmulationParametersViewModel Parameters, MsulEmulationSource EmulationSource, IMsulEmitter Emitter)
+        public MsulEmulationViewModel(MsulEmulationParametersViewModel Parameters, MsulEmulationSource EmulationSource, IMsulEmitter Emitter,
+                                      IMappingService MappingService)
         {
             this.Parameters = Parameters;
             _emulationSource = EmulationSource;
@@ -33,6 +37,9 @@ namespace MsulEmulation.ViewModels
             this.WhenAnyValue(x => x.EmulationEnabled)
                 .Where(running => !running)
                 .InvokeCommand(Stop);
+
+            _positionPresenter = new PositionPresenter(MappingService,
+                                                       Parameters.WhenAnyValue(x => x.Position));
         }
 
         public MsulEmulationParametersViewModel Parameters { get; private set; }

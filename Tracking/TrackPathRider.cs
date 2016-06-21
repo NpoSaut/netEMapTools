@@ -6,9 +6,9 @@ using Geographics;
 namespace Tracking
 {
     /// <summary>Обеспечивает возможность навигации по треку</summary>
-    public class TrackRider : IPathRider
+    public class TrackPathRider : IPathRider
     {
-        public TrackRider(GpsTrack Track)
+        public TrackPathRider(GpsTrack Track)
         {
             this.Track = Track;
             TrackSegments = SliceForSegments(Track);
@@ -21,6 +21,9 @@ namespace Tracking
         public EarthPoint PointAt(Double Offset)
         {
             TrackSegment segment = SegmentAt(Offset);
+            if (segment == null)
+                return TrackSegments.Select(s => s.EndPoint).DefaultIfEmpty(new EarthPoint()).Last();
+
             double localOffset = Offset - segment.StartOffset;
             return segment.GetMiddlePoint(localOffset / segment.Length);
         }
@@ -28,6 +31,12 @@ namespace Tracking
         /// <summary>Нарезает трек на сегменты</summary>
         private static IList<TrackSegment> SliceForSegments(GpsTrack Track)
         {
+            if (Track.TrackPoints.Count == 0)
+                return new TrackSegment[0];
+
+            if (Track.TrackPoints.Count == 1)
+                return new[] { new TrackSegment(Track.TrackPoints[0], Track.TrackPoints[0], 0) };
+
             double offset = 0;
             var res = new List<TrackSegment>(Track.TrackPoints.Count - 1);
             for (int i = 1; i < Track.TrackPoints.Count; i++)
@@ -39,7 +48,7 @@ namespace Tracking
             return res;
         }
 
-        private TrackSegment SegmentAt(Double Offset) { return TrackSegments.First(seg => seg.StartOffset <= Offset && Offset < seg.EndOffset); }
+        private TrackSegment SegmentAt(Double Offset) { return TrackSegments.FirstOrDefault(seg => seg.StartOffset <= Offset && Offset < seg.EndOffset); }
 
         /// <summary>Сегмент трека - участок между двумя точками трека</summary>
         private class TrackSegment
