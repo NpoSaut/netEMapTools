@@ -6,7 +6,8 @@
              xmlns:viewModels="clr-namespace:Tracking.ViewModels"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:TrackingControlViewModel}">
     <StackPanel Orientation="Horizontal">
-        <Button Content="LoadTrack" Command="{Binding LoadTrack}" />
-        <Button Content="SaveTrack" Command="{Binding SaveTrack}" />
+        <Button Content="Clear Track" Command="{Binding ClearTrack}" />
+        <Button Content="Load Track" Command="{Binding LoadTrack}" />
+        <Button Content="Save Track" Command="{Binding SaveTrack}" />
     </StackPanel>
 </UserControl>

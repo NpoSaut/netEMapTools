@@ -29,12 +29,15 @@ namespace Tracking.ViewModels
             _trackPresenter = TrackPresenter;
             IMappingService mappingService = MappingService;
 
-            LoadTrack = ReactiveCommand.CreateAsyncTask(LoadTrackImpl);
-            SaveTrack = ReactiveCommand.CreateAsyncTask(SaveTrackImpl);
-
             _track = new ReactiveList<EarthPoint>();
             _track.Changed
                   .Subscribe(_ => RefreshTrack());
+
+            LoadTrack = ReactiveCommand.CreateAsyncTask(LoadTrackImpl);
+            SaveTrack = ReactiveCommand.CreateAsyncTask(SaveTrackImpl);
+            ReactiveCommand<object> clearCommand = ReactiveCommand.Create(_track.IsEmptyChanged.Select(e => !e));
+            clearCommand.Subscribe(_ => _track.Clear());
+            ClearTrack = clearCommand;
 
             IConnectableObservable<TrackPathRider> prp =
                 _track.Changed
@@ -49,22 +52,15 @@ namespace Tracking.ViewModels
 
             mappingService.Clicks
                           .Where(c => c.Action == MouseAction.RightClick)
-                          .Subscribe(c =>
-                                     {
-                                         _track.Clear();
-                                         RefreshTrack();
-                                     });
+                          .Subscribe(c => _track.Remove(_track.LastOrDefault()));
         }
 
+        public ICommand ClearTrack { get; private set; }
         public ICommand LoadTrack { get; private set; }
         public ICommand SaveTrack { get; private set; }
         public IObservable<IPathRider> PathRider { get; private set; }
 
-        private void AppendPointToTrack(EarthPoint Point)
-        {
-            _track.Add(Point);
-            RefreshTrack();
-        }
+        private void AppendPointToTrack(EarthPoint Point) { _track.Add(Point); }
 
         private void RefreshTrack()
         {
@@ -105,8 +101,6 @@ namespace Tracking.ViewModels
                                                 }
                                             });
             _track.AddRange(track.TrackPoints);
-
-            RefreshTrack();
         }
     }
 }
