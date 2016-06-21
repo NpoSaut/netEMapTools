@@ -40,8 +40,8 @@ namespace MsulEmulation.Encoding
                 writer.Write((UInt16)ViewModel.TrainNumber);
                 writer.Write((Byte)ViewModel.Speed);
                 writer.Write(EncodeTemperature(ViewModel.OutdoorTemperature));
-                writer.Write((Int32)(ViewModel.Position.Latitude.Value * LatitudeFactor));
-                writer.Write((Int32)(ViewModel.Position.Longitude.Value * LatitudeFactor));
+                writer.Write((Int32)(ViewModel.Position.Longitude.Value / LatitudeFactor));
+                writer.Write((Int32)(ViewModel.Position.Latitude.Value / LatitudeFactor));
                 writer.Write((Int16)ViewModel.Altitude);
                 writer.Write((Byte)10);
                 writer.Write((Byte)((ViewModel.EmergencyStop ? 1 : 0) << 0 |
@@ -64,14 +64,14 @@ namespace MsulEmulation.Encoding
                 writer.Write(_carriageKinds[carriage.Kind]);
                 writer.Write(EncodeTemperature(carriage.IndoorTemperature));
                 writer.Write((Byte)((carriage.EmergencyValueReleased ? 1 : 0) << 0 |
-                                    (carriage.Toilet1Occupied ? 0 : 1) << 1 |
-                                    (carriage.Toilet2Occupied ? 0 : 1) << 2));
+                                    (carriage.Toilet1Occupied ? 1 : 0) << 1 |
+                                    (carriage.Toilet2Occupied ? 1 : 0) << 2));
                 writer.Write((Byte)0);
                 writer.Write((Byte)0);
                 return ms.ToArray();
             }
         }
 
-        private byte EncodeTemperature(double TemperatureValue) { return (byte)(TemperatureValue - 60); }
+        private byte EncodeTemperature(double TemperatureValue) { return (byte)Math.Round(TemperatureValue + 60); }
     }
 }
