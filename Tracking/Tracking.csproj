@@ -98,6 +98,7 @@
   <ItemGroup>
     <Compile Include="Formatters\GpxTrackFormatter.cs" />
     <Compile Include="Formatters\ITrackFormatter.cs" />
+    <Compile Include="Formatters\PlainRadianTextFormatter.cs" />
     <Compile Include="GpsTrack.cs" />
     <Compile Include="IPathRider.cs" />
     <Compile Include="IPathRiderProvider.cs" />
@@ -109,6 +110,7 @@
     <Compile Include="Presenting\ITrackPresenter.cs" />
     <Compile Include="Presenting\TrackPresenter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TrackFormatterManager.cs" />
     <Compile Include="TrackPathRider.cs" />
     <Compile Include="ViewModels\TrackingControlViewModel.cs" />
     <Compile Include="Views\TrackingControlView.xaml.cs">

@@ -9,24 +9,22 @@ using Geographics;
 using MapViewer.Mapping;
 using Microsoft.Win32;
 using ReactiveUI;
-using Tracking.Formatters;
 using Tracking.Presenting;
 
 namespace Tracking.ViewModels
 {
     public class TrackingControlViewModel : ReactiveObject, IPathRiderProvider
     {
-        private const string FileTypes = "GPX File (*.gpx)|*.gpx|AnyFile (*.*)|*.*";
         private readonly ReactiveList<EarthPoint> _track;
 
-        private readonly ITrackFormatter _trackFormatter;
+        private readonly TrackFormatterManager _trackFormatterManager;
         private readonly ITrackPresenter _trackPresenter;
         private IDisposable _previousTrackDisplaying;
 
-        public TrackingControlViewModel(ITrackFormatter TrackFormatter, ITrackPresenter TrackPresenter, IMappingService MappingService)
+        public TrackingControlViewModel(ITrackPresenter TrackPresenter, IMappingService MappingService, TrackFormatterManager TrackFormatterManager)
         {
-            _trackFormatter = TrackFormatter;
             _trackPresenter = TrackPresenter;
+            _trackFormatterManager = TrackFormatterManager;
             IMappingService mappingService = MappingService;
 
             _track = new ReactiveList<EarthPoint>();
@@ -73,7 +71,7 @@ namespace Tracking.ViewModels
 
         private async Task SaveTrackImpl(object _)
         {
-            var dlg = new SaveFileDialog { DefaultExt = "gpx", Filter = FileTypes, FilterIndex = 0 };
+            var dlg = new SaveFileDialog { DefaultExt = "gpx", Filter = _trackFormatterManager.GetFileFilterString(), FilterIndex = 0 };
             if (dlg.ShowDialog() != true)
                 return;
 
@@ -81,14 +79,15 @@ namespace Tracking.ViewModels
                            {
                                using (FileStream stream = File.Create(dlg.FileName))
                                {
-                                   _trackFormatter.SaveTrack(new GpsTrack(_track), stream);
+                                   _trackFormatterManager.GetFormatter(Path.GetExtension(dlg.FileName))
+                                                         .SaveTrack(new GpsTrack(_track), stream);
                                }
                            });
         }
 
         private async Task LoadTrackImpl(object _)
         {
-            var dlg = new OpenFileDialog { DefaultExt = "gpx", Filter = FileTypes, FilterIndex = 0 };
+            var dlg = new OpenFileDialog { DefaultExt = "gpx", Filter = _trackFormatterManager.GetFileFilterString(), FilterIndex = 0 };
             if (dlg.ShowDialog() != true)
                 return;
 
@@ -97,7 +96,8 @@ namespace Tracking.ViewModels
                                             {
                                                 using (FileStream stream = File.OpenRead(dlg.FileName))
                                                 {
-                                                    return _trackFormatter.LoadTrack(stream);
+                                                    return _trackFormatterManager.GetFormatter(Path.GetExtension(dlg.FileName))
+                                                                                 .LoadTrack(stream);
                                                 }
                                             });
             _track.AddRange(track.TrackPoints);

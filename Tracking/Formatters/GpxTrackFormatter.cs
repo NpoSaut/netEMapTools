@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
@@ -22,6 +21,16 @@ namespace Tracking.Formatters
                                                                                         new XAttribute("lat", point.Latitude.Value),
                                                                                         new XAttribute("lon", point.Longitude.Value)))))));
             doc.Save(output);
+        }
+
+        public string Name
+        {
+            get { return "GPX File"; }
+        }
+
+        public string Extension
+        {
+            get { return "gpx"; }
         }
 
         public GpsTrack LoadTrack(Stream input)

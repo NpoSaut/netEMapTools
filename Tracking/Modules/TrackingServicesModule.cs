@@ -13,8 +13,9 @@ namespace Tracking.Modules
         public override void Initialize()
         {
             Container
+                .RegisterType<ITrackFormatter, GpxTrackFormatter>("GpxTrackFormatter", new ContainerControlledLifetimeManager())
+                .RegisterType<ITrackFormatter, PlainRadianTextFormatter>("PlainRadianTextFormatter", new ContainerControlledLifetimeManager())
                 .RegisterType<IPathRider, TrackPathRider>(new ContainerControlledLifetimeManager())
-                .RegisterType<ITrackFormatter, GpxTrackFormatter>(new ContainerControlledLifetimeManager())
                 .RegisterType<ITrackPresenter, TrackPresenter>(new ContainerControlledLifetimeManager())
                 .RegisterType<IPathRiderProvider, TrackingControlViewModel>(new ContainerControlledLifetimeManager());
         }
