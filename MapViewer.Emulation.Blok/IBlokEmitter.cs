@@ -41,8 +41,7 @@ namespace MapViewer.Emulation.Blok
         public IObservable<NavigationInformation> Emit(IObservable<NavigationInformation> Navigation)
         {
             AppiDev appi = _appiDeviceFactory.GetDevice();
-            return Navigation.Do(n => Emit(appi, n))
-                             .Finally(appi.Dispose);
+            return Navigation.Do(n => Emit(appi, n));
         }
 
         private void Emit(AppiDev Appi, NavigationInformation NavigationInformation)
