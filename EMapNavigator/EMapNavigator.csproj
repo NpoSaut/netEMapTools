@@ -110,8 +110,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="MapperBootstrapper.cs" />
-    <Compile Include="Can\IAppiDeviceFactory.cs" />
-    <Compile Include="Can\SingletonAppiDeviceFactory.cs" />
     <Compile Include="Emition\CanEmitter.cs" />
     <Compile Include="Emition\LanEmitter.cs" />
     <Compile Include="Emition\IEmitter.cs" />
@@ -209,6 +207,10 @@
     <ProjectReference Include="..\MapViewControl\MapVisualization.csproj">
       <Project>{e4d20511-9feb-4102-bee2-208b124c60c4}</Project>
       <Name>MapVisualization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MapViewer.Emulation.Blok\MapViewer.Emulation.Blok.csproj">
+      <Project>{F88BA4DE-2663-44C1-A953-F0D5E49396A1}</Project>
+      <Name>MapViewer.Emulation.Blok</Name>
     </ProjectReference>
     <ProjectReference Include="..\MapViewer.Emulation\MapViewer.Emulation.csproj">
       <Project>{45DBB5B9-9527-4394-AD47-59EE02BD0E5E}</Project>

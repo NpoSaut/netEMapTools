@@ -4,9 +4,9 @@ using Communications;
 using Communications.Appi;
 using Communications.Appi.Winusb;
 
-namespace EMapNavigator.Can
+namespace MapViewer.Emulation.Blok.Can
 {
-    public class SingletonAppiDeviceFactory : IAppiDeviceFactory
+    public class SingletonAppiDeviceFactory : IAppiDeviceFactory, IDisposable
     {
         private readonly Lazy<AppiDev> _lazyDev;
 
@@ -20,6 +20,12 @@ namespace EMapNavigator.Can
             appiDevice.CanPorts[AppiLine.Can1].BaudRate = BaudRates.CBR_100K;
             appiDevice.CanPorts[AppiLine.Can2].BaudRate = BaudRates.CBR_100K;
             return appiDevice;
+        }
+
+        public void Dispose()
+        {
+            if (_lazyDev.IsValueCreated)
+                _lazyDev.Value.Dispose();
         }
     }
 }

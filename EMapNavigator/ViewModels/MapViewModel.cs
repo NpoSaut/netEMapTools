@@ -17,8 +17,9 @@ namespace EMapNavigator.ViewModels
 
         public MapViewModel()
         {
-            MapCenter = new EarthPoint(new Degree(56.8779), new Degree(60.5905));
-            ZoomLevel = 14;
+            //MapCenter = new EarthPoint(new Degree(56.8779), new Degree(60.5905));
+            MapCenter = new EarthPoint(new Degree(55.740857), new Degree(37.621257));
+            ZoomLevel = 12;
 
             _mapClickedCommand = ReactiveCommand.Create();
 

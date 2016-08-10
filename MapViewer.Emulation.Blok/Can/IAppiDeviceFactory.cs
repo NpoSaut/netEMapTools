@@ -1,6 +1,6 @@
 ﻿using Communications.Appi;
 
-namespace EMapNavigator.Can
+namespace MapViewer.Emulation.Blok.Can
 {
     public interface IAppiDeviceFactory
     {

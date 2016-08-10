@@ -1,0 +1,15 @@
+﻿<UserControl x:Class="MapViewer.Emulation.Blok.Views.BlokEmulationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" Width="150">
+    <Grid>
+        <GroupBox Header="Эмуляция БЛОК" Padding="4">
+            <StackPanel>
+                <TextBlock Text="Эмулировать сообщения ЭК-СНС" TextWrapping="Wrap" />
+                <ToggleButton Content="Включить" IsChecked="{Binding EmulationEnabled}" Margin="2" Padding="3" />
+            </StackPanel>
+        </GroupBox>
+    </Grid>
+</UserControl>

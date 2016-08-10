@@ -1,5 +1,5 @@
 ﻿using Communications.Appi;
-using EMapNavigator.Can;
+using MapViewer.Emulation.Blok.Can;
 using MapViewer.Emulation.Wheels;
 
 namespace MapViewer.Emulation.Blok.Wheels
