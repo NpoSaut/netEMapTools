@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Reactive.Linq;
 using System.Windows.Input;
 using Geographics;
@@ -14,6 +15,7 @@ namespace EMapNavigator.ViewModels
     {
         private readonly ObservableCollection<MapElement> _elements = new ObservableCollection<MapElement>();
         private readonly ReactiveCommand<object> _mapClickedCommand;
+        private EarthPoint _mapCenter;
 
         public MapViewModel()
         {
@@ -27,7 +29,11 @@ namespace EMapNavigator.ViewModels
 
         public int ZoomLevel { get; set; }
 
-        public EarthPoint MapCenter { get; private set; }
+        public EarthPoint MapCenter
+        {
+            get { return _mapCenter; }
+            private set { this.RaiseAndSetIfChanged(ref _mapCenter, value); }
+        }
 
         public ICommand MapClickedCommand
         {
@@ -42,5 +48,6 @@ namespace EMapNavigator.ViewModels
         public void Display(MapElement Element) { Elements.Add(Element); }
         public void Remove(MapElement Element) { Elements.Remove(Element); }
         public IObservable<MapMouseActionEventArgs> Clicks { get; private set; }
+        public void Navigate(EarthPoint ToPoint) { MapCenter = ToPoint; }
     }
 }
