@@ -7,6 +7,11 @@ namespace Tracking.Formatters
 {
     public class PlainRadianTextFormatter : ITrackFormatter
     {
+        public FormatterDirection Direction
+        {
+            get { return FormatterDirection.Save | FormatterDirection.Load; }
+        }
+
         public string Name
         {
             get { return "Radian Plain Text"; }
@@ -14,7 +19,7 @@ namespace Tracking.Formatters
 
         public string Extension
         {
-            get { return "txt"; }
+            get { return "rad"; }
         }
 
         public GpsTrack LoadTrack(Stream input)

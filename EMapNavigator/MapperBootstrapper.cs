@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using BlokCanTracking.Modules;
 using BlokMap.Modules;
 using EMapNavigator.Modules;
 using MapViewer.Emulation.Blok.Modules;
@@ -23,6 +24,7 @@ namespace EMapNavigator
             mc.AddModule(typeof (BlokMapServicesModule));
             mc.AddModule(typeof (BlokMapEmulatorServicesModule));
             mc.AddModule(typeof (TrackingServicesModule));
+            mc.AddModule(typeof (BlockCanTrackingModule));
             mc.AddModule(typeof (EmulationBasicsServicesModule));
             mc.AddModule(typeof (BlokEmulationServicesModule));
             //mc.AddModule(typeof (MsulEmulationServicesModule));
