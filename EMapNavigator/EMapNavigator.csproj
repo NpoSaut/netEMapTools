@@ -109,6 +109,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="EarthPointToStringConverter.cs" />
     <Compile Include="MapperBootstrapper.cs" />
     <Compile Include="Emition\CanEmitter.cs" />
     <Compile Include="Emition\LanEmitter.cs" />

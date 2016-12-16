@@ -5,9 +5,18 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mapVisualization="clr-namespace:MapVisualization;assembly=MapVisualization"
              xmlns:viewModels="clr-namespace:EMapNavigator.ViewModels"
+             xmlns:eMapNavigator="clr-namespace:EMapNavigator"
              mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="200"
              d:DataContext="{d:DesignInstance viewModels:MapViewModel}">
-    <mapVisualization:MapView CentralPoint="{Binding MapCenter}" ZoomLevel="{Binding ZoomLevel}"
-                              ElementsSource="{Binding Elements}"
-                              ClickCommand="{Binding MapClickedCommand}" />
+    <UserControl.Resources>
+        <eMapNavigator:EarthPointToStringConverter x:Key="EarthPointConverter"></eMapNavigator:EarthPointToStringConverter>
+    </UserControl.Resources>
+    <Grid>
+        <mapVisualization:MapView CentralPoint="{Binding MapCenter}" ZoomLevel="{Binding ZoomLevel}"
+                                  ElementsSource="{Binding Elements}"
+                                  ClickCommand="{Binding MapClickedCommand}" />
+        <TextBox VerticalAlignment="Top" HorizontalAlignment="Center" Margin="5" Padding="3"
+                 Width="140" Background="#50ffffff"
+                 Text="{Binding MapCenter, Converter={StaticResource EarthPointConverter}, UpdateSourceTrigger=PropertyChanged}"/>
+    </Grid>
 </UserControl>
