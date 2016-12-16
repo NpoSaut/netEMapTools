@@ -9,12 +9,14 @@ using Geographics;
 using MapViewer.Mapping;
 using Microsoft.Win32;
 using ReactiveUI;
+using Tracking.Formatters;
 using Tracking.Presenting;
 
 namespace Tracking.ViewModels
 {
     public class TrackingControlViewModel : ReactiveObject, IPathRiderProvider
     {
+        private readonly IMappingService _mappingService;
         private readonly ReactiveList<EarthPoint> _track;
 
         private readonly TrackFormatterManager _trackFormatterManager;
@@ -25,7 +27,7 @@ namespace Tracking.ViewModels
         {
             _trackPresenter = TrackPresenter;
             _trackFormatterManager = TrackFormatterManager;
-            IMappingService mappingService = MappingService;
+            _mappingService = MappingService;
 
             _track = new ReactiveList<EarthPoint>();
             _track.Changed
@@ -44,13 +46,13 @@ namespace Tracking.ViewModels
             PathRider = prp;
             prp.Connect();
 
-            mappingService.Clicks
-                          .Where(c => c.Action == MouseAction.LeftClick)
-                          .Subscribe(c => AppendPointToTrack(c.Point));
+            _mappingService.Clicks
+                           .Where(c => c.Action == MouseAction.LeftClick)
+                           .Subscribe(c => AppendPointToTrack(c.Point));
 
-            mappingService.Clicks
-                          .Where(c => c.Action == MouseAction.RightClick)
-                          .Subscribe(c => _track.Remove(_track.LastOrDefault()));
+            _mappingService.Clicks
+                           .Where(c => c.Action == MouseAction.RightClick)
+                           .Subscribe(c => _track.Remove(_track.LastOrDefault()));
         }
 
         public ICommand ClearTrack { get; private set; }
@@ -71,7 +73,7 @@ namespace Tracking.ViewModels
 
         private async Task SaveTrackImpl(object _)
         {
-            var dlg = new SaveFileDialog { DefaultExt = "gpx", Filter = _trackFormatterManager.GetFileFilterString(), FilterIndex = 0 };
+            var dlg = new SaveFileDialog { DefaultExt = "gpx", Filter = _trackFormatterManager.GetFileFilterString(FormatterDirection.Save), FilterIndex = 0 };
             if (dlg.ShowDialog() != true)
                 return;
 
@@ -87,7 +89,7 @@ namespace Tracking.ViewModels
 
         private async Task LoadTrackImpl(object _)
         {
-            var dlg = new OpenFileDialog { DefaultExt = "gpx", Filter = _trackFormatterManager.GetFileFilterString(), FilterIndex = 0 };
+            var dlg = new OpenFileDialog { DefaultExt = "gpx", Filter = _trackFormatterManager.GetFileFilterString(FormatterDirection.Load), FilterIndex = 0 };
             if (dlg.ShowDialog() != true)
                 return;
 
@@ -101,6 +103,7 @@ namespace Tracking.ViewModels
                                                 }
                                             });
             _track.AddRange(track.TrackPoints);
+            _mappingService.Navigate(_track.First());
         }
     }
 }
