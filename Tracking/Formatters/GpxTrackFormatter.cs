@@ -23,6 +23,11 @@ namespace Tracking.Formatters
             doc.Save(output);
         }
 
+        public FormatterDirection Direction
+        {
+            get { return FormatterDirection.Save | FormatterDirection.Load; }
+        }
+
         public string Name
         {
             get { return "GPX File"; }

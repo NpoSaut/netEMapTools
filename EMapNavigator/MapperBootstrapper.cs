@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Windows;
+using BlokCanTracking.Modules;
 using BlokMap.Modules;
 using EMapNavigator.Modules;
 using MapViewer.Emulation.Modules;
 using Microsoft.Practices.Unity;
-using MsulEmulation.Modules;
 using Prism.Modularity;
 using Prism.Unity;
 using Tracking.Modules;
@@ -23,15 +23,16 @@ namespace EMapNavigator
             mc.AddModule(typeof (BlokMapServicesModule));
             mc.AddModule(typeof (BlokMapEmulatorServicesModule));
             mc.AddModule(typeof (TrackingServicesModule));
+            mc.AddModule(typeof (BlockCanTrackingModule));
             mc.AddModule(typeof (EmulationBasicsServicesModule));
-            mc.AddModule(typeof (MsulEmulationServicesModule));
+            //mc.AddModule(typeof (MsulEmulationServicesModule));
 
             mc.AddModule(typeof (MappingInterfaceModule));
             mc.AddModule(typeof (BlokMapInterfaceModule));
             mc.AddModule(typeof (MainInterfaceModule));
             mc.AddModule(typeof (TrackingInterfaceModule));
             mc.AddModule(typeof (EmulationBasicsInterfaceModule));
-            mc.AddModule(typeof (MsulEmulationInterfaceModule));
+            //mc.AddModule(typeof (MsulEmulationInterfaceModule));
 
             base.ConfigureModuleCatalog();
         }

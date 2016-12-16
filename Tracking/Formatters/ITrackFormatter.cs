@@ -1,9 +1,18 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace Tracking.Formatters
 {
+    [Flags]
+    public enum FormatterDirection
+    {
+        Save,
+        Load
+    }
+
     public interface ITrackFormatter
     {
+        FormatterDirection Direction { get; }
         string Name { get; }
         string Extension { get; }
 

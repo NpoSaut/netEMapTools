@@ -167,7 +167,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -178,6 +180,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BlokCanTracking\BlokCanTracking.csproj">
+      <Project>{54EB8115-E732-454C-B513-368080E12A17}</Project>
+      <Name>BlokCanTracking</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BlokMap\BlokMap.csproj">
       <Project>{23739518-611C-45A5-AE6F-258D2846E1C9}</Project>
       <Name>BlokMap</Name>
