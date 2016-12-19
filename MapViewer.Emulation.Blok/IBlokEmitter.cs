@@ -35,20 +35,36 @@ namespace MapViewer.Emulation.Blok
 
     public class CanBlokEmitter : IBlokEmitter
     {
+        private const int Cogs = 42;
+        private const double Diameter = 1250;
+
         private readonly IAppiDeviceFactory _appiDeviceFactory;
         public CanBlokEmitter(IAppiDeviceFactory AppiDeviceFactory) { _appiDeviceFactory = AppiDeviceFactory; }
 
         public IObservable<NavigationInformation> Emit(IObservable<NavigationInformation> Navigation)
         {
             AppiDev appi = _appiDeviceFactory.GetDevice();
-            return Navigation.Do(n => Emit(appi, n));
+
+            return Navigation.Do(n => EmitSpeed(appi, n.Speed))
+                             .Sample(TimeSpan.FromSeconds(1))
+                             .Do(n => EmitPosition(appi, n.Position));
         }
 
-        private void Emit(AppiDev Appi, NavigationInformation NavigationInformation)
+        private void EmitSpeed(AppiDev Appi, double Speed)
         {
-            CanFrame frame = new MmAltLongFrame(NavigationInformation.Position.Latitude,
-                                                NavigationInformation.Position.Longitude).GetCanFrame();
-            CanFrame fx = CanFrame.NewWithId(0x5c0, frame.Data);
+            var frame = new IpdEmulation
+                        {
+                            Sensor1State = IpdEmulation.SensorState.Get(Speed, Cogs, Diameter, IpdEmulation.SensorState.DpsSensorPlacement.Left),
+                            Sensor2State = IpdEmulation.SensorState.Get(Speed, Cogs, Diameter, IpdEmulation.SensorState.DpsSensorPlacement.Left)
+                        };
+            Appi.CanPorts[AppiLine.Can1].Send(frame);
+        }
+
+        private void EmitPosition(AppiDev Appi, EarthPoint Position)
+        {
+            CanFrame frame = new MmAltLongFrame(Position.Latitude,
+                                                Position.Longitude).GetCanFrame();
+            CanFrame fx = CanFrame.NewWithId(0x213, frame.Data);
             Appi.CanPorts[AppiLine.Can1].Send(fx);
         }
     }
