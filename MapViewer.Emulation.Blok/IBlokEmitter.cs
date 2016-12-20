@@ -64,7 +64,7 @@ namespace MapViewer.Emulation.Blok
         {
             CanFrame frame = new MmAltLongFrame(Position.Latitude,
                                                 Position.Longitude).GetCanFrame();
-            CanFrame fx = CanFrame.NewWithId(0x213, frame.Data);
+            CanFrame fx = CanFrame.NewWithId(0x5c0, frame.Data);
             Appi.CanPorts[AppiLine.Can1].Send(fx);
         }
     }

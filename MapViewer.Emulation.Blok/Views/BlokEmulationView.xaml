@@ -8,6 +8,10 @@
         <GroupBox Header="Эмуляция БЛОК" Padding="4">
             <StackPanel>
                 <TextBlock Text="Эмулировать сообщения ЭК-СНС" TextWrapping="Wrap" />
+                <TextBlock TextWrapping="Wrap" Opacity="0.6">
+                    <Run Text="ID:" />
+                    <Run Text="0x5c0" FontFamily="Lucida Console" />
+                </TextBlock>
                 <ToggleButton Content="Включить" IsChecked="{Binding EmulationEnabled}" Margin="2" Padding="3" />
             </StackPanel>
         </GroupBox>
