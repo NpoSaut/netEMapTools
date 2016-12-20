@@ -36,7 +36,7 @@
         <Border BorderThickness="0,1,1,0" BorderBrush="#FF8D3300">
             <Grid>
                 <ContentControl regions:RegionManager.RegionName="Map" />
-                <Rectangle VerticalAlignment="Top" Height="7">
+                <Rectangle VerticalAlignment="Top" Height="7" IsHitTestVisible="False">
                     <Rectangle.Fill>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#33000000" Offset="0.01" />

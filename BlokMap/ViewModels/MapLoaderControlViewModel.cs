@@ -31,7 +31,7 @@ namespace BlokMap.ViewModels
 
         private async Task LoadMap()
         {
-            var dlg = new OpenFileDialog();
+            var dlg = new OpenFileDialog { DefaultExt = "gpx", Filter = "Файл электронной карты|*.gps|Все файлы|*.*", FilterIndex = 0 };
             if (dlg.ShowDialog() != true)
                 return;
 
