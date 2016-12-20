@@ -45,6 +45,8 @@ namespace MapViewer.Emulation.Blok.Wheels
             get { return _milage; }
         }
 
+        public void Reset() { throw new NotImplementedException(); }
+
         public Double Speed { get; set; }
 
         private void ListenForIpdState(object Obj)

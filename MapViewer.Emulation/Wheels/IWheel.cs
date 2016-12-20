@@ -7,5 +7,6 @@ namespace MapViewer.Emulation.Wheels
         Double Speed { get; set; }
         event EventHandler SpeedChanged;
         IObservable<double> Milage { get; }
+        void Reset();
     }
 }

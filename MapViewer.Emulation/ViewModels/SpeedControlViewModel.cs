@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Reactive.Linq;
+using System.Windows.Input;
 using MapViewer.Emulation.Wheels;
 using MapViewer.ViewModels;
 using ReactiveUI;
@@ -21,7 +23,13 @@ namespace MapViewer.Emulation.ViewModels
 
             _wheel.Milage
                   .ToProperty(this, w => w.Disstance, out _disstance);
+
+            ReactiveCommand<object> resetDisstanceCommand = ReactiveCommand.Create(_wheel.Milage.Select(m => m > 0).ObserveOnDispatcher());
+            resetDisstanceCommand.Subscribe(_ => _wheel.Reset());
+            ResetDisstance = resetDisstanceCommand;
         }
+
+        public ICommand ResetDisstance { get; private set; }
 
         public double Speed
         {

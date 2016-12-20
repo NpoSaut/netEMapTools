@@ -10,6 +10,7 @@ namespace MapViewer.Emulation.Wheels
 
         private double _disstance;
 
+        private bool _resetRequested;
         private double _speed;
 
         public VirtualWheel()
@@ -17,7 +18,7 @@ namespace MapViewer.Emulation.Wheels
             _disstance = 0;
             IConnectableObservable<double> milage = Observable.Interval(_timerInterval)
                                                               .Select(i => IncreaseDisstance())
-                                                              .Distinct()
+                                                              .DistinctUntilChanged()
                                                               .Publish();
             Milage = milage;
             milage.Connect();
@@ -40,9 +41,16 @@ namespace MapViewer.Emulation.Wheels
 
         public IObservable<double> Milage { get; private set; }
 
+        public void Reset() { _resetRequested = true; }
+
         private double IncreaseDisstance()
         {
             _disstance += Speed * (_timerInterval.TotalSeconds) / 3.6;
+            if (_resetRequested)
+            {
+                _disstance = 0;
+                _resetRequested = false;
+            }
             return _disstance;
         }
     }
