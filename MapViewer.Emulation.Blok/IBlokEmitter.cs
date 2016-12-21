@@ -23,14 +23,16 @@ namespace MapViewer.Emulation.Blok
 
     public class NavigationInformation
     {
-        public NavigationInformation(EarthPoint Position, double Speed)
+        public NavigationInformation(EarthPoint Position, double Speed, bool Reliability)
         {
+            this.Reliability = Reliability;
             this.Position = Position;
             this.Speed = Speed;
         }
 
         public EarthPoint Position { get; private set; }
         public double Speed { get; private set; }
+        public bool Reliability { get; private set; }
     }
 
     public class CanBlokEmitter : IBlokEmitter
@@ -47,7 +49,7 @@ namespace MapViewer.Emulation.Blok
 
             return Navigation.Do(n => EmitSpeed(appi, n.Speed))
                              .Sample(TimeSpan.FromSeconds(1))
-                             .Do(n => EmitPosition(appi, n.Position));
+                             .Do(n => EmitPosition(appi, n.Position, n.Reliability));
         }
 
         private void EmitSpeed(AppiDev Appi, double Speed)
@@ -60,10 +62,11 @@ namespace MapViewer.Emulation.Blok
             Appi.CanPorts[AppiLine.Can1].Send(frame);
         }
 
-        private void EmitPosition(AppiDev Appi, EarthPoint Position)
+        private void EmitPosition(AppiDev Appi, EarthPoint Position, bool Reliability)
         {
             CanFrame frame = new MmAltLongFrame(Position.Latitude,
-                                                Position.Longitude).GetCanFrame();
+                                                Position.Longitude,
+                                                Reliability).GetCanFrame();
             CanFrame fx = CanFrame.NewWithId(0x5c0, frame.Data);
             Appi.CanPorts[AppiLine.Can1].Send(fx);
         }

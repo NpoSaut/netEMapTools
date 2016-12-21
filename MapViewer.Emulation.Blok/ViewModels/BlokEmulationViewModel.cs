@@ -13,6 +13,7 @@ namespace MapViewer.Emulation.Blok.ViewModels
         private bool _emulationEnabled;
 
         private PositionPresenter _positionPresenter;
+        private bool _reliability = true;
 
         public BlokEmulationViewModel(IBlokEmitter Emitter, BlokEmulationParameters EmulationParameters, IMappingService MappingService)
         {
@@ -20,10 +21,11 @@ namespace MapViewer.Emulation.Blok.ViewModels
 
             ReactiveCommand<NavigationInformation> run =
                 ReactiveCommand.CreateAsyncObservable(
-                    _ => EmulationParameters.Changed
-                                            .Select(x =>
-                                                    new NavigationInformation(EmulationParameters.Position,
-                                                                              EmulationParameters.Speed))
+                    _ => EmulationParameters.WhenAnyValue(x => x.Position,
+                                                          x => x.Speed,
+                                                          (position, speed) => new { position, speed })
+                                            .CombineLatest(this.WhenAnyValue(x => x.Reliability),
+                                                           (n, r) => new NavigationInformation(n.position, n.speed, r))
                                             .EmitThorough(Emitter)
                                             .TakeUntil(_stop));
 
@@ -45,6 +47,12 @@ namespace MapViewer.Emulation.Blok.ViewModels
 
         public ICommand Run { get; private set; }
         public ICommand Stop { get; private set; }
+
+        public bool Reliability
+        {
+            get { return _reliability; }
+            set { this.RaiseAndSetIfChanged(ref _reliability, value); }
+        }
 
         public bool EmulationEnabled
         {
