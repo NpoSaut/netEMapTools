@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         SnapsToDevicePixels="True" TextOptions.TextFormattingMode="Display"
         Background="{StaticResource {x:Static SystemColors.ControlBrushKey}}"
-        Title="MainWindow">
+        Title="MapViewer">
     <DockPanel>
         <ItemsControl DockPanel.Dock="Top" regions:RegionManager.RegionName="MainToolbar">
             <ItemsControl.Resources>
