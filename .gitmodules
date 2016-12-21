@@ -10,3 +10,6 @@
 [submodule "Can"]
 	path = Can
 	url = https://github.com/NpoSaut/netCanLib.git
+[submodule "InstallerTools"]
+	path = InstallerTools
+	url = https://git.nposaut.ru:443/netInstallerTools.git
