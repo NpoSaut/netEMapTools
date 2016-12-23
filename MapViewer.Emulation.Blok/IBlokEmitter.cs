@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using BlokFrames;
 using Communications.Appi;
@@ -45,18 +46,19 @@ namespace MapViewer.Emulation.Blok
 
         public IObservable<NavigationInformation> Emit(IObservable<NavigationInformation> Navigation)
         {
-            AppiDev appi = _appiDeviceFactory.GetDevice();
+            IAppiHandler appi = _appiDeviceFactory.GetDevice();
 
             IObservable<long> speedSampler = Observable.Interval(TimeSpan.FromMilliseconds(200));
             IObservable<long> gpsSampler = Observable.Interval(TimeSpan.FromMilliseconds(1000));
 
             var sub = new CompositeDisposable(
+                appi,
                 Navigation.CombineLatest(speedSampler, (n, i) => n)
                           .Sample(speedSampler)
-                          .Subscribe(n => EmitSpeed(appi, n.Speed)),
+                          .Subscribe(n => EmitSpeed(appi.Dev, n.Speed)),
                 Navigation.CombineLatest(gpsSampler, (n, i) => n)
                           .Sample(gpsSampler)
-                          .Subscribe(n => EmitPosition(appi, n.Position, n.Reliability)));
+                          .Subscribe(n => EmitPosition(appi.Dev, n.Position, n.Reliability)));
 
             Navigation.Subscribe(_ => { }, sub.Dispose);
             return Navigation;

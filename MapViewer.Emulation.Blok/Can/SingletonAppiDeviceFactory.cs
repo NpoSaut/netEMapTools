@@ -8,11 +8,40 @@ namespace MapViewer.Emulation.Blok.Can
 {
     public class SingletonAppiDeviceFactory : IAppiDeviceFactory, IDisposable
     {
-        private readonly Lazy<AppiDev> _lazyDev;
+        private readonly object _appiLocker = new object();
+        private AppiDev _appiDev;
+        private int _refCounter;
 
-        public SingletonAppiDeviceFactory() { _lazyDev = new Lazy<AppiDev>(OpenDevice); }
+        public IAppiHandler GetDevice()
+        {
+            lock (_appiLocker)
+            {
+                if (_appiDev == null)
+                    _appiDev = OpenDevice();
+                _refCounter++;
+                var handler = new Handler(_appiDev);
+                handler.Disposed +=
+                    (s, e) =>
+                    {
+                        lock (_appiLocker)
+                        {
+                            _refCounter--;
+                            if (_refCounter == 0)
+                            {
+                                _appiDev.Dispose();
+                                _appiDev = null;
+                            }
+                        }
+                    };
+                return handler;
+            }
+        }
 
-        public AppiDev GetDevice() { return _lazyDev.Value; }
+        public void Dispose()
+        {
+            if (_appiDev != null)
+                _appiDev.Dispose();
+        }
 
         private AppiDev OpenDevice()
         {
@@ -22,10 +51,18 @@ namespace MapViewer.Emulation.Blok.Can
             return appiDevice;
         }
 
-        public void Dispose()
+        private class Handler : IAppiHandler
         {
-            if (_lazyDev.IsValueCreated)
-                _lazyDev.Value.Dispose();
+            public Handler(AppiDev Dev) { this.Dev = Dev; }
+            public void Dispose() { OnDisposed(); }
+            public AppiDev Dev { get; private set; }
+            public event EventHandler Disposed;
+
+            protected virtual void OnDisposed()
+            {
+                EventHandler handler = Disposed;
+                if (handler != null) handler(this, EventArgs.Empty);
+            }
         }
     }
 }

@@ -11,7 +11,7 @@ namespace MapViewer.Emulation.Blok.Wheels
 
         public IWheel GetWheel()
         {
-            AppiDev appiDevice = _appiDeviceFactory.GetDevice();
+            AppiDev appiDevice = _appiDeviceFactory.GetDevice().Dev;
             return new CanWheel(appiDevice.CanPorts[AppiLine.Can1]);
         }
     }

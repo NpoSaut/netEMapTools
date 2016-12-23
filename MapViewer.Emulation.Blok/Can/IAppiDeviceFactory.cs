@@ -1,9 +1,15 @@
-﻿using Communications.Appi;
+﻿using System;
+using Communications.Appi;
 
 namespace MapViewer.Emulation.Blok.Can
 {
     public interface IAppiDeviceFactory
     {
-        AppiDev GetDevice();
+        IAppiHandler GetDevice();
+    }
+
+    public interface IAppiHandler : IDisposable
+    {
+        AppiDev Dev { get; }
     }
 }
