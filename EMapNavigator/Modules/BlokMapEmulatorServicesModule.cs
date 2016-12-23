@@ -1,7 +1,5 @@
-﻿using EMapNavigator.Views;
-using MapViewer;
+﻿using MapViewer;
 using Microsoft.Practices.Unity;
-using Prism.Regions;
 
 namespace EMapNavigator.Modules
 {
@@ -9,10 +7,6 @@ namespace EMapNavigator.Modules
     {
         public BlokMapEmulatorServicesModule(IUnityContainer Container) : base(Container) { }
 
-        public override void Initialize()
-        {
-            var rm = Container.Resolve<RegionManager>();
-            rm.RegisterViewWithRegion("MapOverlay", typeof (BlokMapEmulatorView));
-        }
+        public override void Initialize() { }
     }
 }

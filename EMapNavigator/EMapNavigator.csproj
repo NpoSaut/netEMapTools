@@ -126,9 +126,6 @@
     <Compile Include="ViewModels\MapViewModel.cs" />
     <Compile Include="ViewModels\WheelViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
-    <Compile Include="Views\BlokMapEmulatorView.xaml.cs">
-      <DependentUpon>BlokMapEmulatorView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\MapView.xaml.cs">
       <DependentUpon>MapView.xaml</DependentUpon>
     </Compile>
@@ -144,10 +141,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\BlokMapEmulatorView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\MapView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

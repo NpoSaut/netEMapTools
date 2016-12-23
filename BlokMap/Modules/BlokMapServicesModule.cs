@@ -1,4 +1,5 @@
-﻿using MapViewer;
+﻿using BlokMap.ViewModels;
+using MapViewer;
 using Microsoft.Practices.Unity;
 
 namespace BlokMap.Modules
@@ -10,7 +11,8 @@ namespace BlokMap.Modules
         public override void Initialize()
         {
             Container
-                .RegisterType<IMapLoadingService, MapLoadingService>(new ContainerControlledLifetimeManager());
+                .RegisterType<IMapLoadingService, MapLoadingService>(new ContainerControlledLifetimeManager())
+                .RegisterType<ITrackSource, TrackSelectorViewModel>(new ContainerControlledLifetimeManager());
         }
     }
 }

@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media;
 using BlokMap.MapElements;
 using BlokMap.MapElements.MapObjectElements;
 using Geographics;
 using GMapElements;
-using MapViewer.Mapping;
 using MapVisualization.Elements;
 
 namespace BlokMap
@@ -31,22 +31,18 @@ namespace BlokMap
 
         #endregion
 
-        private readonly IMappingService _mappingService;
-
-        public MapPresenter(IMappingService MappingService) { _mappingService = MappingService; }
-
-        public void PrintPosts(GMap gMap)
+        public IEnumerable<MapElement> PrintPosts(GMap gMap)
         {
             var r = new Random();
             foreach (GSection section in gMap.Sections)
             {
                 var sectionBrush = new SolidColorBrush(_sectionColors[r.Next(_sectionColors.Length)]);
                 foreach (GPost post in section.Posts)
-                    _mappingService.Display(new KilometerPostMapElement(post) { SectionBrush = sectionBrush });
+                    yield return new KilometerPostMapElement(post) { SectionBrush = sectionBrush };
             }
         }
 
-        public void PrintObjects(GMap gMap, int trackNumber)
+        public IEnumerable<MapElement> PrintObjects(GMap gMap, int trackNumber)
         {
             foreach (GSection section in gMap.Sections)
             {
@@ -80,7 +76,7 @@ namespace BlokMap
                                         objectElement = new MapUnknownObjectElement(objectPosition, gObject);
                                         break;
                                 }
-                                _mappingService.Display(objectElement);
+                                yield return objectElement;
                             }
                         }
                     }

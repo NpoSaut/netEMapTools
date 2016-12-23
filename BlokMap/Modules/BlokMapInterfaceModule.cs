@@ -11,6 +11,11 @@ namespace BlokMap.Modules
     public class BlokMapInterfaceModule : UnityContainerInterfaceModule
     {
         public BlokMapInterfaceModule(IUnityContainer Container, IRegionManager RegionManager) : base(Container, RegionManager) { }
-        public override void Initialize() { RegionManager.RegisterViewWithRegion("MainToolbar", typeof (MapLoaderControlView)); }
+
+        public override void Initialize()
+        {
+            RegionManager.RegisterViewWithRegion("MainToolbar", typeof (MapLoaderControlView));
+            RegionManager.RegisterViewWithRegion("MapOverlay", typeof (TrackSelectorView));
+        }
     }
 }

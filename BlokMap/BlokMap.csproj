@@ -99,6 +99,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IMapLoadingService.cs" />
+    <Compile Include="ITrackSource.cs" />
     <Compile Include="MapElements\KilometerPostMapElement.cs" />
     <Compile Include="MapElements\MapObjectElements\MapObjectElement.cs" />
     <Compile Include="MapElements\MapObjectElements\MapPlatformElement.cs" />
@@ -110,8 +111,12 @@
     <Compile Include="Modules\BlokMapServicesModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\MapLoaderControlViewModel.cs" />
+    <Compile Include="ViewModels\TrackSelectorViewModel.cs" />
     <Compile Include="Views\MapLoaderControlView.xaml.cs">
       <DependentUpon>MapLoaderControlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TrackSelectorView.xaml.cs">
+      <DependentUpon>TrackSelectorView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -138,6 +143,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Views\MapLoaderControlView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TrackSelectorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
