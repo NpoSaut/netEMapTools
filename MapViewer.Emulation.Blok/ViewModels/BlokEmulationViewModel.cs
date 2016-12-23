@@ -26,8 +26,8 @@ namespace MapViewer.Emulation.Blok.ViewModels
                                                           (position, speed) => new { position, speed })
                                             .CombineLatest(this.WhenAnyValue(x => x.Reliability),
                                                            (n, r) => new NavigationInformation(n.position, n.speed, r))
-                                            .EmitThorough(Emitter)
-                                            .TakeUntil(_stop));
+                                            .TakeUntil(_stop)
+                                            .EmitThorough(Emitter));
 
             _stop = ReactiveCommand.Create();
 

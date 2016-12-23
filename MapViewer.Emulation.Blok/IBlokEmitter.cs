@@ -47,9 +47,19 @@ namespace MapViewer.Emulation.Blok
         {
             AppiDev appi = _appiDeviceFactory.GetDevice();
 
-            return Navigation.Do(n => EmitSpeed(appi, n.Speed))
-                             .Sample(TimeSpan.FromSeconds(1))
-                             .Do(n => EmitPosition(appi, n.Position, n.Reliability));
+            IObservable<long> speedSampler = Observable.Interval(TimeSpan.FromMilliseconds(200));
+            IObservable<long> gpsSampler = Observable.Interval(TimeSpan.FromMilliseconds(1000));
+
+            var sub = new CompositeDisposable(
+                Navigation.CombineLatest(speedSampler, (n, i) => n)
+                          .Sample(speedSampler)
+                          .Subscribe(n => EmitSpeed(appi, n.Speed)),
+                Navigation.CombineLatest(gpsSampler, (n, i) => n)
+                          .Sample(gpsSampler)
+                          .Subscribe(n => EmitPosition(appi, n.Position, n.Reliability)));
+
+            Navigation.Subscribe(_ => { }, sub.Dispose);
+            return Navigation;
         }
 
         private void EmitSpeed(AppiDev Appi, double Speed)
