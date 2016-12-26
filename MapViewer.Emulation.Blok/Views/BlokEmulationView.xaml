@@ -9,19 +9,18 @@
         <GroupBox Header="Эмуляция БЛОК" Padding="4">
             <StackPanel>
                 <TextBlock Text="Эмулировать сообщения ЭК-СНС" TextWrapping="Wrap" />
+                <CheckBox Content="Достоверность" IsChecked="{Binding Reliability}" Margin="2" />
+                <ComboBox Margin="2" IsEnabled="{Binding CanChangeEmissionMethod}"
+                          ItemsSource="{Binding EmitterFactories}" DisplayMemberPath="Name"
+                          SelectedItem="{Binding SelectedEmitterFactory}" />
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <RadioButton Grid.Column="0" Margin="2" Content="Вкл"  IsChecked="{Binding EmulationEnabled}" />
+                    <RadioButton Grid.Column="0" Margin="2" Content="Вкл" IsChecked="{Binding EmulationEnabled}" />
                     <RadioButton Grid.Column="1" Margin="2" Content="Выкл" IsChecked="True" />
                 </Grid>
-                <CheckBox Content="Достоверность" IsChecked="{Binding Reliability}" Margin="2" />
-                <TextBlock TextWrapping="Wrap" Opacity="0.6">
-                    <Run Text="ID:" />
-                    <Run Text="0x5c0" FontFamily="Lucida Console" />
-                </TextBlock>
             </StackPanel>
         </GroupBox>
     </Grid>

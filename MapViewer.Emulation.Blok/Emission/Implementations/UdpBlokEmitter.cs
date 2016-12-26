@@ -5,7 +5,7 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using Geographics;
 
-namespace MapViewer.Emulation.Blok.Emission
+namespace MapViewer.Emulation.Blok.Emission.Implementations
 {
     public class UdpBlokEmitter : IBlokEmitter
     {

@@ -100,10 +100,13 @@
   <ItemGroup>
     <Compile Include="Can\IAppiDeviceFactory.cs" />
     <Compile Include="Can\SingletonAppiDeviceFactory.cs" />
-    <Compile Include="Emission\CanBlokEmitter.cs" />
     <Compile Include="Emission\IBlokEmitter.cs" />
+    <Compile Include="Emission\IBlokEmitterFactory.cs" />
+    <Compile Include="Emission\Implementations\CanBlockEmitterFactory.cs" />
+    <Compile Include="Emission\Implementations\CanBlokEmitter.cs" />
+    <Compile Include="Emission\Implementations\UdpBlokEmitter.cs" />
+    <Compile Include="Emission\Implementations\UdpBlokEmitterFactory.cs" />
     <Compile Include="Emission\NavigationInformation.cs" />
-    <Compile Include="Emission\UdpBlokEmitter.cs" />
     <Compile Include="Modules\BlokEmulationInterfaceModule.cs" />
     <Compile Include="Modules\BlokEmulationServicesModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,5 +1,6 @@
 ﻿using MapViewer.Emulation.Blok.Can;
 using MapViewer.Emulation.Blok.Emission;
+using MapViewer.Emulation.Blok.Emission.Implementations;
 using Microsoft.Practices.Unity;
 
 namespace MapViewer.Emulation.Blok.Modules
@@ -11,8 +12,8 @@ namespace MapViewer.Emulation.Blok.Modules
         public override void Initialize()
         {
             Container
-                //.RegisterType<IBlokEmitter, CanBlokEmitter>(new ContainerControlledLifetimeManager())
-                .RegisterType<IBlokEmitter, UdpBlokEmitter>(new ContainerControlledLifetimeManager())
+                .RegisterType<IBlokEmitterFactory, CanBlockEmitterFactory>("can", new ContainerControlledLifetimeManager())
+                .RegisterType<IBlokEmitterFactory, UdpBlokEmitterFactory>("udp", new ContainerControlledLifetimeManager())
                 .RegisterType<IAppiDeviceFactory, SingletonAppiDeviceFactory>(new ContainerControlledLifetimeManager());
         }
     }

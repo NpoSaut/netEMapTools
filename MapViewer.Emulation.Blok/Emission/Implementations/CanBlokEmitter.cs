@@ -7,7 +7,7 @@ using Communications.Can;
 using Geographics;
 using MapViewer.Emulation.Blok.Can;
 
-namespace MapViewer.Emulation.Blok.Emission
+namespace MapViewer.Emulation.Blok.Emission.Implementations
 {
     public class CanBlokEmitter : IBlokEmitter
     {
