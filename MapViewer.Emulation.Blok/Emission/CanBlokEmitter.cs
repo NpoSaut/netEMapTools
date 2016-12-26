@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using BlokFrames;
@@ -7,35 +7,8 @@ using Communications.Can;
 using Geographics;
 using MapViewer.Emulation.Blok.Can;
 
-namespace MapViewer.Emulation.Blok
+namespace MapViewer.Emulation.Blok.Emission
 {
-    public interface IBlokEmitter
-    {
-        IObservable<NavigationInformation> Emit(IObservable<NavigationInformation> Navigation);
-    }
-
-    public static class BlokEmitterHelper
-    {
-        public static IObservable<NavigationInformation> EmitThorough(this IObservable<NavigationInformation> Navigation, IBlokEmitter Emitter)
-        {
-            return Emitter.Emit(Navigation);
-        }
-    }
-
-    public class NavigationInformation
-    {
-        public NavigationInformation(EarthPoint Position, double Speed, bool Reliability)
-        {
-            this.Reliability = Reliability;
-            this.Position = Position;
-            this.Speed = Speed;
-        }
-
-        public EarthPoint Position { get; private set; }
-        public double Speed { get; private set; }
-        public bool Reliability { get; private set; }
-    }
-
     public class CanBlokEmitter : IBlokEmitter
     {
         private const int Cogs = 42;
