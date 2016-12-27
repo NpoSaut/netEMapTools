@@ -99,7 +99,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Can\ICanPortHandlerProvider.cs" />
-    <Compile Include="Can\SingletonCanPortHandlerProvider.cs" />
+    <Compile Include="Can\AppiCanPortHandlerProvider.cs" />
+    <Compile Include="Can\UdpCanPortHandlerProvider.cs" />
+    <Compile Include="Can\UdpCan\ICanToUdpPacker.cs" />
+    <Compile Include="Can\UdpCan\UdpCanPort.cs" />
     <Compile Include="Emission\IBlokEmitter.cs" />
     <Compile Include="Emission\IBlokEmitterFactory.cs" />
     <Compile Include="Emission\Implementations\CanBlockEmitterFactory.cs" />

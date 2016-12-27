@@ -5,7 +5,7 @@ namespace MapViewer.Emulation.Blok.Can
 {
     public interface ICanPortHandlerProvider
     {
-        ICanPortHandler GetDevice();
+        ICanPortHandler OpenPort();
     }
 
     public interface ICanPortHandler : IDisposable

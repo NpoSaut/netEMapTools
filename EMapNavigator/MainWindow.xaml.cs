@@ -52,9 +52,9 @@ namespace EMapNavigator
             _displayPoint = new PositionMapElement(new EarthPoint());
             MapElements.Add(_displayPoint);
 
-            //var appiDeviceFactory = new SingletonCanPortHandlerProvider();
+            //var appiDeviceFactory = new AppiCanPortHandlerProvider();
             //var wheelFactory = new CanWheelFactory(appiDeviceFactory);
-            //_emitter = new CanEmitter(appiDeviceFactory.GetDevice());
+            //_emitter = new CanEmitter(appiDeviceFactory.OpenPort());
 
             var wheelFactory = new VirtualWheelFactory();
             _emitter = new LanEmitter();

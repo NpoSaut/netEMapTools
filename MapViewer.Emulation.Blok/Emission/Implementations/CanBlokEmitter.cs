@@ -18,7 +18,7 @@ namespace MapViewer.Emulation.Blok.Emission.Implementations
 
         public IObservable<NavigationInformation> Emit(IObservable<NavigationInformation> Navigation)
         {
-            ICanPortHandler canPortHandler = _canPortHandlerProvider.GetDevice();
+            ICanPortHandler canPortHandler = _canPortHandlerProvider.OpenPort();
 
             IObservable<long> speedSampler = Observable.Interval(TimeSpan.FromMilliseconds(200));
             IObservable<long> gpsSampler = Observable.Interval(TimeSpan.FromMilliseconds(1000));

@@ -20,9 +20,13 @@ namespace MapViewer.Emulation.Blok.Modules
                 .RegisterType<IAppiFactory<AppiLine>, AppiBlockFactory>(new ContainerControlledLifetimeManager());
 
             Container
-                .RegisterType<IBlokEmitterFactory, CanBlockEmitterFactory>("can", new ContainerControlledLifetimeManager())
-                .RegisterType<IBlokEmitterFactory, UdpBlokEmitterFactory>("udp", new ContainerControlledLifetimeManager())
-                .RegisterType<ICanPortHandlerProvider, SingletonCanPortHandlerProvider>(new ContainerControlledLifetimeManager());
+                .RegisterType<IBlokEmitterFactory>(
+                    "can", new ContainerControlledLifetimeManager(),
+                    new InjectionFactory(c => new CanBlockEmitterFactory("Через АППИ", new AppiCanPortHandlerProvider(c.Resolve<IAppiFactory<AppiLine>>()))))
+                .RegisterType<IBlokEmitterFactory>(
+                    "udp-can", new ContainerControlledLifetimeManager(),
+                    new InjectionFactory(c => new CanBlockEmitterFactory("Через UDP-CAN", new UdpCanPortHandlerProvider())))
+                .RegisterType<IBlokEmitterFactory, UdpBlokEmitterFactory>("udp", new ContainerControlledLifetimeManager());
         }
     }
 }

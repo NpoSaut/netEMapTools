@@ -7,16 +7,16 @@ using Communications.Can;
 
 namespace MapViewer.Emulation.Blok.Can
 {
-    public class SingletonCanPortHandlerProvider : ICanPortHandlerProvider, IDisposable
+    public class AppiCanPortHandlerProvider : ICanPortHandlerProvider, IDisposable
     {
         private readonly IAppiFactory<AppiLine> _appiFactory;
         private readonly object _appiLocker = new object();
 
         private AppiDevice<AppiLine> _appiDev;
         private int _refCounter;
-        public SingletonCanPortHandlerProvider(IAppiFactory<AppiLine> AppiFactory) { _appiFactory = AppiFactory; }
+        public AppiCanPortHandlerProvider(IAppiFactory<AppiLine> AppiFactory) { _appiFactory = AppiFactory; }
 
-        public ICanPortHandler GetDevice()
+        public ICanPortHandler OpenPort()
         {
             lock (_appiLocker)
             {

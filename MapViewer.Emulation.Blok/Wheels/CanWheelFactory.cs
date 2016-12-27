@@ -14,7 +14,7 @@ namespace MapViewer.Emulation.Blok.Wheels
         public IWheel GetWheel()
         {
             throw new NotImplementedException();
-            //AppiDev appiDevice = _canPortHandlerProvider.GetDevice().Port;
+            //AppiDev appiDevice = _canPortHandlerProvider.OpenPort().Port;
             //return new CanWheel(appiDevice.CanPorts[AppiLine.Can1]);
         }
     }
