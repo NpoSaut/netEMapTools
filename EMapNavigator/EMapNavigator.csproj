@@ -116,7 +116,6 @@
     </ApplicationDefinition>
     <Compile Include="EarthPointToStringConverter.cs" />
     <Compile Include="MapperBootstrapper.cs" />
-    <Compile Include="Emition\CanEmitter.cs" />
     <Compile Include="Emition\LanEmitter.cs" />
     <Compile Include="Emition\IEmitter.cs" />
     <Compile Include="Modules\BlokMapEmulatorServicesModule.cs" />
@@ -184,14 +183,6 @@
     <ProjectReference Include="..\BlokMap\BlokMap.csproj">
       <Project>{23739518-611C-45A5-AE6F-258D2846E1C9}</Project>
       <Name>BlokMap</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Can\AppiDrvWinusb\AppiDrvWinusb.csproj">
-      <Project>{758C61BC-7BE1-4E25-BE05-3A17619199EE}</Project>
-      <Name>AppiDrvWinusb</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Can\AppiWorking\AppiWorking.csproj">
-      <Project>{5A812723-E98B-4B82-AE7B-8E2747D8541F}</Project>
-      <Name>AppiWorking</Name>
     </ProjectReference>
     <ProjectReference Include="..\Can\BlokFrames\BlokFrames.csproj">
       <Project>{405B0F26-46EE-4D8C-9267-652F7D4C4AB0}</Project>

@@ -1,25 +1,29 @@
 ﻿using System;
 using System.Linq;
 using Communications;
-using Communications.Appi;
-using Communications.Appi.Winusb;
+using Communications.Appi.Devices;
+using Communications.Appi.Factories;
+using Communications.Can;
 
 namespace MapViewer.Emulation.Blok.Can
 {
-    public class SingletonAppiDeviceFactory : IAppiDeviceFactory, IDisposable
+    public class SingletonCanPortHandlerProvider : ICanPortHandlerProvider, IDisposable
     {
+        private readonly IAppiFactory<AppiLine> _appiFactory;
         private readonly object _appiLocker = new object();
-        private AppiDev _appiDev;
-        private int _refCounter;
 
-        public IAppiHandler GetDevice()
+        private AppiDevice<AppiLine> _appiDev;
+        private int _refCounter;
+        public SingletonCanPortHandlerProvider(IAppiFactory<AppiLine> AppiFactory) { _appiFactory = AppiFactory; }
+
+        public ICanPortHandler GetDevice()
         {
             lock (_appiLocker)
             {
                 if (_appiDev == null)
                     _appiDev = OpenDevice();
                 _refCounter++;
-                var handler = new Handler(_appiDev);
+                var handler = new Handler(_appiDev.CanPorts[AppiLine.Can1]);
                 handler.Disposed +=
                     (s, e) =>
                     {
@@ -43,19 +47,21 @@ namespace MapViewer.Emulation.Blok.Can
                 _appiDev.Dispose();
         }
 
-        private AppiDev OpenDevice()
+        private AppiDevice<AppiLine> OpenDevice()
         {
-            AppiDev appiDevice = WinusbAppiDev.GetDevices().First().OpenDevice();
-            appiDevice.CanPorts[AppiLine.Can1].BaudRate = BaudRates.CBR_100K;
-            appiDevice.CanPorts[AppiLine.Can2].BaudRate = BaudRates.CBR_100K;
-            return appiDevice;
+            IAppiDeviceInfo slot = _appiFactory.EnumerateDevices().First();
+            AppiDevice<AppiLine> dev = _appiFactory.OpenDevice(slot);
+
+            dev.CanPorts[AppiLine.Can1].Options.BaudRate = BaudRates.CBR_100K;
+            dev.CanPorts[AppiLine.Can2].Options.BaudRate = BaudRates.CBR_100K;
+            return dev;
         }
 
-        private class Handler : IAppiHandler
+        private class Handler : ICanPortHandler
         {
-            public Handler(AppiDev Dev) { this.Dev = Dev; }
+            public Handler(ICanPort Port) { this.Port = Port; }
             public void Dispose() { OnDisposed(); }
-            public AppiDev Dev { get; private set; }
+            public ICanPort Port { get; private set; }
             public event EventHandler Disposed;
 
             protected virtual void OnDisposed()

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using System.Timers;
 using BlokFrames;
 using Communications.Can;
+using Communications.PortHelpers;
 using MapViewer.Emulation.Wheels;
 
 namespace MapViewer.Emulation.Blok.Wheels
@@ -16,14 +18,18 @@ namespace MapViewer.Emulation.Blok.Wheels
         private readonly Timer _pumpTimer;
         private double _milageValue;
         private int xxx = -1;
+        private double _oldOrdinate;
 
-        public CanWheel(CanPort Port)
+        public CanWheel(ICanPort Port)
         {
             this.Port = Port;
             GetParameters();
 
-            ICanFlow inputFlow = new CanFlow(Port, BlokFrame.GetDescriptors<IpdState>()[HalfsetKind.SetA]);
-            Task.Factory.StartNew(ListenForIpdState, inputFlow);
+            var descriptor = BlokFrame.GetDescriptors<IpdState>()[HalfsetKind.SetA];
+            Port.Rx.WaitForTransactionCompleated()
+                .Where(f => f.Descriptor == descriptor)
+                .Select(BlokFrame.GetBlokFrame<IpdState>)
+                .Subscribe(ProcessIpdState);
 
             _pumpTimer = new Timer(100);
             _pumpTimer.Elapsed += PumpTimerOnElapsed;
@@ -33,7 +39,7 @@ namespace MapViewer.Emulation.Blok.Wheels
             _milage = new Subject<double>();
         }
 
-        public CanPort Port { get; private set; }
+        public ICanPort Port { get; private set; }
         private int? CogsCount { get; set; }
         private Double? BondageDiameter { get; set; }
         public void Dispose() { _pumpTimer.Dispose(); }
@@ -49,28 +55,21 @@ namespace MapViewer.Emulation.Blok.Wheels
 
         public Double Speed { get; set; }
 
-        private void ListenForIpdState(object Obj)
+        private void ProcessIpdState(IpdState IpdState)
         {
-            var flow = (CanFlow)Obj;
-            double oldOrdinate = Double.NaN;
-            while (true)
+            Debug.Print("ORD: {0}  | SPEED: {1}   | IMP: {2}", IpdState.LinearOrdinate, IpdState.Speed, IpdState.SpeedPulsesAvailable);
+            if (!Double.IsNaN(_oldOrdinate) && Math.Abs(IpdState.LinearOrdinate - _oldOrdinate) < 500)
             {
-                CanFrame f = flow.Read().First();
-                var stateFrame = BlokFrame.GetBlokFrame<IpdState>(f);
-                Debug.Print("ORD: {0}  | SPEED: {1}   | IMP: {2} | {3}", stateFrame.LinearOrdinate, stateFrame.Speed, stateFrame.SpeedPulsesAvailable, f);
-                if (!Double.IsNaN(oldOrdinate) && Math.Abs(stateFrame.LinearOrdinate - oldOrdinate) < 500)
-                {
-                    _milageValue += stateFrame.LinearOrdinate - oldOrdinate;
-                    _milage.OnNext(_milageValue);
-                }
-                oldOrdinate = stateFrame.LinearOrdinate;
+                _milageValue += IpdState.LinearOrdinate - _oldOrdinate;
+                _milage.OnNext(_milageValue);
             }
+            _oldOrdinate = IpdState.LinearOrdinate;
         }
 
         private void PumpTimerOnElapsed(object Sender, ElapsedEventArgs Args)
         {
             IpdEmulation f = GetPumpingFrame();
-            Port.Send(f);
+            Port.BeginSend(f);
         }
 
         private IpdEmulation GetPumpingFrame()

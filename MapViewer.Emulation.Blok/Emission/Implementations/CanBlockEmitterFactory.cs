@@ -4,14 +4,14 @@ namespace MapViewer.Emulation.Blok.Emission.Implementations
 {
     public class CanBlockEmitterFactory : IBlokEmitterFactory
     {
-        private readonly IAppiDeviceFactory _appiDeviceFactory;
-        public CanBlockEmitterFactory(IAppiDeviceFactory AppiDeviceFactory) { _appiDeviceFactory = AppiDeviceFactory; }
+        private readonly ICanPortHandlerProvider _canPortHandlerProvider;
+        public CanBlockEmitterFactory(ICanPortHandlerProvider CanPortHandlerProvider) { _canPortHandlerProvider = CanPortHandlerProvider; }
 
         public string Name
         {
             get { return "Через CAN"; }
         }
 
-        public IBlokEmitter CreatEmitter() { return new CanBlokEmitter(_appiDeviceFactory); }
+        public IBlokEmitter CreatEmitter() { return new CanBlokEmitter(_canPortHandlerProvider); }
     }
 }

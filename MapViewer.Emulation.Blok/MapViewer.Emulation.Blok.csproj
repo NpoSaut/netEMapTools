@@ -98,8 +98,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Can\IAppiDeviceFactory.cs" />
-    <Compile Include="Can\SingletonAppiDeviceFactory.cs" />
+    <Compile Include="Can\ICanPortHandlerProvider.cs" />
+    <Compile Include="Can\SingletonCanPortHandlerProvider.cs" />
     <Compile Include="Emission\IBlokEmitter.cs" />
     <Compile Include="Emission\IBlokEmitterFactory.cs" />
     <Compile Include="Emission\Implementations\CanBlockEmitterFactory.cs" />
@@ -119,17 +119,17 @@
     <Compile Include="Wheels\CanWheelFactory.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Can\AppiDrvWinusb\AppiDrvWinusb.csproj">
-      <Project>{758C61BC-7BE1-4E25-BE05-3A17619199EE}</Project>
-      <Name>AppiDrvWinusb</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Can\AppiWorking\AppiWorking.csproj">
-      <Project>{5A812723-E98B-4B82-AE7B-8E2747D8541F}</Project>
-      <Name>AppiWorking</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Can\BlokFrames\BlokFrames.csproj">
       <Project>{405B0F26-46EE-4D8C-9267-652F7D4C4AB0}</Project>
       <Name>BlokFrames</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Can\Communications.Appi\Communications.Appi.csproj">
+      <Project>{5A812723-E98B-4B82-AE7B-8E2747D8541F}</Project>
+      <Name>Communications.Appi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Can\Communications.Usb.WinUsb\Communications.Usb.WinUsb.csproj">
+      <Project>{93A2A4AF-029B-4320-AE8E-DC38CD3F3C85}</Project>
+      <Name>Communications.Usb.WinUsb</Name>
     </ProjectReference>
     <ProjectReference Include="..\Can\Communications\Communications.csproj">
       <Project>{6C5B1ECA-5187-4F63-8CF1-C17DF50D0F65}</Project>
