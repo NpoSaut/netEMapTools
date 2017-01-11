@@ -107,6 +107,8 @@
     <Compile Include="Emission\IBlokEmitterFactory.cs" />
     <Compile Include="Emission\Implementations\CanBlockEmitterFactory.cs" />
     <Compile Include="Emission\Implementations\CanBlokEmitter.cs" />
+    <Compile Include="Emission\Implementations\CanOverUdpBlokEmitter.cs" />
+    <Compile Include="Emission\Implementations\CanOverUdpBlokEmitterFactory.cs" />
     <Compile Include="Emission\Implementations\UdpBlokEmitter.cs" />
     <Compile Include="Emission\Implementations\UdpBlokEmitterFactory.cs" />
     <Compile Include="Emission\NavigationInformation.cs" />
