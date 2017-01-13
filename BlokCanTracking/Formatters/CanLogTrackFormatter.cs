@@ -38,8 +38,7 @@ namespace BlokCanTracking.Formatters
             IList<EarthPoint> trackPoints =
                 LoadCanLog(input).Where(f => targetDescriptors.Contains(f.Descriptor))
                                  .Select(BlokFrame.GetBlokFrame<MmAltLongFrame>)
-                                 //.Where(CoordinatesAreCorrect)
-                                 .Where(f => !f.Reliable)
+                                 .Where(f => f.Reliable)
                                  .Select(f => new EarthPoint(f.Latitude, f.Longitude))
                                  .ToList();
 
