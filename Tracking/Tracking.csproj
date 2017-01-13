@@ -110,6 +110,8 @@
     <Compile Include="Modules\TrackingServicesModule.cs" />
     <Compile Include="PositionPresenter.cs" />
     <Compile Include="Presenting\ITrackPresenter.cs" />
+    <Compile Include="Presenting\SegmentationTrackPresenterDecorator.cs" />
+    <Compile Include="Presenting\TrackFilterPresenterDecorator.cs" />
     <Compile Include="Presenting\TrackPresenter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TrackFormatterManager.cs" />
