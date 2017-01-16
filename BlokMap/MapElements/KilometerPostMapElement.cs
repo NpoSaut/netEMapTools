@@ -32,7 +32,7 @@ namespace BlokMap.MapElements
 
             const int flagHeight = 22;
 
-            if (Zoom > 11)
+            if (Zoom > 12 || IsMouseOver)
             {
                 dc.PushTransform(new TranslateTransform(0, -flagHeight));
 
@@ -49,7 +49,7 @@ namespace BlokMap.MapElements
             {
                 dc.PushTransform(new TranslateTransform(3, 10));
                 PrintStack(dc,
-                           new FormattedText(Post.Direction == OrdinateDirection.Increasing ? "Возрастает по неч." : "Убывает по чёт.",
+                           new FormattedText(Post.Direction == OrdinateDirection.Increasing ? "Возрастает по неч." : "Убывает по неч.",
                                              CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Verdana"), 10, Brushes.DarkBlue),
                            new FormattedText(String.Format("Пути: {0}", string.Join(", ", Post.Tracks.Select(TrackName))),
                                              CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Verdana"), 10, Brushes.DarkOliveGreen));
