@@ -24,7 +24,7 @@ namespace BlokMap.MapElements
 
         public Brush SectionBrush { get; set; }
 
-        protected override void DrawPointElement(DrawingContext dc)
+        protected override void DrawPointElement(DrawingContext dc, int Zoom)
         {
             string postLabelText = string.Format("{0}км", (double)Post.Ordinate / 1000);
             var postLabel = new FormattedText(postLabelText, CultureInfo.CurrentCulture,
@@ -32,13 +32,16 @@ namespace BlokMap.MapElements
 
             const int flagHeight = 22;
 
-            dc.PushTransform(new TranslateTransform(0, -flagHeight));
+            if (Zoom > 11)
+            {
+                dc.PushTransform(new TranslateTransform(0, -flagHeight));
 
-            dc.DrawRectangle(Brushes.White, new Pen(mainBrush, 1), new Rect(-0.5, -0.5, Math.Round(postLabel.Width) + 5, Math.Round(postLabel.Height) + 2));
-            dc.DrawText(postLabel, new Point(2, 0));
-            dc.DrawLine(new Pen(mainBrush, 2), new Point(0, 0), new Point(0, flagHeight));
+                dc.DrawRectangle(Brushes.White, new Pen(mainBrush, 1), new Rect(-0.5, -0.5, Math.Round(postLabel.Width) + 5, Math.Round(postLabel.Height) + 2));
+                dc.DrawText(postLabel, new Point(2, 0));
+                dc.DrawLine(new Pen(mainBrush, 2), new Point(0, 0), new Point(0, flagHeight));
 
-            dc.Pop();
+                dc.Pop();
+            }
 
             dc.DrawEllipse(SectionBrush, new Pen(mainBrush, 1.5), new Point(0, 0), 5, 5);
 

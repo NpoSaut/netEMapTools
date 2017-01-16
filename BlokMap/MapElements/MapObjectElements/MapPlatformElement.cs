@@ -14,7 +14,7 @@ namespace BlokMap.MapElements.MapObjectElements
 
         public MapPlatformElement(EarthPoint Position, GObject Target) : base(Position, Target) { }
 
-        protected override void DrawPointElement(DrawingContext dc)
+        protected override void DrawPointElement(DrawingContext dc, int Zoom)
         {
             dc.DrawRectangle(Brushes.Chocolate, new Pen(Brushes.White, 2), new Rect(-0.5 * Width, -0.5 * Height, Width, Height));
             

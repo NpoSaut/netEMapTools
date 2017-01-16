@@ -16,6 +16,6 @@ namespace Tracking.MapElements
             get { return 20; }
         }
 
-        protected override void DrawPointElement(DrawingContext dc) { dc.DrawEllipse(Brushes.Red, new Pen(Brushes.White, 2), new Point(), 5, 5); }
+        protected override void DrawPointElement(DrawingContext dc, int Zoom) { dc.DrawEllipse(Brushes.Red, new Pen(Brushes.White, 2), new Point(), 5, 5); }
     }
 }

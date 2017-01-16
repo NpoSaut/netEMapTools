@@ -13,7 +13,7 @@ namespace BlokMap.MapElements.MapObjectElements
 
         public MapUnknownObjectElement(EarthPoint Position, GObject Target) : base(Position, Target) { }
 
-        protected override void DrawPointElement(DrawingContext dc)
+        protected override void DrawPointElement(DrawingContext dc, int Zoom)
         {
             double bw = 1;
             var accentPen = new Pen(Brushes.Red, 2);
