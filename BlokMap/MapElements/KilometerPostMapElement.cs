@@ -26,14 +26,13 @@ namespace BlokMap.MapElements
 
         protected override void DrawPointElement(DrawingContext dc, int Zoom)
         {
-            string postLabelText = string.Format("{0}км", (double)Post.Ordinate / 1000);
-            var postLabel = new FormattedText(postLabelText, CultureInfo.CurrentCulture,
-                                              FlowDirection.LeftToRight, new Typeface("Verdana"), 10, mainBrush);
-
-            const int flagHeight = 22;
-
             if (Zoom > 12 || IsMouseOver)
             {
+                string postLabelText = string.Format("{0}км", (double)Post.Ordinate / 1000);
+                var postLabel = new FormattedText(postLabelText, CultureInfo.CurrentCulture,
+                                                  FlowDirection.LeftToRight, new Typeface("Verdana"), 10, mainBrush);
+
+                const int flagHeight = 22;
                 dc.PushTransform(new TranslateTransform(0, -flagHeight));
 
                 dc.DrawRectangle(Brushes.White, new Pen(mainBrush, 1), new Rect(-0.5, -0.5, Math.Round(postLabel.Width) + 5, Math.Round(postLabel.Height) + 2));
@@ -43,7 +42,10 @@ namespace BlokMap.MapElements
                 dc.Pop();
             }
 
-            dc.DrawEllipse(SectionBrush, new Pen(mainBrush, 1.5), new Point(0, 0), 5, 5);
+            if (Zoom > 8)
+                dc.DrawEllipse(SectionBrush, new Pen(mainBrush, 1.5), new Point(0, 0), 5, 5);
+            else
+                dc.DrawRectangle(SectionBrush, null, new Rect(-2, -2, 4, 4));
 
             if (IsMouseOver)
             {
