@@ -9,6 +9,7 @@ using MapVisualization.Elements;
 
 namespace BlokMap.MapElements
 {
+    [ZoomRestriction(0)]
     public class KilometerPostMapElement : MapPointElement
     {
         protected static readonly SolidColorBrush TextBackgroundBrush = new SolidColorBrush(Colors.White);

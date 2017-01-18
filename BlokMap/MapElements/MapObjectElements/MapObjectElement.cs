@@ -8,6 +8,7 @@ using MapVisualization.Elements;
 
 namespace BlokMap.MapElements.MapObjectElements
 {
+    [ZoomRestriction(12)]
     public abstract class MapObjectElement : MapPointElement
     {
         private static readonly Dictionary<AlsnFrequency, string> _frequencyNames =
@@ -21,7 +22,9 @@ namespace BlokMap.MapElements.MapObjectElements
             };
 
         protected static readonly SolidColorBrush TextBackgroundBrush = new SolidColorBrush(Colors.White) { Opacity = 0.7 };
+
         public MapObjectElement(EarthPoint Position, GObject Target) : base(Position) { this.Target = Target; }
+
         public GObject Target { get; set; }
 
         protected string OrdinateString

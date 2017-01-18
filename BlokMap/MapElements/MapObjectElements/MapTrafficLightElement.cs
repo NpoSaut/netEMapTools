@@ -33,7 +33,7 @@ namespace BlokMap.MapElements.MapObjectElements
 
             dc.PushTransform(new TranslateTransform(0.5 * BodyWidth + 2, -0.5 * BodyHeight));
 
-            if (Zoom > 11 || IsMouseOver)
+            if (Zoom > 12 || IsMouseOver)
             {
                 var stack =
                     new List<FormattedText>
