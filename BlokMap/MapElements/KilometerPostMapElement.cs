@@ -45,7 +45,10 @@ namespace BlokMap.MapElements
             if (Zoom > 8)
                 dc.DrawEllipse(SectionBrush, new Pen(mainBrush, 1.5), new Point(0, 0), 5, 5);
             else
-                dc.DrawRectangle(SectionBrush, null, new Rect(-2, -2, 4, 4));
+            {
+                if (Post.Ordinate % (1000 * Math.Pow(2, 9 - Zoom)) == 0)
+                    dc.DrawRectangle(SectionBrush, null, new Rect(-2, -2, 4, 4));
+            }
 
             if (IsMouseOver)
             {
