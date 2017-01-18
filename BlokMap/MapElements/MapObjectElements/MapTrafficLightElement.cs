@@ -1,5 +1,8 @@
+using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using Geographics;
 using GMapElements;
@@ -30,16 +33,43 @@ namespace BlokMap.MapElements.MapObjectElements
 
             dc.PushTransform(new TranslateTransform(0.5 * BodyWidth + 2, -0.5 * BodyHeight));
 
-            if (Zoom > 11)
+            if (Zoom > 11 || IsMouseOver)
             {
-                PrintStack(dc,
-                           new FormattedText(Target.Name, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Verdana"), 10, Brushes.Black),
-                           new FormattedText(OrdinateString, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Verdana"), 8, Brushes.Blue));
+                var stack =
+                    new List<FormattedText>
+                    {
+                        new FormattedText(Target.Name, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Verdana"), 10, Brushes.Black),
+                        new FormattedText(OrdinateString, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Verdana"), 8, Brushes.Blue)
+                    };
+
+                if (IsMouseOver)
+                {
+                    stack.Add(new FormattedText(String.Format("АЛСН: {0}", AlstFrequencyString), CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
+                                                new Typeface("Verdana"), 10, Brushes.Black));
+                }
+
+                PrintStack(dc, stack);
             }
 
             dc.Pop();
 
             dc.Pop();
         }
+
+        #region Реакция на движения мышью
+
+        public override void OnMouseEnter(MouseEventArgs MouseEventArgs)
+        {
+            base.OnMouseEnter(MouseEventArgs);
+            RequestChangeVisual();
+        }
+
+        public override void OnMouseLeave(MouseEventArgs MouseEventArgs)
+        {
+            base.OnMouseLeave(MouseEventArgs);
+            RequestChangeVisual();
+        }
+
+        #endregion
     }
 }
