@@ -101,6 +101,7 @@
     <Compile Include="IMapLoadingService.cs" />
     <Compile Include="ITrackSource.cs" />
     <Compile Include="MapElements\KilometerPostMapElement.cs" />
+    <Compile Include="MapElements\MapObjectElements\MapDangerousPlaceObjectElement.cs" />
     <Compile Include="MapElements\MapObjectElements\MapObjectElement.cs" />
     <Compile Include="MapElements\MapObjectElements\MapPlatformElement.cs" />
     <Compile Include="MapElements\MapObjectElements\MapTrafficLightElement.cs" />

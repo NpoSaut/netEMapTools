@@ -72,6 +72,9 @@ namespace BlokMap
                                     case GObjectType.Station:
                                         objectElement = new MapPlatformElement(objectPosition, gObject);
                                         break;
+                                    case GObjectType.DangerousPlace:
+                                        objectElement = new MapDangerousPlaceObjectElement(objectPosition, gObject);
+                                        break;
                                     default:
                                         objectElement = new MapUnknownObjectElement(objectPosition, gObject);
                                         break;
