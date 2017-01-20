@@ -33,10 +33,10 @@ namespace BlokMap
 
         public IEnumerable<MapElement> PrintPosts(GMap gMap)
         {
-            var r = new Random();
+            int i = 0;
             foreach (GSection section in gMap.Sections)
             {
-                var sectionBrush = new SolidColorBrush(_sectionColors[r.Next(_sectionColors.Length)]);
+                var sectionBrush = new SolidColorBrush(_sectionColors[(++i)%_sectionColors.Length]);
                 foreach (GPost post in section.Posts)
                     yield return new KilometerPostMapElement(post) { SectionBrush = sectionBrush };
             }
