@@ -24,7 +24,8 @@ namespace BlokMap.MapElements.MapObjectElements
                 { GObjectType.Switch, "Стрелка" },
                 { GObjectType.Tks, "ТКС" },
                 { GObjectType.TrafficLight, "Светофор" },
-                { GObjectType.Tunnel, "Тоннель" }
+                { GObjectType.Tunnel, "Тоннель" },
+                { GObjectType.Unknown, "Неизвестный" }
             };
 
         public MapUnknownObjectElement(EarthPoint Position, GObject Target) : base(Position, Target) { }
