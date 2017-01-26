@@ -14,6 +14,9 @@ namespace BlokMap.MapElements.MapObjectElements
     [ZoomRestriction(12)]
     public abstract class MapObjectElement : MapPointElement
     {
+        private const double HorizontalStackPadding = 4;
+        private const double VerticalStackPadding = 2;
+
         private static readonly Dictionary<AlsnFrequency, string> _frequencyNames =
             new Dictionary<AlsnFrequency, string>
             {
@@ -25,6 +28,7 @@ namespace BlokMap.MapElements.MapObjectElements
             };
 
         protected static readonly SolidColorBrush TextBackgroundBrush = new SolidColorBrush(Colors.White) { Opacity = 0.8 };
+        protected static readonly Pen TextBoxStrokePen = new Pen(Brushes.DarkGray, 1);
 
         public MapObjectElement(EarthPoint Position, GObject Target) : base(Position) { this.Target = Target; }
 
@@ -44,8 +48,12 @@ namespace BlokMap.MapElements.MapObjectElements
 
         protected static void PrintStack(DrawingContext dc, IList<FormattedText> labels)
         {
-            dc.DrawRectangle(TextBackgroundBrush, null,
-                             new Rect(-2, -1, labels.Max(l => l.Width) + 4, labels.Sum(l => l.Height + 1) + 2));
+            dc.DrawRoundedRectangle(TextBackgroundBrush, TextBoxStrokePen,
+                                    new Rect(-HorizontalStackPadding,
+                                             -TextBoxStrokePen.Thickness * 0.5 - VerticalStackPadding,
+                                             Math.Round(labels.Max(l => l.Width)) + 2 * HorizontalStackPadding,
+                                             Math.Round(labels.Sum(l => l.Height + 1)) + 2 * VerticalStackPadding),
+                                    2, 2);
             double yOffset = 0;
             foreach (FormattedText label in labels)
             {
@@ -61,7 +69,7 @@ namespace BlokMap.MapElements.MapObjectElements
             if (!string.IsNullOrWhiteSpace(Name))
             {
                 stack.Add(new FormattedText(Name, CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
-                                            new Typeface(new FontFamily("Verdana"), FontStyles.Normal, FontWeights.Medium, FontStretches.Normal), 10,
+                                            new Typeface(new FontFamily("Verdana"), FontStyles.Normal, IsMouseOver ? FontWeights.SemiBold : FontWeights.Medium, FontStretches.Normal), 10,
                                             Brushes.Black));
             }
 
