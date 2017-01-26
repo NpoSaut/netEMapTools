@@ -27,7 +27,7 @@ namespace BlokMap.MapElements.MapObjectElements
             dc.Pop();
 
             if (Zoom > 12 || IsMouseOver)
-                PrintDetails(dc);
+                PrintDetails(dc, Target.Name);
         }
     }
 }
