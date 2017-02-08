@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using Communications;
 using Communications.Appi.Devices;
 using Communications.Appi.Factories;
 using Communications.Can;
@@ -11,10 +11,18 @@ namespace MapViewer.Emulation.Blok.Can
     {
         private readonly IAppiFactory<AppiLine> _appiFactory;
         private readonly object _appiLocker = new object();
+        private readonly IDictionary<AppiLine, int> _baudRates;
+        private readonly AppiLine _line;
 
         private AppiDevice<AppiLine> _appiDev;
         private int _refCounter;
-        public AppiCanPortHandlerProvider(IAppiFactory<AppiLine> AppiFactory) { _appiFactory = AppiFactory; }
+
+        public AppiCanPortHandlerProvider(IAppiFactory<AppiLine> AppiFactory, AppiLine Line, IDictionary<AppiLine, int> BaudRates)
+        {
+            _appiFactory = AppiFactory;
+            _line = Line;
+            _baudRates = BaudRates;
+        }
 
         public ICanPortHandler OpenPort()
         {
@@ -23,7 +31,7 @@ namespace MapViewer.Emulation.Blok.Can
                 if (_appiDev == null)
                     _appiDev = OpenDevice();
                 _refCounter++;
-                var handler = new Handler(_appiDev.CanPorts[AppiLine.Can1]);
+                var handler = new Handler(_appiDev.CanPorts[_line]);
                 handler.Disposed +=
                     (s, e) =>
                     {
@@ -52,8 +60,8 @@ namespace MapViewer.Emulation.Blok.Can
             IAppiDeviceInfo slot = _appiFactory.EnumerateDevices().First();
             AppiDevice<AppiLine> dev = _appiFactory.OpenDevice(slot);
 
-            dev.CanPorts[AppiLine.Can1].Options.BaudRate = BaudRates.CBR_100K;
-            dev.CanPorts[AppiLine.Can2].Options.BaudRate = BaudRates.CBR_100K;
+            foreach (var baudRate in _baudRates)
+                dev.CanPorts[baudRate.Key].Options.BaudRate = baudRate.Value;
             return dev;
         }
 
