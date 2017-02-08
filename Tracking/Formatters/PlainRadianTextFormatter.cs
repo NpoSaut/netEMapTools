@@ -38,15 +38,15 @@ namespace Tracking.Formatters
             using (var writer = new StreamWriter(output))
             {
                 foreach (EarthPoint point in GpsTrack.TrackPoints)
-                    writer.WriteLine("{0:F8}\t{1:F8}", point.Longitude.ToRadian().Value, point.Latitude.ToRadian().Value);
+                    writer.WriteLine("{0:F8}\t{1:F8}", point.Latitude.ToRadian().Value, point.Longitude.ToRadian().Value);
             }
         }
 
         private EarthPoint LoadPoint(string line)
         {
             string[] parts = line.Split(new[] { '\t', ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            return new EarthPoint(new Radian(double.Parse(parts[1])),
-                                  new Radian(double.Parse(parts[0])));
+            return new EarthPoint(new Radian(double.Parse(parts[0])),
+                                  new Radian(double.Parse(parts[1])));
         }
     }
 }
