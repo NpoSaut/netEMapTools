@@ -79,9 +79,6 @@
     <Compile Include="ViewModels\ISpeedControlViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Geographics\Geographics.csproj">
       <Project>{4EAF91DF-7A6C-4F0E-B15B-F372CE42C8D0}</Project>
       <Name>Geographics</Name>
@@ -90,6 +87,9 @@
       <Project>{E4D20511-9FEB-4102-BEE2-208B124C60C4}</Project>
       <Name>MapVisualization</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
