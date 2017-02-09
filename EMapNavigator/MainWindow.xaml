@@ -6,6 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:EMapNavigator.ViewModels"
         xmlns:regions="http://prismlibrary.com/"
+        xmlns:emulation="clr-namespace:MapViewer.Emulation;assembly=MapViewer.Emulation"
         mc:Ignorable="d"
         SnapsToDevicePixels="True" TextOptions.TextFormattingMode="Display"
         Background="{StaticResource {x:Static SystemColors.ControlBrushKey}}"
@@ -29,9 +30,28 @@
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
         </ItemsControl>
-        <ScrollViewer DockPanel.Dock="Right" Margin="3"
+        <ScrollViewer DockPanel.Dock="Right" Margin="3" MinWidth="220"
                       VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-            <ItemsControl regions:RegionManager.RegionName="Emulators" />
+            <ItemsControl regions:RegionManager.RegionName="Emulators">
+                <ItemsControl.ItemContainerStyle>
+                    <Style TargetType="ContentControl">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ContentControl">
+                                    <Expander Margin="2, 4">
+                                        <Expander.Header>
+                                            <TextBlock FontWeight="SemiBold" Foreground="#FF8D3300"
+                                                       Text="{Binding Path=(emulation:EmulatorView.EmulatorName),
+                                                               RelativeSource={RelativeSource TemplatedParent}}" />
+                                        </Expander.Header>
+                                        <ContentPresenter Margin="2, 4" Content="{TemplateBinding Content}" />
+                                    </Expander>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+            </ItemsControl>
         </ScrollViewer>
         <Border BorderThickness="0,1,1,0" BorderBrush="#FF8D3300">
             <Grid>

@@ -5,7 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:views="clr-namespace:MsulEmulation.Views"
              xmlns:viewModels="clr-namespace:MsulEmulation.ViewModels"
-             mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:MsulEmulationViewModel}">
+             xmlns:emulation="clr-namespace:MapViewer.Emulation;assembly=MapViewer.Emulation"
+             mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:MsulEmulationViewModel}"
+             emulation:EmulatorView.EmulatorName="Эмуляция МСУЛ">
     <StackPanel>
         <ToggleButton Content="Включить" IsChecked="{Binding EmulationEnabled}" Margin="2" Padding="3" />
         <views:MsulEmulationParametersView DataContext="{Binding Parameters}" />

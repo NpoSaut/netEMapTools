@@ -4,24 +4,24 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:MapViewer.Emulation.Blok.ViewModels"
-             mc:Ignorable="d" Width="150" d:DataContext="{d:DesignInstance viewModels:BlokEmulationViewModel}">
+             xmlns:emulation="clr-namespace:MapViewer.Emulation;assembly=MapViewer.Emulation"
+             mc:Ignorable="d" MinWidth="150" d:DataContext="{d:DesignInstance viewModels:BlokEmulationViewModel}"
+             emulation:EmulatorView.EmulatorName="Эмуляция БЛОК">
     <Grid>
-        <GroupBox Header="Эмуляция БЛОК" Padding="4">
-            <StackPanel>
-                <TextBlock Text="Эмулировать сообщения ЭК-СНС" TextWrapping="Wrap" />
-                <CheckBox Content="Достоверность" IsChecked="{Binding Reliability}" Margin="2" />
-                <ComboBox Margin="2" IsEnabled="{Binding CanChangeEmissionMethod}"
-                          ItemsSource="{Binding EmitterFactories}" DisplayMemberPath="Name"
-                          SelectedItem="{Binding SelectedEmitterFactory}" />
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <RadioButton Grid.Column="0" Margin="2" Content="Вкл" IsChecked="{Binding EmulationEnabled}" />
-                    <RadioButton Grid.Column="1" Margin="2" Content="Выкл" IsChecked="True" />
-                </Grid>
-            </StackPanel>
-        </GroupBox>
+        <StackPanel>
+            <TextBlock Text="Эмулировать сообщения ЭК-СНС" TextWrapping="Wrap" Margin="3" />
+            <CheckBox Content="Достоверность" IsChecked="{Binding Reliability}" Margin="3" />
+            <ComboBox Margin="3" IsEnabled="{Binding CanChangeEmissionMethod}"
+                      ItemsSource="{Binding EmitterFactories}" DisplayMemberPath="Name"
+                      SelectedItem="{Binding SelectedEmitterFactory}" />
+            <Grid Margin="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <RadioButton Grid.Column="0" Margin="2" Content="Вкл" IsChecked="{Binding EmulationEnabled}" />
+                <RadioButton Grid.Column="1" Margin="2" Content="Выкл" IsChecked="True" />
+            </Grid>
+        </StackPanel>
     </Grid>
 </UserControl>
