@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Geographics;
 using MapViewer.Mapping;
+using MapViewer.Settings.Interfaces;
 using Microsoft.Win32;
 using ReactiveUI;
 using Tracking.Formatters;
@@ -16,6 +17,7 @@ namespace Tracking.ViewModels
 {
     public class TrackingControlViewModel : ReactiveObject, IPathRiderProvider
     {
+        private readonly IMapBehaviorSettings _behaviorSettings;
         private readonly IMappingService _mappingService;
         private readonly ReactiveList<EarthPoint> _track;
 
@@ -23,10 +25,12 @@ namespace Tracking.ViewModels
         private readonly ITrackPresenter _trackPresenter;
         private IDisposable _previousTrackDisplaying;
 
-        public TrackingControlViewModel(ITrackPresenter TrackPresenter, IMappingService MappingService, TrackFormatterManager TrackFormatterManager)
+        public TrackingControlViewModel(ITrackPresenter TrackPresenter, IMappingService MappingService, TrackFormatterManager TrackFormatterManager,
+                                        IMapBehaviorSettings BehaviorSettings)
         {
             _trackPresenter = TrackPresenter;
             _trackFormatterManager = TrackFormatterManager;
+            _behaviorSettings = BehaviorSettings;
             _mappingService = MappingService;
 
             _track = new ReactiveList<EarthPoint>();
@@ -103,7 +107,9 @@ namespace Tracking.ViewModels
                                                 }
                                             });
             _track.AddRange(track.TrackPoints);
-            _mappingService.Navigate(_track.First());
+
+            if (_behaviorSettings.JumpOnOpen)
+                _mappingService.Navigate(_track.First());
         }
     }
 }

@@ -21,6 +21,7 @@ namespace EMapNavigator
         {
             var mc = (ModuleCatalog)ModuleCatalog;
 
+            mc.AddModule(typeof (SettingsModule));
             mc.AddModule(typeof (MappingServicesModule));
             mc.AddModule(typeof (BlokMapServicesModule));
             mc.AddModule(typeof (BlokMapEmulatorServicesModule));
@@ -30,13 +31,14 @@ namespace EMapNavigator
             mc.AddModule(typeof (BlokEmulationServicesModule));
             mc.AddModule(typeof (MsulEmulationServicesModule));
 
-            mc.AddModule(typeof (MappingInterfaceModule));
+            mc.AddModule(typeof (SettingsInterfaceModule));
             mc.AddModule(typeof (BlokMapInterfaceModule));
             mc.AddModule(typeof (MainInterfaceModule));
             mc.AddModule(typeof (TrackingInterfaceModule));
             mc.AddModule(typeof (EmulationBasicsInterfaceModule));
             mc.AddModule(typeof (BlokEmulationInterfaceModule));
             mc.AddModule(typeof (MsulEmulationInterfaceModule));
+            mc.AddModule(typeof (MappingInterfaceModule));
 
             base.ConfigureModuleCatalog();
         }

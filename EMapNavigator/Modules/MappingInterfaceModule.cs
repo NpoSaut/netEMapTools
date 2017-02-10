@@ -9,6 +9,11 @@ namespace EMapNavigator.Modules
     {
         public MappingInterfaceModule(IUnityContainer Container, IRegionManager RegionManager) : base(Container, RegionManager) { }
 
-        public override void Initialize() { RegionManager.RegisterViewWithRegion("Map", typeof (MapView)); }
+        public override void Initialize()
+        {
+            RegionManager.RegisterViewWithRegion("Map", typeof (MapView));
+            RegionManager.RegisterViewWithRegion("MainToolbar", typeof (MappingToolbarView));
+            RegionManager.RegisterViewWithRegion("Settings", typeof (MapSettingsView));
+        }
     }
 }

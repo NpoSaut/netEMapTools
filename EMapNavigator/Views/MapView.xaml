@@ -7,13 +7,14 @@
              xmlns:viewModels="clr-namespace:EMapNavigator.ViewModels"
              xmlns:eMapNavigator="clr-namespace:EMapNavigator"
              mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="200"
-             d:DataContext="{d:DesignInstance viewModels:MapViewModel}">
+             d:DataContext="{d:DesignInstance viewModels:MapViewModel}"
+             Loaded="MapView_OnLoaded">
     <UserControl.Resources>
         <eMapNavigator:EarthPointToStringConverter x:Key="EarthPointConverter"></eMapNavigator:EarthPointToStringConverter>
     </UserControl.Resources>
     <Grid>
-        <mapVisualization:MapView CentralPoint="{Binding MapCenter}" ZoomLevel="{Binding ZoomLevel}"
-                                  ElementsSource="{Binding Elements}"
+        <mapVisualization:MapView CentralPoint="{Binding MapCenter}" ZoomLevel="{Binding ZoomLevel, Mode=TwoWay}"
+                                  ElementsSource="{Binding Elements}" TileLoader="{Binding TileLoader}"
                                   ClickCommand="{Binding MapClickedCommand}" />
         <TextBox VerticalAlignment="Top" HorizontalAlignment="Center" Margin="5" Padding="3"
                  Width="140" Background="#50ffffff"
