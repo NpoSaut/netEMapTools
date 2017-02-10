@@ -40,8 +40,8 @@ namespace EMapNavigator.Settings.Implementations
             try
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(_settingsFileName));
-                File.WriteAllText(_settingsFileName,
-                                  JsonConvert.SerializeObject(SettingsObject, Formatting.Indented));
+                string json = JsonConvert.SerializeObject(SettingsObject, Formatting.Indented);
+                File.WriteAllText(_settingsFileName, json);
             }
             catch (Exception) { }
         }
