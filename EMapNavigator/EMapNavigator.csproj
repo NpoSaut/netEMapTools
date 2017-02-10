@@ -132,9 +132,13 @@
     <Compile Include="Settings\Implementations\JsonUserSettingsFactory.cs" />
     <Compile Include="Settings\Interfaces\IMapPositionSettings.cs" />
     <Compile Include="Settings\Interfaces\ISettingsFactory.cs" />
+    <Compile Include="ViewModels\MappingToolbarViewModel.cs" />
     <Compile Include="ViewModels\MapViewModel.cs" />
     <Compile Include="ViewModels\WheelViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="Views\MappingToolbarView.xaml.cs">
+      <DependentUpon>MappingToolbarView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MapView.xaml.cs">
       <DependentUpon>MapView.xaml</DependentUpon>
     </Compile>
@@ -150,6 +154,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\MappingToolbarView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MapView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

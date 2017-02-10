@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using GMapElements;
 using MapViewer.Mapping;
+using MapViewer.Settings.Interfaces;
 using MapVisualization.Elements;
 using Microsoft.Win32;
 using ReactiveUI;
@@ -15,6 +16,7 @@ namespace BlokMap.ViewModels
 {
     public class MapLoaderControlViewModel : ReactiveObject
     {
+        private readonly IMapBehaviorSettings _behaviorSettings;
         private readonly ReactiveCommand<Unit> _load;
         private readonly IMapLoadingService _mapLoadingService;
         private readonly MapPresenter _mapPresenter;
@@ -22,12 +24,13 @@ namespace BlokMap.ViewModels
         private readonly ITrackSource _trackSource;
 
         public MapLoaderControlViewModel(IMapLoadingService MapLoadingService, MapPresenter MapPresenter, IMappingService MappingService,
-                                         ITrackSource TrackSource)
+                                         ITrackSource TrackSource, IMapBehaviorSettings BehaviorSettings)
         {
             _mapLoadingService = MapLoadingService;
             _mapPresenter = MapPresenter;
             _mappingService = MappingService;
             _trackSource = TrackSource;
+            _behaviorSettings = BehaviorSettings;
             _load = ReactiveCommand.CreateAsyncTask((_, c) => LoadMap());
         }
 
@@ -58,7 +61,8 @@ namespace BlokMap.ViewModels
                                    });
 
             //List<MapElement> objects = _mapPresenter.PrintObjects(gMap, 1).ToList();
-            _mappingService.Navigate(gMap.Sections.First().Posts.First().Point);
+            if (_behaviorSettings.JumpOnOpen)
+                _mappingService.Navigate(gMap.Sections.First().Posts.First().Point);
         }
     }
 }
