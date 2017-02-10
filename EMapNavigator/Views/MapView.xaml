@@ -14,7 +14,7 @@
     </UserControl.Resources>
     <Grid>
         <mapVisualization:MapView CentralPoint="{Binding MapCenter}" ZoomLevel="{Binding ZoomLevel, Mode=TwoWay}"
-                                  ElementsSource="{Binding Elements}"
+                                  ElementsSource="{Binding Elements}" TileLoader="{Binding TileLoader}"
                                   ClickCommand="{Binding MapClickedCommand}" />
         <TextBox VerticalAlignment="Top" HorizontalAlignment="Center" Margin="5" Padding="3"
                  Width="140" Background="#50ffffff"

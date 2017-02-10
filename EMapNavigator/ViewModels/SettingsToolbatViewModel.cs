@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Input;
 using EMapNavigator.Views;
 using ReactiveUI;
@@ -12,7 +13,7 @@ namespace EMapNavigator.ViewModels
             ReactiveCommand<object> showSettingsDialogCommand = ReactiveCommand.Create();
             ShowSettingsDialog = showSettingsDialogCommand;
 
-            showSettingsDialogCommand.Subscribe(_ => new SettingsWindow().Show());
+            showSettingsDialogCommand.Subscribe(_ => new SettingsWindow { Owner = Application.Current.MainWindow }.Show());
         }
 
         public ICommand ShowSettingsDialog { get; private set; }
