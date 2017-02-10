@@ -10,11 +10,11 @@
 
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="0" Text="Температура в салоне:" />
-                <TextBox Width="34" Grid.Column="1" Text="{Binding IndoorTemperature, StringFormat=F1}" TextAlignment="Center" />
+                <TextBox Width="40" Grid.Column="1" Text="{Binding IndoorTemperature, StringFormat=F1}" TextAlignment="Center" />
             </Grid>
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -24,6 +24,7 @@
                 <ToggleButton Grid.Column="0" Content="Туалет 1" IsChecked="{Binding Toilet1Occupied}" />
                 <ToggleButton Grid.Column="1" Content="Туалет 2" IsChecked="{Binding Toilet2Occupied}" />
             </Grid>
+            <ToggleButton Content="Стоп-кран" IsChecked="{Binding EmergencyValueReleased}" />
         </StackPanel>
     </GroupBox>
 </UserControl>
