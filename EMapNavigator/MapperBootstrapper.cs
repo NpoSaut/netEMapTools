@@ -20,6 +20,7 @@ namespace EMapNavigator
         {
             var mc = (ModuleCatalog)ModuleCatalog;
 
+            mc.AddModule(typeof (SettingsModule));
             mc.AddModule(typeof (MappingServicesModule));
             mc.AddModule(typeof (BlokMapServicesModule));
             mc.AddModule(typeof (BlokMapEmulatorServicesModule));

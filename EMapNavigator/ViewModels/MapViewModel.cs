@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Reactive.Linq;
 using System.Windows.Input;
+using EMapNavigator.Settings.Interfaces;
 using Geographics;
 using MapViewer.Mapping;
 using MapVisualization;
@@ -17,18 +17,26 @@ namespace EMapNavigator.ViewModels
         private readonly ReactiveCommand<object> _mapClickedCommand;
         private EarthPoint _mapCenter;
 
-        public MapViewModel()
+        private int _zoomLevel;
+
+        public MapViewModel(IMapPositionSettings PositionSettings)
         {
-            //MapCenter = new EarthPoint(new Degree(56.8779), new Degree(60.5905));
-            MapCenter = new EarthPoint(new Degree(55.729959), new Degree(37.540420));
-            ZoomLevel = 14;
+            MapCenter = PositionSettings.MapCenter;
+            ZoomLevel = PositionSettings.ZoomLevel;
+
+            this.WhenAnyValue(x => x.MapCenter).Subscribe(c => PositionSettings.MapCenter = c);
+            this.WhenAnyValue(x => x.ZoomLevel).Subscribe(z => PositionSettings.ZoomLevel = z);
 
             _mapClickedCommand = ReactiveCommand.Create();
 
             Clicks = _mapClickedCommand.OfType<MapMouseActionEventArgs>();
         }
 
-        public int ZoomLevel { get; set; }
+        public int ZoomLevel
+        {
+            get { return _zoomLevel; }
+            set { this.RaiseAndSetIfChanged(ref _zoomLevel, value); }
+        }
 
         public EarthPoint MapCenter
         {
