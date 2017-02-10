@@ -6,5 +6,6 @@
              xmlns:viewModels="clr-namespace:EMapNavigator.ViewModels"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:MappingToolbarViewModel}">
     <CheckBox Content="Перескакивать при открытии" VerticalAlignment="Center" Margin="3, 1"
+              ToolTip="Если установлена эта галочка, то после открытия карты или трека карта автоматически покажет первый объект карты или первую точку трека"
               IsChecked="{Binding JumpOnOpen}" />
 </UserControl>

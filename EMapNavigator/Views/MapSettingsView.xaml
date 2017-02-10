@@ -9,7 +9,7 @@
         <CheckBox IsChecked="{Binding UseHighResolutionTiles}">
             <StackPanel>
                 <TextBlock Text="Карта высокого разрешения" />
-                <TextBlock Text="Потребуется перезагрузка приложения" FontSize="9" Opacity="0.7" />
+                <TextBlock Text="Для Retina-экранов" FontSize="9" Opacity="0.7" />
             </StackPanel>
         </CheckBox>
     </Grid>
