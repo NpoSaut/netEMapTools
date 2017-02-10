@@ -127,20 +127,32 @@
     <Compile Include="Modules\MainInterfaceModule.cs" />
     <Compile Include="Modules\MappingInterfaceModule.cs" />
     <Compile Include="Modules\MappingServicesModule.cs" />
+    <Compile Include="Modules\SettingsInterfaceModule.cs" />
     <Compile Include="Modules\SettingsModule.cs" />
     <Compile Include="Settings\Implementations\UserSettings.cs" />
     <Compile Include="Settings\Implementations\JsonUserSettingsFactory.cs" />
     <Compile Include="Settings\Interfaces\IMapPositionSettings.cs" />
     <Compile Include="Settings\Interfaces\ISettingsFactory.cs" />
     <Compile Include="ViewModels\MappingToolbarViewModel.cs" />
+    <Compile Include="ViewModels\MapSettingsViewModel.cs" />
     <Compile Include="ViewModels\MapViewModel.cs" />
+    <Compile Include="ViewModels\SettingsToolbatViewModel.cs" />
     <Compile Include="ViewModels\WheelViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\MappingToolbarView.xaml.cs">
       <DependentUpon>MappingToolbarView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\MapSettingsView.xaml.cs">
+      <DependentUpon>MapSettingsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MapView.xaml.cs">
       <DependentUpon>MapView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingsToolbarView.xaml.cs">
+      <DependentUpon>SettingsToolbarView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -158,7 +170,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\MapSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MapView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingsToolbarView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

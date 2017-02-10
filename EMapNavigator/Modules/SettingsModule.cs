@@ -18,6 +18,7 @@ namespace EMapNavigator.Modules
 
             RegisterSettings<IMapPositionSettings>();
             RegisterSettings<IMapBehaviorSettings>();
+            RegisterSettings<IMapAppearanceSettings>();
         }
 
         private void RegisterSettings<TSettings>()

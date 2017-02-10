@@ -13,6 +13,7 @@ namespace EMapNavigator.Modules
         {
             RegionManager.RegisterViewWithRegion("Map", typeof (MapView));
             RegionManager.RegisterViewWithRegion("MainToolbar", typeof (MappingToolbarView));
+            RegionManager.RegisterViewWithRegion("Settings", typeof (MapSettingsView));
         }
     }
 }
