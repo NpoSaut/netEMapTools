@@ -1,10 +1,9 @@
-﻿using MapViewer;
+﻿using MapViewer.Emulation.Msul.Views;
 using Microsoft.Practices.Unity;
-using MsulEmulation.Views;
 using Prism.Modularity;
 using Prism.Regions;
 
-namespace MsulEmulation.Modules
+namespace MapViewer.Emulation.Msul.Modules
 {
     [ModuleDependency("MsulEmulationServicesModule")]
     public class MsulEmulationInterfaceModule : UnityContainerInterfaceModule

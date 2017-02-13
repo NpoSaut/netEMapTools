@@ -1,7 +1,6 @@
-﻿using MsulEmulation.ViewModels;
-using ReactiveUI;
+﻿using MapViewer.Emulation.Msul.ViewModels;
 
-namespace MsulEmulation.Encoding
+namespace MapViewer.Emulation.Msul.Encoding
 {
     public interface IMsulMessageEncoder
     {

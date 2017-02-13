@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MsulEmulation
+namespace MapViewer.Emulation.Msul
 {
     public class MsulMessage
     {

@@ -1,4 +1,4 @@
-﻿namespace MsulEmulation.Entities
+﻿namespace MapViewer.Emulation.Msul.Entities
 {
     public enum CarriageKind
     {

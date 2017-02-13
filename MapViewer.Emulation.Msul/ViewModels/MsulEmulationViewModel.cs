@@ -1,11 +1,11 @@
 ﻿using System.Reactive.Linq;
 using System.Windows.Input;
+using MapViewer.Emulation.Msul.Emit;
 using MapViewer.Mapping;
-using MsulEmulation.Emit;
 using ReactiveUI;
 using Tracking;
 
-namespace MsulEmulation.ViewModels
+namespace MapViewer.Emulation.Msul.ViewModels
 {
     public class MsulEmulationViewModel : ReactiveObject
     {

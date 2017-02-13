@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Reactive.Linq;
 using Geographics;
+using MapViewer.Emulation.Msul.Entities;
 using MapViewer.Emulation.Wheels;
-using MsulEmulation.Entities;
 using ReactiveUI;
 using Tracking;
 
-namespace MsulEmulation.ViewModels
+namespace MapViewer.Emulation.Msul.ViewModels
 {
     public class MsulEmulationParametersViewModel : ReactiveObject
     {

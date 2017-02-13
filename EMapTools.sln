@@ -27,7 +27,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapViewer.Emulation", "MapV
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapViewer.Emulation.Blok", "MapViewer.Emulation.Blok\MapViewer.Emulation.Blok.csproj", "{F88BA4DE-2663-44C1-A953-F0D5E49396A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MsulEmulation", "MsulEmulation\MsulEmulation.csproj", "{BB9BE2B4-DE1A-471D-A915-44C1E49D6C96}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapViewer.Emulation.Msul", "MapViewer.Emulation.Msul\MapViewer.Emulation.Msul.csproj", "{BB9BE2B4-DE1A-471D-A915-44C1E49D6C96}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlokCanTracking", "BlokCanTracking\BlokCanTracking.csproj", "{54EB8115-E732-454C-B513-368080E12A17}"
 EndProject

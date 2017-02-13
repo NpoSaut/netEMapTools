@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using MsulEmulation.Entities;
-using MsulEmulation.ViewModels;
+using MapViewer.Emulation.Msul.Entities;
+using MapViewer.Emulation.Msul.ViewModels;
 
-namespace MsulEmulation.Encoding
+namespace MapViewer.Emulation.Msul.Encoding
 {
     public class MsulMessageEncoder : IMsulMessageEncoder
     {

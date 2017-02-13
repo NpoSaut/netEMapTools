@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MsulEmulation.Emit
+namespace MapViewer.Emulation.Msul.Emit
 {
     public interface IMsulEmitter
     {

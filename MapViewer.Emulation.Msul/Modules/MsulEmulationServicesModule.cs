@@ -1,9 +1,8 @@
-﻿using MapViewer;
+﻿using MapViewer.Emulation.Msul.Emit;
+using MapViewer.Emulation.Msul.Encoding;
 using Microsoft.Practices.Unity;
-using MsulEmulation.Emit;
-using MsulEmulation.Encoding;
 
-namespace MsulEmulation.Modules
+namespace MapViewer.Emulation.Msul.Modules
 {
     public class MsulEmulationServicesModule : UnityContainerModule
     {

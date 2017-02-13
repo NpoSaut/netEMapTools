@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace MsulEmulation.Views
+namespace MapViewer.Emulation.Msul.Views
 {
     /// <summary>Логика взаимодействия для MsulEmulationParametersView.xaml</summary>
     public partial class MsulEmulationParametersView : UserControl

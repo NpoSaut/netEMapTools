@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Reactive.Linq;
-using MsulEmulation.Encoding;
-using MsulEmulation.ViewModels;
+using MapViewer.Emulation.Msul.Encoding;
+using MapViewer.Emulation.Msul.ViewModels;
 
-namespace MsulEmulation
+namespace MapViewer.Emulation.Msul
 {
     public class MsulEmulationSource
     {

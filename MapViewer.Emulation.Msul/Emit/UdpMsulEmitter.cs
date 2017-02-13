@@ -4,7 +4,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Reactive.Linq;
 
-namespace MsulEmulation.Emit
+namespace MapViewer.Emulation.Msul.Emit
 {
     public class UdpMsulEmitter : IMsulEmitter
     {

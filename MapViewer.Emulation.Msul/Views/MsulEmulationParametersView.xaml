@@ -1,10 +1,10 @@
-﻿<UserControl x:Class="MsulEmulation.Views.MsulEmulationParametersView"
+﻿<UserControl x:Class="MapViewer.Emulation.Msul.Views.MsulEmulationParametersView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:viewModels="clr-namespace:MsulEmulation.ViewModels"
-             xmlns:views="clr-namespace:MsulEmulation.Views"
+             xmlns:viewModels="clr-namespace:MapViewer.Emulation.Msul.ViewModels"
+             xmlns:views="clr-namespace:MapViewer.Emulation.Msul.Views"
              d:DataContext="{d:DesignInstance viewModels:MsulEmulationParametersViewModel}">
     <Grid>
 

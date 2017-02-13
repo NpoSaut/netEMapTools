@@ -7,8 +7,8 @@
     <ProjectGuid>{BB9BE2B4-DE1A-471D-A915-44C1E49D6C96}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MsulEmulation</RootNamespace>
-    <AssemblyName>MsulEmulation</AssemblyName>
+    <RootNamespace>MapViewer.Emulation.Msul</RootNamespace>
+    <AssemblyName>MapViewer.Emulation.Msul</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>

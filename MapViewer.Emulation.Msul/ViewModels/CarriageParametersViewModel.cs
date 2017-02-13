@@ -1,7 +1,7 @@
-﻿using MsulEmulation.Entities;
+﻿using MapViewer.Emulation.Msul.Entities;
 using ReactiveUI;
 
-namespace MsulEmulation.ViewModels
+namespace MapViewer.Emulation.Msul.ViewModels
 {
     public class CarriageParametersViewModel : ReactiveObject
     {
