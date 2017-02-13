@@ -3,6 +3,13 @@ using ReactiveUI;
 
 namespace MapViewer.Emulation.Msul.ViewModels
 {
+    public enum CarriagePosition
+    {
+        Left,
+        Middle,
+        Right
+    }
+
     public class CarriageParametersViewModel : ReactiveObject
     {
         private bool _emergencyValueReleased;
@@ -10,10 +17,11 @@ namespace MapViewer.Emulation.Msul.ViewModels
         private bool _toilet1Occupied;
         private bool _toilet2Occupied;
 
-        public CarriageParametersViewModel(int Number, CarriageKind Kind)
+        public CarriageParametersViewModel(int Number, CarriageKind Kind, CarriagePosition Position)
         {
             this.Number = Number;
             this.Kind = Kind;
+            this.Position = Position;
             IndoorTemperature = 24.0;
             EmergencyValueReleased = false;
             Toilet1Occupied = false;
@@ -22,6 +30,7 @@ namespace MapViewer.Emulation.Msul.ViewModels
 
         public int Number { get; set; }
         public CarriageKind Kind { get; private set; }
+        public CarriagePosition Position { get; private set; }
 
         public double IndoorTemperature
         {

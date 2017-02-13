@@ -116,6 +116,7 @@
     <Compile Include="Views\CarriageParametersModel.xaml.cs">
       <DependentUpon>CarriageParametersModel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Controls\Carriage.cs" />
     <Compile Include="Views\MsulEmulationParametersView.xaml.cs">
       <DependentUpon>MsulEmulationParametersView.xaml</DependentUpon>
     </Compile>

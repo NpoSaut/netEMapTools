@@ -43,11 +43,11 @@ namespace MapViewer.Emulation.Msul.ViewModels
             Carriages =
                 new[]
                 {
-                    new CarriageParametersViewModel(1, CarriageKind.TractionHead),
-                    new CarriageParametersViewModel(2, CarriageKind.HighVoltage),
-                    new CarriageParametersViewModel(3, CarriageKind.Normal),
-                    new CarriageParametersViewModel(4, CarriageKind.HighVoltage),
-                    new CarriageParametersViewModel(5, CarriageKind.TractionHead)
+                    new CarriageParametersViewModel(1, CarriageKind.TractionHead, CarriagePosition.Left),
+                    new CarriageParametersViewModel(2, CarriageKind.HighVoltage, CarriagePosition.Middle),
+                    new CarriageParametersViewModel(3, CarriageKind.Normal, CarriagePosition.Middle),
+                    new CarriageParametersViewModel(4, CarriageKind.HighVoltage, CarriagePosition.Middle),
+                    new CarriageParametersViewModel(5, CarriageKind.TractionHead, CarriagePosition.Right)
                 };
 
             Observable.Interval(TimeSpan.FromSeconds(1))
