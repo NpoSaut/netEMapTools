@@ -129,8 +129,9 @@
     <Compile Include="Modules\MappingServicesModule.cs" />
     <Compile Include="Modules\SettingsInterfaceModule.cs" />
     <Compile Include="Modules\SettingsModule.cs" />
+    <Compile Include="Settings\Implementations\MsulEmulationSettings.cs" />
     <Compile Include="Settings\Implementations\UserSettings.cs" />
-    <Compile Include="Settings\Implementations\JsonUserSettingsFactory.cs" />
+    <Compile Include="Settings\Implementations\JsonSettingsFactory.cs" />
     <Compile Include="Settings\Interfaces\IMapPositionSettings.cs" />
     <Compile Include="Settings\Interfaces\ISettingsFactory.cs" />
     <Compile Include="ViewModels\MappingToolbarViewModel.cs" />

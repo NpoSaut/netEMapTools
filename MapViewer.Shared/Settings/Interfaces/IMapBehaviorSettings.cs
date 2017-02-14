@@ -1,6 +1,6 @@
 ﻿namespace MapViewer.Settings.Interfaces
 {
-    public interface IMapBehaviorSettings
+    public interface IMapBehaviorSettings : ISettings
     {
         bool JumpOnOpen { get; set; }
     }

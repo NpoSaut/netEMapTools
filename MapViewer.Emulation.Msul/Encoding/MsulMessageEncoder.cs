@@ -19,22 +19,30 @@ namespace MapViewer.Emulation.Msul.Encoding
                 { CarriageKind.Normal, 3 },
             };
 
+        private readonly Dictionary<InitializationKind, byte> _initializationKinds =
+            new Dictionary<InitializationKind, byte>
+            {
+                { InitializationKind.HeadSection, 1 },
+                { InitializationKind.TailSection, 5 },
+                { InitializationKind.Uninitialized, 0 },
+            };
+
         private readonly DateTime _zeroTime = new DateTime(1970, 1, 1);
 
-        public MsulMessage GetMessage(MsulEmulationParametersViewModel ViewModel)
+        public MsulMessage GetMessage(MsulEmulationParametersViewModel ViewModel, InitializationKind InitializationKind)
         {
-            return new MsulMessage(GetCommonData(ViewModel),
+            return new MsulMessage(GetCommonData(ViewModel, InitializationKind),
                                    ViewModel.Carriages.Select(GetCarriageData).ToList());
         }
 
-        private byte[] GetCommonData(MsulEmulationParametersViewModel ViewModel)
+        private byte[] GetCommonData(MsulEmulationParametersViewModel ViewModel, InitializationKind InitializationKind)
         {
             using (var ms = new MemoryStream())
             {
                 var writer = new BinaryWriter(ms);
 
                 writer.Write((Byte)1);
-                writer.Write((Byte)1);
+                writer.Write(_initializationKinds[InitializationKind]);
                 writer.Write((Byte)ViewModel.Carriages.Count);
                 writer.Write((UInt32)(ViewModel.Time - _zeroTime).TotalSeconds);
                 writer.Write((UInt16)ViewModel.TrainNumber);

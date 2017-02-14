@@ -1,4 +1,7 @@
-﻿using EMapNavigator.Settings.Implementations;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using EMapNavigator.Settings.Implementations;
 using EMapNavigator.Settings.Interfaces;
 using MapViewer.Settings.Interfaces;
 using Microsoft.Practices.Unity;
@@ -13,17 +16,27 @@ namespace EMapNavigator.Modules
 
         public void Initialize()
         {
-            _container
-                .RegisterType(typeof (ISettingsFactory<>), typeof (JsonUserSettingsFactory), new ContainerControlledLifetimeManager());
-
-            RegisterSettings<IMapPositionSettings>();
-            RegisterSettings<IMapBehaviorSettings>();
-            RegisterSettings<IMapAppearanceSettings>();
+            RegisterSettingsInstance<UserSettings>("Settings.json");
+            RegisterSettingsInstance<MsulEmulationSettings>("MsulSettings.json");
         }
 
-        private void RegisterSettings<TSettings>()
+        private void RegisterSettingsInstance<TInstance>(string FileName) where TInstance : ISettings, new()
         {
-            _container.RegisterType<TSettings>(new InjectionFactory(c => c.Resolve<ISettingsFactory<TSettings>>().Produce()));
+            _container
+                .RegisterType(typeof (ISettingsFactory<TInstance>), typeof (JsonSettingsFactory<TInstance>),
+                              new ContainerControlledLifetimeManager(),
+                              new InjectionConstructor(FileName));
+
+            Type settingsInterface = typeof (ISettings);
+            List<Type> interfaces = typeof (TInstance).GetInterfaces()
+                                                      .Where(settingsInterface.IsAssignableFrom)
+                                                      .ToList();
+
+            foreach (Type implementedInterface in interfaces)
+            {
+                _container.RegisterType(implementedInterface,
+                                        new InjectionFactory(c => c.Resolve<ISettingsFactory<TInstance>>().Produce()));
+            }
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace MapViewer.Settings.Interfaces
 {
-    public interface IMapAppearanceSettings
+    public interface IMapAppearanceSettings : ISettings
     {
         bool HighResolutionTiles { get; set; }
     }

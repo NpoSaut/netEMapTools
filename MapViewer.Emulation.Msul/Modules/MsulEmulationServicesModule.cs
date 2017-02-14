@@ -12,7 +12,7 @@ namespace MapViewer.Emulation.Msul.Modules
         {
             Container
                 .RegisterType<IMsulMessageEncoder, MsulMessageEncoder>(new ContainerControlledLifetimeManager())
-                .RegisterType<IMsulEmitter, UdpMsulEmitter>(new ContainerControlledLifetimeManager());
+                .RegisterType<IMsulEmitterProvider, UdpMsulEmitterProvider>(new ContainerControlledLifetimeManager());
         }
     }
 }

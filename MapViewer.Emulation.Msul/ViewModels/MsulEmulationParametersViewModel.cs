@@ -15,6 +15,7 @@ namespace MapViewer.Emulation.Msul.ViewModels
         private readonly ObservableAsPropertyHelper<double> _speed;
         private readonly ObservableAsPropertyHelper<DateTime> _time;
         private readonly IWheel _wheel;
+        private int _activeSection;
         private double _altitude;
         private bool _emergencyStop;
         private bool _leftDoorLocked;
@@ -140,5 +141,11 @@ namespace MapViewer.Emulation.Msul.ViewModels
         }
 
         public IList<CarriageParametersViewModel> Carriages { get; private set; }
+
+        public int ActiveSection
+        {
+            get { return _activeSection; }
+            set { this.RaiseAndSetIfChanged(ref _activeSection, value); }
+        }
     }
 }

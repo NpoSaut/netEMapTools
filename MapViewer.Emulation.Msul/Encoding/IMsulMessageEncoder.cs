@@ -4,6 +4,6 @@ namespace MapViewer.Emulation.Msul.Encoding
 {
     public interface IMsulMessageEncoder
     {
-        MsulMessage GetMessage(MsulEmulationParametersViewModel ViewModel);
+        MsulMessage GetMessage(MsulEmulationParametersViewModel ViewModel, InitializationKind InitializationKind);
     }
 }

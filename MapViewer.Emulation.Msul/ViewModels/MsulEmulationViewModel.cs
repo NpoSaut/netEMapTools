@@ -1,30 +1,44 @@
 ﻿using System.Reactive.Linq;
 using System.Windows.Input;
 using MapViewer.Emulation.Msul.Emit;
+using MapViewer.Emulation.Msul.Encoding;
 using MapViewer.Mapping;
 using ReactiveUI;
-using Tracking;
 
 namespace MapViewer.Emulation.Msul.ViewModels
 {
     public class MsulEmulationViewModel : ReactiveObject
     {
-        private readonly IMsulEmitter _emitter;
         private readonly MsulEmulationSource _emulationSource;
         private readonly ReactiveCommand<object> _stop;
         private bool _emulationEnabled;
-        private PositionPresenter _positionPresenter;
 
-        public MsulEmulationViewModel(MsulEmulationParametersViewModel Parameters, MsulEmulationSource EmulationSource, IMsulEmitter Emitter,
-                                      IMappingService MappingService)
+        public MsulEmulationViewModel(MsulEmulationParametersViewModel Parameters, MsulEmulationSource EmulationSource,
+                                      IMsulEmitterProvider EmitterProvider, IMappingService MappingService)
         {
             this.Parameters = Parameters;
             _emulationSource = EmulationSource;
-            _emitter = Emitter;
+            // ReSharper disable InvokeAsExtensionMethod
             ReactiveCommand<MsulMessage> run =
-                ReactiveCommand.CreateAsyncObservable(_ => _emulationSource.EmulationSource(Parameters)
-                                                                           .EmitOn(_emitter)
-                                                                           .TakeUntil(_stop));
+                ReactiveCommand.CreateAsyncObservable(
+                    _ => Observable.CombineLatest(EmitterProvider.LeftEmitter,
+                                                  EmitterProvider.RightEmitter,
+                                                  Parameters.WhenAnyValue(x => x.ActiveSection),
+                                                  (left, right, active) => new { left, right, active })
+                                   .SelectMany(x =>
+                                               Observable.Merge(
+                                                   _emulationSource.EmulationSource(Parameters,
+                                                                                    x.active == 1
+                                                                                        ? InitializationKind.HeadSection
+                                                                                        : InitializationKind.TailSection)
+                                                                   .EmitOn(x.left),
+                                                   _emulationSource.EmulationSource(Parameters,
+                                                                                    x.active == 5
+                                                                                        ? InitializationKind.HeadSection
+                                                                                        : InitializationKind.TailSection)
+                                                                   .EmitOn(x.right)))
+                                   .TakeUntil(_stop));
+            // ReSharper restore InvokeAsExtensionMethod
 
             _stop = ReactiveCommand.Create();
 
@@ -37,9 +51,6 @@ namespace MapViewer.Emulation.Msul.ViewModels
             this.WhenAnyValue(x => x.EmulationEnabled)
                 .Where(running => !running)
                 .InvokeCommand(Stop);
-
-            _positionPresenter = new PositionPresenter(MappingService,
-                                                       Parameters.WhenAnyValue(x => x.Position));
         }
 
         public MsulEmulationParametersViewModel Parameters { get; private set; }
