@@ -11,13 +11,22 @@ namespace EMapNavigator.Settings.Implementations
     {
         private EmissionLink _leftEmissionLink;
         private EmissionLink _rightEmissionLink;
+        private int _testValue;
 
         public MsulEmulationSettings()
         {
-            LeftEmissionLink = new EmissionLink(new IPAddress(new byte[] { 192, 168, 0, 1 }),
-                                                new IPAddress(new byte[] { 192, 168, 0, 2 }));
-            RightEmissionLink = new EmissionLink(new IPAddress(new byte[] { 192, 168, 0, 1 }),
-                                                 new IPAddress(new byte[] { 192, 168, 0, 3 }));
+            _testValue = 777;
+            _leftEmissionLink = new EmissionLink(new IPAddress(new byte[] { 192, 168, 0, 1 }),
+                                                 new IPAddress(new byte[] { 192, 168, 0, 2 }));
+            _rightEmissionLink = new EmissionLink(new IPAddress(new byte[] { 192, 168, 0, 1 }),
+                                                  new IPAddress(new byte[] { 192, 168, 0, 3 }));
+        }
+
+        [JsonProperty]
+        public int TestValue
+        {
+            get { return _testValue; }
+            set { this.RaiseAndSetIfChanged(ref _testValue, value); }
         }
 
         [JsonProperty]

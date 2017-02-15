@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using EMapNavigator.Settings.Interfaces;
@@ -17,10 +18,14 @@ namespace EMapNavigator.Settings.Implementations
 
         public JsonSettingsFactory(string FileName)
         {
-            _jsonSerializationSettings = new JsonSerializerSettings();
+            _jsonSerializationSettings =
+                new JsonSerializerSettings
+                {
+                    Formatting = Formatting.Indented,
+                    ObjectCreationHandling = ObjectCreationHandling.Replace
+                };
             _jsonSerializationSettings.Converters.Add(new IPAddressConverter());
             _jsonSerializationSettings.Converters.Add(new DegreeConverter());
-            _jsonSerializationSettings.Formatting = Formatting.Indented;
 
             _settingsFileName =
                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
@@ -42,7 +47,8 @@ namespace EMapNavigator.Settings.Implementations
             try
             {
                 string jsonString = File.ReadAllText(_settingsFileName);
-                return JsonConvert.DeserializeObject<TSettings>(jsonString, _jsonSerializationSettings);
+                var result = JsonConvert.DeserializeObject<TSettings>(jsonString, _jsonSerializationSettings);
+                return result;
             }
             catch (Exception)
             {
@@ -58,7 +64,11 @@ namespace EMapNavigator.Settings.Implementations
                 string json = JsonConvert.SerializeObject(SettingsObject, _jsonSerializationSettings);
                 File.WriteAllText(_settingsFileName, json);
             }
-            catch (Exception) { }
+            catch (Exception)
+            {
+                if (Debugger.IsAttached)
+                    throw;
+            }
         }
 
         private class DegreeConverter : JsonConverter
@@ -92,7 +102,8 @@ namespace EMapNavigator.Settings.Implementations
             public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
             {
                 JToken token = JToken.Load(reader);
-                return IPAddress.Parse(token.Value<string>());
+                IPAddress result = IPAddress.Parse(token.Value<string>());
+                return result;
             }
         }
     }

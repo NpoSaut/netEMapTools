@@ -13,7 +13,8 @@ namespace MapViewer.Emulation.Msul.Modules
         public override void Initialize()
         {
             RegionManager
-                .RegisterViewWithRegion("Emulators", typeof (MsulEmulationView));
+                .RegisterViewWithRegion("Emulators", typeof (MsulEmulationView))
+                .RegisterViewWithRegion("Settings", typeof (MsulEmulationSettingsView));
         }
     }
 }
