@@ -11,6 +11,8 @@ namespace MapViewer.Emulation.Msul.ViewModels
 {
     public class MsulEmulationParametersViewModel : ReactiveObject
     {
+        private readonly ObservableAsPropertyHelper<bool> _isLeftSectionActive;
+        private readonly ObservableAsPropertyHelper<bool> _isRightSectionActive;
         private readonly ObservableAsPropertyHelper<EarthPoint> _position;
         private readonly ObservableAsPropertyHelper<double> _speed;
         private readonly ObservableAsPropertyHelper<DateTime> _time;
@@ -63,6 +65,26 @@ namespace MapViewer.Emulation.Msul.ViewModels
                              .CombineLatest(_wheel.Milage,
                                             (rider, milage) => rider.PointAt(milage))
                              .ToProperty(this, x => x.Position, out _position);
+
+            ActiveSection = 1;
+            this.WhenAnyValue(x => x.ActiveSection)
+                .Select(s => s == 1)
+                .ToProperty(this, x => x.IsLeftSectionActive, out _isLeftSectionActive);
+            this.WhenAnyValue(x => x.ActiveSection)
+                .Select(s => s == 5)
+                .ToProperty(this, x => x.IsRightSectionActive, out _isRightSectionActive);
+        }
+
+        public bool IsLeftSectionActive
+        {
+            get { return _isLeftSectionActive.Value; }
+            set { ActiveSection = 1; }
+        }
+
+        public bool IsRightSectionActive
+        {
+            get { return _isRightSectionActive.Value; }
+            set { ActiveSection = 5; }
         }
 
         public DateTime Time

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.ComponentModel.Design.Serialization;
 using System.Reactive.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Input;
 using MapViewer.Emulation.Msul.Emit;
 using MapViewer.Emulation.Msul.Encoding;

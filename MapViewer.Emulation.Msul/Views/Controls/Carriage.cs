@@ -18,7 +18,8 @@ namespace MapViewer.Emulation.Msul.Views.Controls
             "Fill", typeof (Brush), typeof (Carriage), new FrameworkPropertyMetadata(default(Brush), FrameworkPropertyMetadataOptions.AffectsRender));
 
         public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(
-            "Position", typeof (CarriagePosition), typeof (Carriage), new PropertyMetadata(default(CarriagePosition)));
+            "Position", typeof (CarriagePosition), typeof (Carriage),
+            new FrameworkPropertyMetadata(CarriagePosition.Left, FrameworkPropertyMetadataOptions.AffectsRender));
 
         static Carriage() { DefaultStyleKeyProperty.OverrideMetadata(typeof (Carriage), new FrameworkPropertyMetadata(typeof (Carriage))); }
 

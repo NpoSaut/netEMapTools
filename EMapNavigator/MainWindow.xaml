@@ -30,9 +30,9 @@
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
         </ItemsControl>
-        <ScrollViewer DockPanel.Dock="Right" Margin="3" MinWidth="220"
+        <ScrollViewer DockPanel.Dock="Right" MinWidth="220"
                       VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-            <ItemsControl regions:RegionManager.RegionName="Emulators">
+            <ItemsControl regions:RegionManager.RegionName="Emulators" Margin="2">
                 <ItemsControl.ItemContainerStyle>
                     <Style TargetType="ContentControl">
                         <Setter Property="Template">
