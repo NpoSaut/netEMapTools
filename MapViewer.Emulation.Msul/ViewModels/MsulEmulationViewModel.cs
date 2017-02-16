@@ -1,8 +1,8 @@
-﻿using System.Reactive.Linq;
+﻿using System;
+using System.Reactive.Linq;
 using System.Windows.Input;
 using MapViewer.Emulation.Msul.Emit;
 using MapViewer.Emulation.Msul.Encoding;
-using MapViewer.Mapping;
 using ReactiveUI;
 
 namespace MapViewer.Emulation.Msul.ViewModels
@@ -14,33 +14,36 @@ namespace MapViewer.Emulation.Msul.ViewModels
         private bool _emulationEnabled;
 
         public MsulEmulationViewModel(MsulEmulationParametersViewModel Parameters, MsulEmulationSource EmulationSource,
-                                      IMsulEmitterProvider EmitterProvider, IMappingService MappingService)
+                                      IMsulEmitterProvider EmitterProvider)
         {
             this.Parameters = Parameters;
             _emulationSource = EmulationSource;
+
             // ReSharper disable InvokeAsExtensionMethod
-            ReactiveCommand<MsulMessage> run =
+            var emulationSettings = Observable.CombineLatest(EmitterProvider.LeftEmitter,
+                                                             EmitterProvider.RightEmitter,
+                                                             Parameters.WhenAnyValue(x => x.ActiveSection),
+                                                             (left, right, activeSection) => new { left, right, activeSection });
+
+            ReactiveCommand<IDisposable> run =
                 ReactiveCommand.CreateAsyncObservable(
-                    _ => Observable.CombineLatest(EmitterProvider.LeftEmitter,
-                                                  EmitterProvider.RightEmitter,
-                                                  Parameters.WhenAnyValue(x => x.ActiveSection),
-                                                  (left, right, active) => new { left, right, active })
-                                   .SelectMany(x =>
-                                               Observable.Merge(
-                                                   _emulationSource.EmulationSource(Parameters,
-                                                                                    x.active == 1
-                                                                                        ? InitializationKind.HeadSection
-                                                                                        : InitializationKind.TailSection)
-                                                                   .EmitOn(x.left),
-                                                   _emulationSource.EmulationSource(Parameters,
-                                                                                    x.active == 5
-                                                                                        ? InitializationKind.HeadSection
-                                                                                        : InitializationKind.TailSection)
-                                                                   .EmitOn(x.right)))
-                                   .TakeUntil(_stop));
+                    _ => emulationSettings.Select(s => _emulationSource.EmulationSource(Parameters,
+                                                                                        s.activeSection == 1
+                                                                                            ? InitializationKind.HeadSection
+                                                                                            : InitializationKind.TailSection)
+                                                                       .EmitOn(s.left))
+                                          .Scan((old, current) =>
+                                                {
+                                                    old.Dispose();
+                                                    return current;
+                                                })
+                                          .TakeUntil(_stop));
             // ReSharper restore InvokeAsExtensionMethod
 
             _stop = ReactiveCommand.Create();
+
+            run.Sample(_stop)
+               .Subscribe(d => d.Dispose());
 
             Run = run;
             Stop = _stop;
