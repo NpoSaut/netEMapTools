@@ -1,7 +1,6 @@
 ﻿using System;
-using System.ComponentModel.Design.Serialization;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Runtime.InteropServices;
 using System.Windows.Input;
 using MapViewer.Emulation.Msul.Emit;
 using MapViewer.Emulation.Msul.Encoding;
@@ -27,13 +26,10 @@ namespace MapViewer.Emulation.Msul.ViewModels
                                                              Parameters.WhenAnyValue(x => x.ActiveSection),
                                                              (left, right, activeSection) => new { left, right, activeSection });
 
-            ReactiveCommand<IDisposable> run =
+            ReactiveCommand<CompositeDisposable> run =
                 ReactiveCommand.CreateAsyncObservable(
-                    _ => emulationSettings.Select(s => _emulationSource.EmulationSource(Parameters,
-                                                                                        s.activeSection == 1
-                                                                                            ? InitializationKind.HeadSection
-                                                                                            : InitializationKind.TailSection)
-                                                                       .EmitOn(s.left))
+                    _ => emulationSettings.Select(s => new CompositeDisposable(Emit(s.activeSection == 1, s.left),
+                                                                               Emit(s.activeSection == 5, s.right)))
                                           .Scan((old, current) =>
                                                 {
                                                     old.Dispose();
@@ -66,6 +62,15 @@ namespace MapViewer.Emulation.Msul.ViewModels
         {
             get { return _emulationEnabled; }
             set { this.RaiseAndSetIfChanged(ref _emulationEnabled, value); }
+        }
+
+        private IDisposable Emit(bool Active, IMsulEmitter Emitter)
+        {
+            return _emulationSource.EmulationSource(Parameters,
+                                                    Active
+                                                        ? InitializationKind.HeadSection
+                                                        : InitializationKind.TailSection)
+                                   .EmitOn(Emitter);
         }
     }
 }
