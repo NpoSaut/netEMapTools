@@ -15,7 +15,7 @@ namespace MapViewer.Emulation.Msul.Emit
 
         public IDisposable Emit(IObservable<MsulMessage> Messages)
         {
-            var client = new UdpClient(new IPEndPoint(IPAddress.Loopback, 0));
+            var client = new UdpClient(new IPEndPoint(_emissionLink.LocalAddress, 0));
 
             return Observable.Interval(_messageInterval)
                              .CombineLatest(Messages, (i, m) => m)
@@ -27,8 +27,6 @@ namespace MapViewer.Emulation.Msul.Emit
 
         private int Emit(UdpClient client, MsulMessage Message, int i)
         {
-            Console.WriteLine("{0} --> {1}", _emissionLink.LocalAddress, _emissionLink.TargetAddress);
-            return 0;
             byte[] data = Message.CommonData.Concat(Message.CarriagesData[i]).ToArray();
             return client.Send(data, data.Length, new IPEndPoint(_emissionLink.TargetAddress, 125));
         }
