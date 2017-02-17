@@ -68,7 +68,7 @@ namespace MapViewer.Emulation.Msul.Encoding
             using (var ms = new MemoryStream())
             {
                 var writer = new BinaryWriter(ms);
-                writer.Write((Byte)(carriage.Number - 1));
+                writer.Write((Byte)carriage.Number);
                 writer.Write(_carriageKinds[carriage.Kind]);
                 writer.Write(EncodeTemperature(carriage.IndoorTemperature));
                 writer.Write((Byte)((carriage.EmergencyValueReleased ? 1 : 0) << 0 |
