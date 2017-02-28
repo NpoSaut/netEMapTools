@@ -14,6 +14,11 @@ namespace MapViewer.Emulation.Blok.Emission.Implementations
 
         public string Name { get; private set; }
 
-        public IBlokEmitter CreatEmitter() { return new CanBlokEmitter(_canPortHandlerProvider); }
+        public bool UsesDescriptor
+        {
+            get { return true; }
+        }
+
+        public IBlokEmitter CreatEmitter(int Descriptor) { return new CanBlokEmitter(_canPortHandlerProvider, Descriptor); }
     }
 }

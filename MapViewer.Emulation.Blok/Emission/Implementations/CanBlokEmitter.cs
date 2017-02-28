@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using BlokFrames;
@@ -14,7 +15,13 @@ namespace MapViewer.Emulation.Blok.Emission.Implementations
         private const double Diameter = 1250;
 
         private readonly ICanPortHandlerProvider _canPortHandlerProvider;
-        public CanBlokEmitter(ICanPortHandlerProvider CanPortHandlerProvider) { _canPortHandlerProvider = CanPortHandlerProvider; }
+        private readonly int _emissionDescriptor;
+
+        public CanBlokEmitter(ICanPortHandlerProvider CanPortHandlerProvider, int EmissionDescriptor)
+        {
+            _canPortHandlerProvider = CanPortHandlerProvider;
+            _emissionDescriptor = EmissionDescriptor;
+        }
 
         public IObservable<NavigationInformation> Emit(IObservable<NavigationInformation> Navigation)
         {
@@ -51,8 +58,9 @@ namespace MapViewer.Emulation.Blok.Emission.Implementations
             CanFrame frame = new MmAltLongFrame(Position.Latitude,
                                                 Position.Longitude,
                                                 Reliability).GetCanFrame();
-            CanFrame fx = CanFrame.NewWithId(0x5c0, frame.Data);
+            CanFrame fx = CanFrame.NewWithDescriptor(_emissionDescriptor, frame.Data);
             Port.BeginSend(fx);
+            Console.WriteLine("---> {0}", fx);
         }
     }
 }
