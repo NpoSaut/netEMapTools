@@ -98,6 +98,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BlokMapService.cs" />
+    <Compile Include="IBlokMapService.cs" />
     <Compile Include="IMapLoadingService.cs" />
     <Compile Include="ITrackSource.cs" />
     <Compile Include="MapElements\KilometerPostMapElement.cs" />
@@ -111,13 +113,19 @@
     <Compile Include="Modules\BlokMapInterfaceModule.cs" />
     <Compile Include="Modules\BlokMapServicesModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Search\Implementations\OrdinateSearchProvider.cs" />
+    <Compile Include="Search\Interfaces\ISearchProvider.cs" />
+    <Compile Include="Search\Interfaces\SearchResult.cs" />
+    <Compile Include="ViewModels\BlokMapOverlayViewModel.cs" />
+    <Compile Include="ViewModels\BlokMapSearchViewModel.cs" />
     <Compile Include="ViewModels\MapLoaderControlViewModel.cs" />
+    <Compile Include="ViewModels\SearchResultViewModel.cs" />
     <Compile Include="ViewModels\TrackSelectorViewModel.cs" />
     <Compile Include="Views\MapLoaderControlView.xaml.cs">
       <DependentUpon>MapLoaderControlView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TrackSelectorView.xaml.cs">
-      <DependentUpon>TrackSelectorView.xaml</DependentUpon>
+    <Compile Include="Views\BlokMapOverlayView.xaml.cs">
+      <DependentUpon>BlokMapOverlayView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -147,7 +155,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\TrackSelectorView.xaml">
+    <Page Include="Views\BlokMapOverlayView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

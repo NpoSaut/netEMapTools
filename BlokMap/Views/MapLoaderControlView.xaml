@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:BlokMap.ViewModels"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:MapLoaderControlViewModel}">
-    <Grid>
+    <StackPanel Orientation="Horizontal">
         <Button Command="{Binding Load}" Content="Load Map" />
-    </Grid>
+    </StackPanel>
 </UserControl>
