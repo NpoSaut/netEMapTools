@@ -7,6 +7,8 @@
              mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance viewModels:BlokMapOverlayViewModel}">
     <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+
         <Style TargetType="{x:Type Control}">
             <Setter Property="Margin" Value="2" />
         </Style>
@@ -67,7 +69,7 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid>
+    <Grid Visibility="{Binding IsActive, Converter={StaticResource BooleanToVisibilityConverter}}">
         <Border VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5"
                 Padding="5,4" Background="#90FFFFFF" CornerRadius="3">
             <Grid>
