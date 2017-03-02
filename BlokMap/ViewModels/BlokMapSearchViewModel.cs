@@ -71,12 +71,9 @@ namespace BlokMap.ViewModels
         private async Task<IList<SearchResultViewModel>> GetSearchResults(object Parameter)
         {
             IList<SearchResult> results = await _searchProvider.Search(SearchQuery);
-
-            return await Task.WhenAll(results.Select(async sr =>
-                                                           {
-                                                               var cityTask = _geocodingService.GetCity(sr.Point);
-                                                               return new SearchResultViewModel(sr, _mappingService, cityTask);
-                                                           }).ToArray());
+            return results.Select(sr => new SearchResultViewModel(sr, _mappingService,
+                                                                  _geocodingService.GetPlacementName(sr.Point)))
+                          .ToList();
         }
     }
 }

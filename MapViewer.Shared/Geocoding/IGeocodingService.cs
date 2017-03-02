@@ -5,6 +5,6 @@ namespace MapViewer.Geocoding
 {
     public interface IGeocodingService
     {
-        Task<string> GetCity(EarthPoint Point);
+        Task<string> GetPlacementName(EarthPoint Point);
     }
 }

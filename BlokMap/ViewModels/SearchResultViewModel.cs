@@ -11,9 +11,9 @@ namespace BlokMap.ViewModels
 {
     public class SearchResultViewModel : INotifyPropertyChanged
     {
-        public SearchResultViewModel(SearchResult SearchResult, IMappingService MappingService, Task<string> CityRequest)
+        public SearchResultViewModel(SearchResult SearchResult, IMappingService MappingService, Task<string> PlacementRequest)
         {
-            CityRequest.ContinueWith(UpdateCity);
+            PlacementRequest.ContinueWith(UpdateCity);
             Title = SearchResult.Title;
             Navigate = new DelegateCommand(() => MappingService.Navigate(SearchResult.Point));
         }

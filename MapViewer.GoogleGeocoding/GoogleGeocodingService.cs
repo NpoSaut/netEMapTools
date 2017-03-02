@@ -33,15 +33,15 @@ namespace MapViewer.GoogleGeocoding
 
         public void Dispose() { _webClient.Dispose(); }
 
-        public async Task<string> GetCity(EarthPoint Point)
+        public async Task<string> GetPlacementName(EarthPoint Point)
         {
             Exception exception = null;
             for (int i = 0; i < 5; i++)
             {
-                await _googleSemaphore.WaitAsync();
+                await _googleSemaphore.WaitAsync().ConfigureAwait(false);
                 try
                 {
-                    IEnumerable<GoogleAddress> geocode = await _okGoogle.ReverseGeocodeAsync(Point.Latitude.Value, Point.Longitude.Value);
+                    IEnumerable<GoogleAddress> geocode = await _okGoogle.ReverseGeocodeAsync(Point.Latitude.Value, Point.Longitude.Value).ConfigureAwait(false);
                     GoogleAddress address = geocode.Last(a => a.Components.Any(c => c.Types.Contains(GoogleAddressType.AdministrativeAreaLevel2)));
                     IEnumerable<GoogleAddressComponent> addressComponents = address.Components.Where(c => c.Types.Any(t => _goodTypes.Contains(t)));
                     return string.Join(", ", addressComponents.Select(c => c.ShortName));
@@ -54,7 +54,7 @@ namespace MapViewer.GoogleGeocoding
                 {
                     _googleSemaphore.Release();
                 }
-                await Task.Delay(TimeSpan.FromMilliseconds(700));
+                await Task.Delay(TimeSpan.FromMilliseconds(700)).ConfigureAwait(false);
             }
             throw exception;
         }
