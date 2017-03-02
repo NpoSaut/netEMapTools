@@ -15,7 +15,7 @@ namespace BlokMap.Modules
         public override void Initialize()
         {
             RegionManager.RegisterViewWithRegion("MainToolbar", typeof (MapLoaderControlView));
-            RegionManager.RegisterViewWithRegion("MapOverlay", typeof (TrackSelectorView));
+            RegionManager.RegisterViewWithRegion("MapOverlay", typeof (BlokMapOverlayView));
         }
     }
 }
