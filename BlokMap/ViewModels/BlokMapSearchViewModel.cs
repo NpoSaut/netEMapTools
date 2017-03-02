@@ -8,6 +8,7 @@ using BlokMap.Search.Interfaces;
 using Geographics;
 using MapViewer.Geocoding;
 using MapViewer.Mapping;
+using Prism.Commands;
 using ReactiveUI;
 
 namespace BlokMap.ViewModels
@@ -36,6 +37,8 @@ namespace BlokMap.ViewModels
                 .CombineLatest(_searchProvider.CanSearch,
                                (a, b) => a && b)
                 .ToProperty(this, x => x.CanSearch, out _canSearch);
+
+            Clear = new DelegateCommand(() => SearchQuery = string.Empty);
 
             ReactiveCommand<IList<SearchResult>> search =
                 ReactiveCommand.CreateAsyncTask(this.WhenAnyValue(x => x.CanSearch),
@@ -72,6 +75,8 @@ namespace BlokMap.ViewModels
                                              Highlight(result);
                                      });
         }
+
+        public ICommand Clear { get; private set; }
 
         public bool CanSearch
         {
