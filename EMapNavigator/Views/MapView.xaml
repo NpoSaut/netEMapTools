@@ -15,7 +15,7 @@
     <Grid>
         <mapVisualization:MapView CentralPoint="{Binding MapCenter}" ZoomLevel="{Binding ZoomLevel, Mode=TwoWay}"
                                   ElementsSource="{Binding Elements}" TileLoader="{Binding TileLoader}"
-                                  ClickCommand="{Binding MapClickedCommand}" />
+                                  ClickCommand="{Binding MapClickedCommand}" Focusable="True" />
         <TextBox VerticalAlignment="Top" HorizontalAlignment="Center" Margin="5" Padding="3"
                  Width="140" Background="#50ffffff"
                  Text="{Binding MapCenter, Converter={StaticResource EarthPointConverter}, UpdateSourceTrigger=PropertyChanged}"/>

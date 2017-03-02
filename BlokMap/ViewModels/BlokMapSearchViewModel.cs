@@ -37,8 +37,7 @@ namespace BlokMap.ViewModels
                 ReactiveCommand.CreateAsyncTask(this.WhenAnyValue(x => x.CanSearch),
                                                 GetSearchResults);
 
-            search.SubscribeOnDispatcher()
-                  .Subscribe(results =>
+            search.Subscribe(results =>
                              {
                                  SearchResults.Clear();
                                  using (SearchResults.SuppressChangeNotifications())

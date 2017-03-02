@@ -17,6 +17,7 @@
         <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type Control}}">
             <Setter Property="Padding" Value="2" />
         </Style>
+
         <DataTemplate DataType="{x:Type viewModels:SearchResultViewModel}">
             <Border Background="#D6FFFFFF" Padding="4,1">
                 <TextBlock>
@@ -27,7 +28,45 @@
                 </TextBlock>
             </Border>
         </DataTemplate>
+
+        <Style x:Key="SearchBoxStyle" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Style.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsFocused" Value="false" />
+                        <Condition Property="Text" Value="" />
+                    </MultiTrigger.Conditions>
+                    <MultiTrigger.ExitActions>
+                        <BeginStoryboard>
+                            <BeginStoryboard.Storyboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetProperty="MinWidth" To="330" Duration="0:00:00.5">
+                                        <DoubleAnimation.EasingFunction>
+                                            <PowerEase EasingMode="EaseInOut" />
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                </Storyboard>
+                            </BeginStoryboard.Storyboard>
+                        </BeginStoryboard>
+                    </MultiTrigger.ExitActions>
+                    <MultiTrigger.EnterActions>
+                        <BeginStoryboard>
+                            <BeginStoryboard.Storyboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetProperty="MinWidth" Duration="0:00:00.5">
+                                        <DoubleAnimation.EasingFunction>
+                                            <PowerEase EasingMode="EaseOut" />
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                </Storyboard>
+                            </BeginStoryboard.Storyboard>
+                        </BeginStoryboard>
+                    </MultiTrigger.EnterActions>
+                </MultiTrigger>
+            </Style.Triggers>
+        </Style>
     </UserControl.Resources>
+
     <Grid>
         <Border VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5"
                 Padding="5,4" Background="#90FFFFFF" CornerRadius="3">
@@ -38,20 +77,21 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="60" />
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Поиск" />
-                <TextBox Grid.Row="1" Grid.Column="0" MinWidth="300"
+                <TextBox Grid.Row="1" Grid.Column="0" MinWidth="160"
                          IsEnabled="{Binding Path=Search.CanSearch}"
-                         Text="{Binding Path=Search.SearchQuery, UpdateSourceTrigger=PropertyChanged}" />
+                         Text="{Binding Path=Search.SearchQuery, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource SearchBoxStyle}" />
                 <ScrollViewer Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
                               VerticalScrollBarVisibility="Auto">
                     <ItemsControl ItemsSource="{Binding Path=Search.SearchResults}" />
                 </ScrollViewer>
 
                 <TextBlock Grid.Row="0" Grid.Column="1" Text="Путь" />
-                <ComboBox Grid.Row="1" Grid.Column="1" IsReadOnly="True" MinWidth="50"
+                <ComboBox Grid.Row="1" Grid.Column="1" IsReadOnly="True"
                           ItemsSource="{Binding Path=TrackSelector.Tracks}" DisplayMemberPath="Name"
                           SelectedValue="{Binding Path=TrackSelector.SelectedTrack}" SelectedValuePath="Number" />
             </Grid>
