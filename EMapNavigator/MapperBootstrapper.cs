@@ -3,9 +3,11 @@ using System.Windows;
 using BlokCanTracking.Modules;
 using BlokMap.Modules;
 using EMapNavigator.Modules;
+using MapViewer;
 using MapViewer.Emulation.Blok.Modules;
 using MapViewer.Emulation.Modules;
 using MapViewer.Emulation.Msul.Modules;
+using MapViewer.GoogleGeocoding;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
 using Prism.Unity;
@@ -21,6 +23,8 @@ namespace EMapNavigator
         {
             var mc = (ModuleCatalog)ModuleCatalog;
 
+            mc.AddModule(typeof (SharedModule));
+            mc.AddModule(typeof (GoogleGeocodingModule));
             mc.AddModule(typeof (SettingsModule));
             mc.AddModule(typeof (MappingServicesModule));
             mc.AddModule(typeof (BlokMapServicesModule));
