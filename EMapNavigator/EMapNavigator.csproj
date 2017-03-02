@@ -252,6 +252,10 @@
       <Project>{45DBB5B9-9527-4394-AD47-59EE02BD0E5E}</Project>
       <Name>MapViewer.Emulation</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MapViewer.GoogleGeocoding\MapViewer.GoogleGeocoding.csproj">
+      <Project>{E95C2324-4902-4BB3-A30D-6A9E7E5AF8C2}</Project>
+      <Name>MapViewer.GoogleGeocoding</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MapViewer.Shared\MapViewer.Shared.csproj">
       <Project>{4B6E0840-94A8-4CCD-AAB8-C4C24383229E}</Project>
       <Name>MapViewer.Shared</Name>

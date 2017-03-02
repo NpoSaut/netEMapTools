@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.Practices.Unity;
+﻿using Microsoft.Practices.Unity;
 
 namespace MapViewer
 {
@@ -7,6 +6,6 @@ namespace MapViewer
     {
         public SharedModule(IUnityContainer Container) : base(Container) { }
 
-        public override void Initialize() { throw new NotImplementedException(); }
+        public override void Initialize() { }
     }
 }

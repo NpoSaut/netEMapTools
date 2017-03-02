@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using BlokMap.Search.Interfaces;
+using MapViewer.Geocoding;
 using MapViewer.Mapping;
 using ReactiveUI;
 
@@ -12,13 +14,17 @@ namespace BlokMap.ViewModels
     public class BlokMapSearchViewModel : ReactiveObject
     {
         private readonly ObservableAsPropertyHelper<bool> _canSearch;
+        private readonly IGeocodingService _geocodingService;
+        private readonly IMappingService _mappingService;
         private readonly ISearchProvider _searchProvider;
 
         private string _searchQuery;
 
-        public BlokMapSearchViewModel(ISearchProvider SearchProvider, IMappingService MappingService)
+        public BlokMapSearchViewModel(ISearchProvider SearchProvider, IMappingService MappingService, IGeocodingService GeocodingService)
         {
             _searchProvider = SearchProvider;
+            _mappingService = MappingService;
+            _geocodingService = GeocodingService;
 
             SearchResults = new ReactiveList<SearchResultViewModel>();
 
@@ -27,15 +33,12 @@ namespace BlokMap.ViewModels
                                (a, b) => a && b)
                 .ToProperty(this, x => x.CanSearch, out _canSearch);
 
-            ReactiveCommand<List<SearchResultViewModel>> search =
+            ReactiveCommand<IList<SearchResultViewModel>> search =
                 ReactiveCommand.CreateAsyncTask(this.WhenAnyValue(x => x.CanSearch),
-                                                async _ =>
-                                                      {
-                                                          IList<SearchResult> results = await _searchProvider.Search(SearchQuery);
-                                                          return results.Select(sr => new SearchResultViewModel(sr, MappingService)).ToList();
-                                                      });
+                                                GetSearchResults);
 
-            search.Subscribe(results =>
+            search.SubscribeOnDispatcher()
+                  .Subscribe(results =>
                              {
                                  SearchResults.Clear();
                                  using (SearchResults.SuppressChangeNotifications())
@@ -65,5 +68,16 @@ namespace BlokMap.ViewModels
         }
 
         public ReactiveList<SearchResultViewModel> SearchResults { get; private set; }
+
+        private async Task<IList<SearchResultViewModel>> GetSearchResults(object Parameter)
+        {
+            IList<SearchResult> results = await _searchProvider.Search(SearchQuery);
+
+            return await Task.WhenAll(results.Select(async sr =>
+                                                           {
+                                                               var cityTask = _geocodingService.GetCity(sr.Point);
+                                                               return new SearchResultViewModel(sr, _mappingService, cityTask);
+                                                           }).ToArray());
+        }
     }
 }

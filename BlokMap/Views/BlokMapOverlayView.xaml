@@ -10,6 +10,9 @@
         <Style TargetType="{x:Type Control}">
             <Setter Property="Margin" Value="2" />
         </Style>
+        <Style TargetType="{x:Type TextBlock}">
+            <Setter Property="Margin" Value="2,0" />
+        </Style>
         <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type Control}}" />
         <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type Control}}">
             <Setter Property="Padding" Value="2" />
@@ -20,7 +23,9 @@
                     <Hyperlink Command="{Binding Navigate}">
                         <Run Text="{Binding Title, Mode=OneTime}" />
                     </Hyperlink>
-                </TextBlock></Border>
+                    <Run Text="{Binding Placement, Mode=OneWay}" FontStyle="Italic" Foreground="#636363" />
+                </TextBlock>
+            </Border>
         </DataTemplate>
     </UserControl.Resources>
     <Grid>
@@ -37,10 +42,13 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Поиск" />
-                <TextBox Grid.Row="1" Grid.Column="0" Width="180"
+                <TextBox Grid.Row="1" Grid.Column="0" MinWidth="300"
                          IsEnabled="{Binding Path=Search.CanSearch}"
                          Text="{Binding Path=Search.SearchQuery, UpdateSourceTrigger=PropertyChanged}" />
-                <ItemsControl Grid.Row="2" Grid.Column="0" ItemsSource="{Binding Path=Search.SearchResults}" />
+                <ScrollViewer Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                              VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding Path=Search.SearchResults}" />
+                </ScrollViewer>
 
                 <TextBlock Grid.Row="0" Grid.Column="1" Text="Путь" />
                 <ComboBox Grid.Row="1" Grid.Column="1" IsReadOnly="True" MinWidth="50"
