@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using BlokMap.Search.Interfaces;
+using Geographics;
 using MapViewer.Mapping;
 using MapVisualization.Annotations;
 using Prism.Commands;
@@ -15,9 +16,11 @@ namespace BlokMap.ViewModels
         {
             PlacementRequest.ContinueWith(UpdateCity);
             Title = SearchResult.Title;
-            Navigate = new DelegateCommand(() => MappingService.Navigate(SearchResult.Point));
+            Position = SearchResult.Point;
+            Navigate = new DelegateCommand(() => MappingService.Navigate(Position));
         }
 
+        public EarthPoint Position { get; private set; }
         public string Placement { get; private set; }
         public string Title { get; private set; }
         public ICommand Navigate { get; private set; }

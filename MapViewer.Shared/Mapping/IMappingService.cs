@@ -9,6 +9,7 @@ namespace MapViewer.Mapping
     public interface IMappingService
     {
         IObservable<MapMouseActionEventArgs> Clicks { get; }
+        EarthPoint MapCenter { get; }
         void Display(MapElement Element);
         void Remove(MapElement Element);
         void Navigate(EarthPoint ToPoint);
