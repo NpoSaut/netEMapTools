@@ -3,6 +3,7 @@
     public interface IBlokEmitterFactory
     {
         string Name { get; }
-        IBlokEmitter CreatEmitter();
+        bool UsesDescriptor { get; }
+        IBlokEmitter CreatEmitter(int Descriptor);
     }
 }

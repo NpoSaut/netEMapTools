@@ -9,12 +9,30 @@
              emulation:EmulatorView.EmulatorName="Эмуляция БЛОК">
     <Grid>
         <StackPanel>
-            <TextBlock Text="Эмулировать сообщения ЭК-СНС" TextWrapping="Wrap" Margin="3" />
-            <CheckBox Content="Достоверность" IsChecked="{Binding Reliability}" Margin="3" />
-            <ComboBox Margin="3" IsEnabled="{Binding CanChangeEmissionMethod}"
+            <CheckBox Content="Достоверность" IsChecked="{Binding Reliability}" Margin="2" />
+            <ComboBox Margin="2" IsEnabled="{Binding CanChangeEmissionMethod}"
                       ItemsSource="{Binding EmitterFactories}" DisplayMemberPath="Name"
                       SelectedItem="{Binding SelectedEmitterFactory}" />
-            <Grid Margin="2">
+            <TextBlock Margin="2" Text="Дескриптор:" />
+            <ComboBox Margin="2" IsEnabled="{Binding CanChangeDescriptor}"
+                      ItemsSource="{Binding EmissionDescriptors}"
+                      SelectedItem="{Binding SelectedDescriptor}"
+                      HorizontalContentAlignment="Stretch">
+                <ComboBox.ItemContainerStyle>
+                    <Style TargetType="ContentControl">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    </Style>
+                </ComboBox.ItemContainerStyle>
+                <ComboBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type viewModels:EmissionDescriptorViewModel}">
+                        <DockPanel>
+                            <TextBlock DockPanel.Dock="Right" Text="{Binding Path=Descriptor, StringFormat=X4}" Opacity="0.6" />
+                            <TextBlock Text="{Binding Name}" />
+                        </DockPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition />

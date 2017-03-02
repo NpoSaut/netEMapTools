@@ -7,6 +7,11 @@
             get { return "Через UDP"; }
         }
 
-        public IBlokEmitter CreatEmitter() { return new UdpBlokEmitter(); }
+        public bool UsesDescriptor
+        {
+            get { return false; }
+        }
+
+        public IBlokEmitter CreatEmitter(int Descriptor) { return new UdpBlokEmitter(); }
     }
 }
