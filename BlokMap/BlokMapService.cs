@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using GMapElements;
+using MapViewer.Environment;
 using MapViewer.Mapping;
 using MapVisualization.Elements;
 
@@ -16,11 +19,20 @@ namespace BlokMap
 
         private MapToken _currentMapToken;
 
-        public BlokMapService(MapPresenter MapPresenter, IMappingService MappingService, ITrackSource TrackSource)
+        public BlokMapService(MapPresenter MapPresenter, IMappingService MappingService, ITrackSource TrackSource,
+                              IStartupArgumentsProvider StartupArgumentsProvider)
         {
             _mapPresenter = MapPresenter;
             _mappingService = MappingService;
             _trackSource = TrackSource;
+
+            string startupMap = StartupArgumentsProvider.FindFilePath("gps");
+            if (startupMap != null)
+            {
+                Observable.FromAsync(() => Task.Factory.StartNew(() => GMap.Load(File.OpenRead(startupMap))))
+                          .ObserveOnDispatcher()
+                          .Subscribe(SwitchMap);
+            }
         }
 
         public GMap CurrentMap

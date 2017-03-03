@@ -70,6 +70,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Environment\Implementations\ListStartupArgumentsProvider.cs" />
+    <Compile Include="Environment\IStartupArgumentsProvider.cs" />
+    <Compile Include="Environment\StartupArgumentsProviderHelper.cs" />
     <Compile Include="Geocoding\IGeocodingService.cs" />
     <Compile Include="InterfaceElements\InterfaceElementsRegistrationHelper.cs" />
     <Compile Include="InterfaceElements\IToolbarCommand.cs" />
@@ -98,6 +101,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
