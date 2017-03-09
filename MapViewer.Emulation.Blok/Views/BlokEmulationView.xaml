@@ -38,7 +38,8 @@
                 <ComboBox Margin="2" IsEnabled="{Binding CanChangeEmissionMethod}"
                           ItemsSource="{Binding EmitterFactories}" DisplayMemberPath="Name"
                           SelectedItem="{Binding SelectedEmitterFactory}" />
-                <ItemsControl ItemsSource="{Binding EmissionOptions}" IsTabStop="False" Focusable="False" />
+                <ItemsControl IsTabStop="False" Focusable="False" IsEnabled="{Binding CanChangeEmissionMethod}"
+                              ItemsSource="{Binding EmissionOptions}" />
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
