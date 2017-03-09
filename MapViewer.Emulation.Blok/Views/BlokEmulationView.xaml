@@ -4,17 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:MapViewer.Emulation.Blok.ViewModels"
+             xmlns:options="clr-namespace:MapViewer.Emulation.Blok.ViewModels.Options"
              mc:Ignorable="d" Width="150" d:DataContext="{d:DesignInstance viewModels:BlokEmulationViewModel}">
-    <Grid>
-        <GroupBox Header="Эмуляция БЛОК" Padding="4">
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type options:DescriptorSelectorViewModel}">
             <StackPanel>
-                <CheckBox Content="Достоверность" IsChecked="{Binding Reliability}" Margin="2" />
-                <ComboBox Margin="2" IsEnabled="{Binding CanChangeEmissionMethod}"
-                          ItemsSource="{Binding EmitterFactories}" DisplayMemberPath="Name"
-                          SelectedItem="{Binding SelectedEmitterFactory}" />
                 <TextBlock Margin="2" Text="Дескриптор:" />
-                <ComboBox Margin="2" IsEnabled="{Binding CanChangeDescriptor}"
-                          ItemsSource="{Binding EmissionDescriptors}"
+                <ComboBox Margin="2" ItemsSource="{Binding Descriptors}"
                           SelectedItem="{Binding SelectedDescriptor}"
                           HorizontalContentAlignment="Stretch">
                     <ComboBox.ItemContainerStyle>
@@ -25,12 +21,24 @@
                     <ComboBox.ItemTemplate>
                         <DataTemplate DataType="{x:Type viewModels:EmissionDescriptorViewModel}">
                             <DockPanel>
-                                <TextBlock DockPanel.Dock="Right" Text="{Binding Path=Descriptor, StringFormat=X4}" Opacity="0.6" />
+                                <TextBlock DockPanel.Dock="Right" Text="{Binding Path=Descriptor, StringFormat=X4}"
+                                           Opacity="0.6" />
                                 <TextBlock Text="{Binding Name}" />
                             </DockPanel>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <GroupBox Header="Эмуляция БЛОК" Padding="4">
+            <StackPanel>
+                <CheckBox Content="Достоверность" IsChecked="{Binding Reliability}" Margin="2" />
+                <ComboBox Margin="2" IsEnabled="{Binding CanChangeEmissionMethod}"
+                          ItemsSource="{Binding EmitterFactories}" DisplayMemberPath="Name"
+                          SelectedItem="{Binding SelectedEmitterFactory}" />
+                <ItemsControl ItemsSource="{Binding EmissionOptions}" IsTabStop="False" Focusable="False" />
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />

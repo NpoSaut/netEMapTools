@@ -1,7 +1,10 @@
-﻿using MapViewer.Emulation.Blok.Can;
+﻿using System.Collections.Generic;
+using MapViewer.Emulation.Blok.Can;
+using MapViewer.Emulation.Blok.Emission.Options;
 
 namespace MapViewer.Emulation.Blok.Emission.Implementations
 {
+    [EmissionOption(typeof (IDescriptorEmissionOption))]
     public class CanBlockEmitterFactory : IBlokEmitterFactory
     {
         private readonly ICanPortHandlerProvider _canPortHandlerProvider;
@@ -14,11 +17,9 @@ namespace MapViewer.Emulation.Blok.Emission.Implementations
 
         public string Name { get; private set; }
 
-        public bool UsesDescriptor
+        public IBlokEmitter CreatEmitter(ICollection<IEmissionOption> Options)
         {
-            get { return true; }
+            return new CanBlokEmitter(_canPortHandlerProvider, Options.Of<IDescriptorEmissionOption>().EmissionDescriptor);
         }
-
-        public IBlokEmitter CreatEmitter(int Descriptor) { return new CanBlokEmitter(_canPortHandlerProvider, Descriptor); }
     }
 }

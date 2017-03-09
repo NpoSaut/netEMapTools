@@ -4,6 +4,9 @@ using Communications.Usb;
 using MapViewer.Emulation.Blok.Can;
 using MapViewer.Emulation.Blok.Emission;
 using MapViewer.Emulation.Blok.Emission.Implementations;
+using MapViewer.Emulation.Blok.Emission.Options;
+using MapViewer.Emulation.Blok.ViewModels.Options;
+using MapViewer.Emulation.Blok.ViewModels.Options.Producing;
 using Microsoft.Practices.Unity;
 using ReactiveWinUsb;
 
@@ -27,6 +30,10 @@ namespace MapViewer.Emulation.Blok.Modules
                     "udp-can", new ContainerControlledLifetimeManager(),
                     new InjectionFactory(c => new CanBlockEmitterFactory("Через UDP-CAN", new UdpCanPortHandlerProvider())))
                 .RegisterType<IBlokEmitterFactory, UdpBlokEmitterFactory>("udp", new ContainerControlledLifetimeManager());
+
+            Container
+                .RegisterType<IOptionViewModelsSetFactory, OptionViewModelsSetFactory>(new ContainerControlledLifetimeManager())
+                .RegisterOptionViewModelFactory<IDescriptorEmissionOption>(c => new DescriptorSelectorViewModel());
         }
     }
 }
