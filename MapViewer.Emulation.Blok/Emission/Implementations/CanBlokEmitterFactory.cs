@@ -5,11 +5,11 @@ using MapViewer.Emulation.Blok.Emission.Options;
 namespace MapViewer.Emulation.Blok.Emission.Implementations
 {
     [EmissionOption(typeof (IDescriptorEmissionOption))]
-    public class CanBlockEmitterFactory : IBlokEmitterFactory
+    public class CanBlokEmitterFactory : IBlokEmitterFactory
     {
         private readonly ICanPortHandlerProvider _canPortHandlerProvider;
 
-        public CanBlockEmitterFactory(string Name, ICanPortHandlerProvider CanPortHandlerProvider)
+        public CanBlokEmitterFactory(string Name, ICanPortHandlerProvider CanPortHandlerProvider)
         {
             _canPortHandlerProvider = CanPortHandlerProvider;
             this.Name = Name;
