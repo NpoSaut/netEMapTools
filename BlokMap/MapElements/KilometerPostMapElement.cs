@@ -54,10 +54,12 @@ namespace BlokMap.MapElements
             {
                 dc.PushTransform(new TranslateTransform(3, 10));
                 PrintStack(dc,
+                           new FormattedText(string.Format("Секция #{0}", Post.SectionId),
+                                             CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Verdana"), 10, Brushes.Sienna),
                            new FormattedText(Post.Direction == OrdinateDirection.Increasing ? "Возрастает по неч." : "Убывает по неч.",
-                                             CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Verdana"), 10, Brushes.DarkBlue),
+                                             CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Verdana"), 10, Brushes.Black),
                            new FormattedText(String.Format("Пути: {0}", string.Join(", ", Post.Tracks.Select(TrackName))),
-                                             CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Verdana"), 10, Brushes.DarkOliveGreen));
+                                             CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Verdana"), 10, Brushes.Black));
                 dc.Pop();
             }
         }
