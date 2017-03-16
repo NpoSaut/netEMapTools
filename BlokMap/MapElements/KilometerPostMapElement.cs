@@ -12,7 +12,6 @@ namespace BlokMap.MapElements
     [ZoomRestriction(0)]
     public class KilometerPostMapElement : MapPointElement
     {
-        protected static readonly SolidColorBrush TextBackgroundBrush = new SolidColorBrush(Colors.White);
         private readonly Brush mainBrush = Brushes.DarkSlateGray;
 
         public KilometerPostMapElement(GPost Post) : base(Post.Point)
@@ -68,17 +67,6 @@ namespace BlokMap.MapElements
             if (Track.Number <= 15)
                 return string.Format("{0}П", Track.Number);
             return string.Format("{0}Н", Track.Number - 15);
-        }
-
-        protected static void PrintStack(DrawingContext dc, params FormattedText[] labels)
-        {
-            dc.DrawRectangle(TextBackgroundBrush, null, new Rect(-2, -1, labels.Max(l => l.Width) + 2, labels.Sum(l => l.Height + 1) + 2));
-            double yOffset = 0;
-            foreach (FormattedText label in labels)
-            {
-                dc.DrawText(label, new Point(0, yOffset));
-                yOffset += label.Height + 1;
-            }
         }
 
         protected double PrintTrack(DrawingContext dc, GTrack Track)

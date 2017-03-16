@@ -14,9 +14,6 @@ namespace BlokMap.MapElements.MapObjectElements
     [ZoomRestriction(12)]
     public abstract class MapObjectElement : MapPointElement
     {
-        private const double HorizontalStackPadding = 4;
-        private const double VerticalStackPadding = 2;
-
         private static readonly Dictionary<AlsnFrequency, string> _frequencyNames =
             new Dictionary<AlsnFrequency, string>
             {
@@ -26,9 +23,6 @@ namespace BlokMap.MapElements.MapObjectElements
                 { AlsnFrequency.NoAlsn, "Без АЛСН" },
                 { AlsnFrequency.Unknown, "Неизв." },
             };
-
-        protected static readonly SolidColorBrush TextBackgroundBrush = new SolidColorBrush(Colors.White) { Opacity = 0.8 };
-        protected static readonly Pen TextBoxStrokePen = new Pen(Brushes.DarkGray, 1);
 
         public MapObjectElement(EarthPoint Position, GObject Target) : base(Position) { this.Target = Target; }
 
@@ -42,24 +36,6 @@ namespace BlokMap.MapElements.MapObjectElements
         protected string AlstFrequencyString
         {
             get { return _frequencyNames[Target.AlsnFreq]; }
-        }
-
-        protected static void PrintStack(DrawingContext dc, params FormattedText[] labels) { PrintStack(dc, (IList<FormattedText>)labels); }
-
-        protected static void PrintStack(DrawingContext dc, IList<FormattedText> labels)
-        {
-            dc.DrawRoundedRectangle(TextBackgroundBrush, TextBoxStrokePen,
-                                    new Rect(-HorizontalStackPadding,
-                                             -TextBoxStrokePen.Thickness * 0.5 - VerticalStackPadding,
-                                             Math.Round(labels.Max(l => l.Width)) + 2 * HorizontalStackPadding,
-                                             Math.Round(labels.Sum(l => l.Height + 1)) + 2 * VerticalStackPadding),
-                                    2, 2);
-            double yOffset = 0;
-            foreach (FormattedText label in labels)
-            {
-                dc.DrawText(label, new Point(0, yOffset));
-                yOffset += label.Height + 1;
-            }
         }
 
         protected void PrintDetails(DrawingContext dc, string Name = null)
@@ -93,7 +69,7 @@ namespace BlokMap.MapElements.MapObjectElements
 
             if (stack.Any())
             {
-                dc.PushTransform(new TranslateTransform(-0.5 * stack.Max(l => l.Width), 5));
+                dc.PushTransform(new TranslateTransform(Math.Round(-0.5 * stack.Max(l => l.Width)), 5));
                 PrintStack(dc, stack);
                 dc.Pop();
             }
