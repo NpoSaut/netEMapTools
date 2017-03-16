@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
@@ -12,6 +13,14 @@ namespace BlokMap.MapElements
     [ZoomRestriction(0)]
     public class KilometerPostMapElement : MapPointElement
     {
+        private static readonly Dictionary<PositionInSection, string> _positionNames =
+            new Dictionary<PositionInSection, string>
+            {
+                { PositionInSection.Start, "Начало" },
+                { PositionInSection.Middle, "Середина" },
+                { PositionInSection.End, "Конец" }
+            };
+
         private readonly Brush mainBrush = Brushes.DarkSlateGray;
 
         public KilometerPostMapElement(GPost Post) : base(Post.Point)
@@ -28,7 +37,7 @@ namespace BlokMap.MapElements
         {
             if (Zoom > 12 || IsMouseOver)
             {
-                string postLabelText = string.Format("{0}км", (double)Post.Ordinate / 1000);
+                var postLabelText = string.Format("{0}км", (double)Post.Ordinate / 1000);
                 var postLabel = new FormattedText(postLabelText, CultureInfo.CurrentCulture,
                                                   FlowDirection.LeftToRight, new Typeface("Verdana"), 10, mainBrush);
 
@@ -43,7 +52,9 @@ namespace BlokMap.MapElements
             }
 
             if (Zoom > 8)
+            {
                 dc.DrawEllipse(SectionBrush, new Pen(mainBrush, 1.5), new Point(0, 0), 5, 5);
+            }
             else
             {
                 if (Post.Ordinate % (1000 * Math.Pow(2, 9 - Zoom)) == 0)
@@ -58,7 +69,9 @@ namespace BlokMap.MapElements
                                              CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Verdana"), 10, Brushes.Sienna),
                            new FormattedText(Post.Direction == OrdinateDirection.Increasing ? "Возрастает по неч." : "Убывает по неч.",
                                              CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Verdana"), 10, Brushes.Black),
-                           new FormattedText(String.Format("Пути: {0}", string.Join(", ", Post.Tracks.Select(TrackName))),
+                           new FormattedText(string.Format("Пути: {0}", string.Join(", ", Post.Tracks.Select(TrackName))),
+                                             CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Verdana"), 10, Brushes.Black),
+                           new FormattedText(string.Format("Положение: {0}", _positionNames[Post.Position]),
                                              CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Verdana"), 10, Brushes.Black));
                 dc.Pop();
             }
