@@ -31,7 +31,7 @@ namespace Tracking.Presenting
                     segment = new List<EarthPoint>(_segmentLength) { point };
                 }
             }
-            if (segment.Count > 1)
+            if (segment.Count > 0)
                 yield return segment;
         }
     }
