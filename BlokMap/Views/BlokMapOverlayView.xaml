@@ -72,39 +72,54 @@
     <Grid Visibility="{Binding IsActive, Converter={StaticResource BooleanToVisibilityConverter}}">
         <Border VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5"
                 Padding="5,4" Background="#90FFFFFF" CornerRadius="3">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="60" />
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="Поиск" />
-                <Grid Grid.Row="1" Grid.Column="0">
-                    <TextBox MinWidth="160"
-                             IsEnabled="{Binding Path=Search.CanSearch}"
-                             Text="{Binding Path=Search.SearchQuery, UpdateSourceTrigger=PropertyChanged}"
-                             Style="{StaticResource SearchBoxStyle}" />
-                    <Button Margin="3" HorizontalAlignment="Right" Content=""
-                            Background="Transparent" BorderBrush="Transparent" BorderThickness="0"
-                            Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
-                            Command="{Binding Path=Search.Clear}"
-                            FontFamily="/Fonts/#Linearicons-Free" FontSize="16" Padding="0"
-                            Foreground="DimGray" />
+            <StackPanel>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding MapFileName}" />
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding MapConversionDate}" FontStyle="Italic" />
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding MapNumber, StringFormat='X4'}" />
                 </Grid>
-                <ScrollViewer Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
-                              VerticalScrollBarVisibility="Auto">
-                    <ItemsControl ItemsSource="{Binding Path=Search.SearchResults}" />
-                </ScrollViewer>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="60" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Поиск" />
+                    <Grid Grid.Row="1" Grid.Column="0">
+                        <TextBox MinWidth="160"
+                                 IsEnabled="{Binding Path=Search.CanSearch}"
+                                 Text="{Binding Path=Search.SearchQuery, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource SearchBoxStyle}" />
+                        <Button Margin="3" HorizontalAlignment="Right" Content=""
+                                Background="Transparent" BorderBrush="Transparent" BorderThickness="0"
+                                Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
+                                Command="{Binding Path=Search.Clear}"
+                                FontFamily="/Fonts/#Linearicons-Free" FontSize="16" Padding="0"
+                                Foreground="DimGray" />
+                    </Grid>
+                    <ScrollViewer Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                                  VerticalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{Binding Path=Search.SearchResults}" />
+                    </ScrollViewer>
 
-                <TextBlock Grid.Row="0" Grid.Column="1" Text="Путь" />
-                <ComboBox Grid.Row="1" Grid.Column="1" IsReadOnly="True"
-                          ItemsSource="{Binding Path=TrackSelector.Tracks}" DisplayMemberPath="Name"
-                          SelectedValue="{Binding Path=TrackSelector.SelectedTrack}" SelectedValuePath="Number" />
-            </Grid>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="Путь" />
+                    <ComboBox Grid.Row="1" Grid.Column="1" IsReadOnly="True"
+                              ItemsSource="{Binding Path=TrackSelector.Tracks}" DisplayMemberPath="Name"
+                              SelectedValue="{Binding Path=TrackSelector.SelectedTrack}" SelectedValuePath="Number" />
+                </Grid>
+            </StackPanel>
         </Border>
     </Grid>
 </UserControl>
