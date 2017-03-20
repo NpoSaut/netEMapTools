@@ -34,6 +34,7 @@ namespace EMapNavigator
             var mc = (ModuleCatalog)ModuleCatalog;
 
             mc.AddModule(typeof (SharedModule));
+            mc.AddModule(typeof (MainServicesModule));
             mc.AddModule(typeof (GoogleGeocodingModule));
             mc.AddModule(typeof (SettingsModule));
             mc.AddModule(typeof (MappingServicesModule));

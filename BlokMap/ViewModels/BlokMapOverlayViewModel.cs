@@ -1,18 +1,18 @@
 ﻿using System;
 using System.IO;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using MapViewer;
 using ReactiveUI;
 
 namespace BlokMap.ViewModels
 {
     public class BlokMapOverlayViewModel : ReactiveObject
     {
-        private readonly ObservableAsPropertyHelper<string> _fileName;
         private readonly ObservableAsPropertyHelper<bool> _isActive;
-        private readonly ObservableAsPropertyHelper<string> _mapConversionDate;
-        private readonly ObservableAsPropertyHelper<ushort> _mapNumber;
 
-        public BlokMapOverlayViewModel(TrackSelectorViewModel TrackSelector, BlokMapSearchViewModel Search, IBlokMapService BlokMapService)
+        public BlokMapOverlayViewModel(TrackSelectorViewModel TrackSelector, BlokMapSearchViewModel Search, IBlokMapService BlokMapService,
+                                       IWindowTitleManager WindowTitleManager)
         {
             this.TrackSelector = TrackSelector;
             this.Search = Search;
@@ -26,29 +26,17 @@ namespace BlokMap.ViewModels
             mapChanged.Select(map => map.map != null)
                       .ToProperty(this, x => x.IsActive, out _isActive);
 
-            mapChanged.Select(map => Path.GetFileNameWithoutExtension(map.file))
-                      .ToProperty(this, x => x.MapFileName, out _fileName);
-
-            mapChanged.Select(map => map.map.Header.Number)
-                      .ToProperty(this, x => x.MapNumber, out _mapNumber);
-
-            mapChanged.Select(map => map.map.Header.ConversionDate.ToShortDateString())
-                      .ToProperty(this, x => x.MapConversionDate, out _mapConversionDate);
-        }
-
-        public string MapConversionDate
-        {
-            get { return _mapConversionDate.Value; }
-        }
-
-        public ushort MapNumber
-        {
-            get { return _mapNumber.Value; }
-        }
-
-        public string MapFileName
-        {
-            get { return _fileName.Value; }
+            mapChanged.Select(map => string.Format("– {0} [{1:X4}] от {2:d}",
+                                                   Path.GetFileNameWithoutExtension(map.file),
+                                                   map.map.Header.Number,
+                                                   map.map.Header.ConversionDate))
+                      .Scan((IDisposable)new CompositeDisposable(),
+                            (token, line) =>
+                            {
+                                token.Dispose();
+                                return WindowTitleManager.PutText(1, line);
+                            })
+                      .Subscribe();
         }
 
         public bool IsActive

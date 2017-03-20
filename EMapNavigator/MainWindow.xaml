@@ -4,12 +4,10 @@
         xmlns:m="clr-namespace:MapVisualization;assembly=MapVisualization"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:viewModels="clr-namespace:EMapNavigator.ViewModels"
         xmlns:regions="http://prismlibrary.com/"
         mc:Ignorable="d"
         SnapsToDevicePixels="True" TextOptions.TextFormattingMode="Display"
-        Background="{StaticResource {x:Static SystemColors.ControlBrushKey}}"
-        Title="MapViewer">
+        Background="{StaticResource {x:Static SystemColors.ControlBrushKey}}">
     <DockPanel>
         <ItemsControl DockPanel.Dock="Top" regions:RegionManager.RegionName="MainToolbar">
             <ItemsControl.Resources>

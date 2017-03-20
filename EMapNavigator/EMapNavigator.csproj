@@ -125,6 +125,7 @@
     <Compile Include="Emition\IEmitter.cs" />
     <Compile Include="Modules\BlokMapEmulatorServicesModule.cs" />
     <Compile Include="Modules\MainInterfaceModule.cs" />
+    <Compile Include="Modules\MainServicesModule.cs" />
     <Compile Include="Modules\MappingInterfaceModule.cs" />
     <Compile Include="Modules\MappingServicesModule.cs" />
     <Compile Include="Modules\SettingsInterfaceModule.cs" />
@@ -154,6 +155,7 @@
     <Compile Include="Views\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WindowTitleManager.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
