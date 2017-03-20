@@ -12,10 +12,14 @@ namespace BlokMap.ViewModels
             this.TrackSelector = TrackSelector;
             this.Search = Search;
 
-            Observable.FromEventPattern(h => BlokMapService.CurrentMapChanged += h,
-                                        h => BlokMapService.CurrentMapChanged -= h)
-                      .Select(_ => BlokMapService.CurrentMap != null)
-                      .ToProperty(this, x => x.IsActive, out _isActive, false);
+            var mapChanged =
+                Observable.FromEventPattern<MapChangedEventArgs>(
+                              h => BlokMapService.CurrentMapChanged += h,
+                              h => BlokMapService.CurrentMapChanged -= h)
+                          .Select(e => new { file = e.EventArgs.FileName, map = BlokMapService.CurrentMap });
+
+            mapChanged.Select(map => map.map != null)
+                      .ToProperty(this, x => x.IsActive, out _isActive);
         }
 
         public bool IsActive
