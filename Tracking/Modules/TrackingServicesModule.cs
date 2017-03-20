@@ -21,8 +21,8 @@ namespace Tracking.Modules
                     new ContainerControlledLifetimeManager(),
                     new InjectionFactory(c =>
                                          new TrackFilterPresenterDecorator(
-                                             30.0, new SegmentationTrackPresenterDecorator(
-                                                       100, new TrackPresenter(c.Resolve<IMappingService>())))))
+                                             10.0, new SegmentationTrackPresenterDecorator(
+                                                       300, new TrackPresenter(c.Resolve<IMappingService>())))))
                 .RegisterType<IPathRiderProvider, TrackingControlViewModel>(new ContainerControlledLifetimeManager());
         }
     }
