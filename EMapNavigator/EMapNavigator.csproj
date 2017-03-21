@@ -120,6 +120,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="EarthPointToStringConverter.cs" />
+    <Compile Include="MapElements\MapMarkerElement.cs" />
     <Compile Include="MapperBootstrapper.cs" />
     <Compile Include="Emition\LanEmitter.cs" />
     <Compile Include="Emition\IEmitter.cs" />
