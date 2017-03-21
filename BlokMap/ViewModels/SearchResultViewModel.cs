@@ -16,6 +16,7 @@ namespace BlokMap.ViewModels
         {
             PlacementRequest.ContinueWith(UpdateCity);
             Title = SearchResult.Title;
+            Description = SearchResult.Description;
             Position = SearchResult.Point;
             Navigate = new DelegateCommand(() => MappingService.Navigate(Position));
         }
@@ -23,6 +24,7 @@ namespace BlokMap.ViewModels
         public EarthPoint Position { get; private set; }
         public string Placement { get; private set; }
         public string Title { get; private set; }
+        public string Description { get; private set; }
         public ICommand Navigate { get; private set; }
         public event PropertyChangedEventHandler PropertyChanged;
 

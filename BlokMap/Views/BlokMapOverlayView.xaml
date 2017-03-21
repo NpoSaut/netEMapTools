@@ -23,7 +23,7 @@
         <DataTemplate DataType="{x:Type viewModels:SearchResultViewModel}">
             <Border Background="#D6FFFFFF" Padding="4,1">
                 <TextBlock>
-                    <Hyperlink Command="{Binding Navigate}">
+                    <Hyperlink Command="{Binding Navigate}" ToolTip="{Binding Description}">
                         <Run Text="{Binding Title, Mode=OneTime}" />
                     </Hyperlink>
                     <Run Text="{Binding Placement, Mode=OneWay}" FontStyle="Italic" Foreground="#636363" />

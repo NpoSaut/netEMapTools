@@ -42,6 +42,7 @@ namespace BlokMap.Search.Implementations
                                   .SelectMany(section => section.Posts)
                                   .Where(post => ordinate == Math.Floor(post.Ordinate / 1000.0))
                                   .Select(post => new SearchResult(string.Format("Столб {0} км", post.Ordinate / 1000.0),
+                                                                   string.Format("Секция #{0}", post.SectionId),
                                                                    post.Point))
                                   .ToList();
         }
