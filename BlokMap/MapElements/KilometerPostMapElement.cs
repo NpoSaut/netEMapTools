@@ -33,6 +33,11 @@ namespace BlokMap.MapElements
 
         public Brush SectionBrush { get; set; }
 
+        protected override int ZIndex
+        {
+            get { return base.ZIndex + (IsMouseOver ? 100 : 0); }
+        }
+
         protected override void DrawPointElement(DrawingContext dc, int Zoom)
         {
             if (Zoom > 12 || IsMouseOver)
@@ -82,14 +87,6 @@ namespace BlokMap.MapElements
             if (Track.Number <= 15)
                 return string.Format("{0}П", Track.Number);
             return string.Format("{0}Н", Track.Number - 15);
-        }
-
-        protected double PrintTrack(DrawingContext dc, GTrack Track)
-        {
-            var postLabel = new FormattedText(string.Format("Путь {0}", Track.Number), CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
-                                              new Typeface("Verdana"), 10, mainBrush);
-            dc.DrawText(postLabel, new Point());
-            return postLabel.Height;
         }
 
         #region Реакция на движения мышью
