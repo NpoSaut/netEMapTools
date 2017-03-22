@@ -120,11 +120,13 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="EarthPointToStringConverter.cs" />
+    <Compile Include="MapElements\MapMarkerElement.cs" />
     <Compile Include="MapperBootstrapper.cs" />
     <Compile Include="Emition\LanEmitter.cs" />
     <Compile Include="Emition\IEmitter.cs" />
     <Compile Include="Modules\BlokMapEmulatorServicesModule.cs" />
     <Compile Include="Modules\MainInterfaceModule.cs" />
+    <Compile Include="Modules\MainServicesModule.cs" />
     <Compile Include="Modules\MappingInterfaceModule.cs" />
     <Compile Include="Modules\MappingServicesModule.cs" />
     <Compile Include="Modules\SettingsInterfaceModule.cs" />
@@ -155,6 +157,7 @@
     <Compile Include="Views\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WindowTitleManager.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -206,6 +209,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Resource Include="Fonts\Linearicons-Free.ttf" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -273,7 +277,12 @@
   <ItemGroup>
     <Resource Include="icon.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="..\!res\gps-file-icon\gpsfile.ico">
+      <Link>gpsfile.ico</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

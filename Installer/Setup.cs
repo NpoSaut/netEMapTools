@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using InstallerTools;
 using WixSharp;
+using WixSharp.CommonTasks;
 using Assembly = System.Reflection.Assembly;
 
 public class Script
@@ -31,10 +32,19 @@ public class Script
                                   new Dir(mainFeature, "%Desktop%",
                                           new ExeFileShortcut(mainFeature, projectName, "[INSTALLDIR]" + exeFileName, "") { WorkingDirectory = "INSTALLDIR" }
                                       ))
-        {
-            DefaultFeature = mainFeature,
-            OutDir = @"..\..\..\installers"
-        };
+                      {
+                          DefaultFeature = mainFeature,
+                          OutDir = @"..\..\..\installers"
+                      };
+
+        project.ResolveWildCards(true)
+               .FindFile(f => f.Name.EndsWith(exeFileName))
+               .First()
+               .AddAssociation(new FileAssociation("gps", "application/blok-map-project", "Открыть в MapViewer", "\"%1\"")
+                               {
+                                   Icon = "gpsfile.ico",
+                                   Description = "Карта КЛУБ/БЛОК"
+                               });
 
         project.SetBasicThings(new Guid("E9D8C57F-D4D0-4772-A508-1F21C627B892"), DotNetVersion.DotNet45);
         project.SetInterface(InstallerInterfaceKind.SelectDirectory);

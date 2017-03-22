@@ -23,7 +23,7 @@
         <DataTemplate DataType="{x:Type viewModels:SearchResultViewModel}">
             <Border Background="#D6FFFFFF" Padding="4,1">
                 <TextBlock>
-                    <Hyperlink Command="{Binding Navigate}">
+                    <Hyperlink Command="{Binding Navigate}" ToolTip="{Binding Description}">
                         <Run Text="{Binding Title, Mode=OneTime}" />
                     </Hyperlink>
                     <Run Text="{Binding Placement, Mode=OneWay}" FontStyle="Italic" Foreground="#636363" />
@@ -83,10 +83,18 @@
                     <ColumnDefinition Width="60" />
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Поиск" />
-                <TextBox Grid.Row="1" Grid.Column="0" MinWidth="160"
-                         IsEnabled="{Binding Path=Search.CanSearch}"
-                         Text="{Binding Path=Search.SearchQuery, UpdateSourceTrigger=PropertyChanged}"
-                         Style="{StaticResource SearchBoxStyle}" />
+                <Grid Grid.Row="1" Grid.Column="0">
+                    <TextBox MinWidth="160"
+                             IsEnabled="{Binding Path=Search.CanSearch}"
+                             Text="{Binding Path=Search.SearchQuery, UpdateSourceTrigger=PropertyChanged}"
+                             Style="{StaticResource SearchBoxStyle}" />
+                    <Button Margin="3" HorizontalAlignment="Right" Content=""
+                            Background="Transparent" BorderBrush="Transparent" BorderThickness="0"
+                            Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
+                            Command="{Binding Path=Search.Clear}"
+                            FontFamily="/Fonts/#Linearicons-Free" FontSize="16" Padding="0"
+                            Foreground="DimGray" />
+                </Grid>
                 <ScrollViewer Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
                               VerticalScrollBarVisibility="Auto">
                     <ItemsControl ItemsSource="{Binding Path=Search.SearchResults}" />

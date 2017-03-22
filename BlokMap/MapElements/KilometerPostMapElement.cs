@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
@@ -12,7 +13,14 @@ namespace BlokMap.MapElements
     [ZoomRestriction(0)]
     public class KilometerPostMapElement : MapPointElement
     {
-        protected static readonly SolidColorBrush TextBackgroundBrush = new SolidColorBrush(Colors.White);
+        private static readonly Dictionary<PositionInSection, string> _positionNames =
+            new Dictionary<PositionInSection, string>
+            {
+                { PositionInSection.Start, "Начало" },
+                { PositionInSection.Middle, "Середина" },
+                { PositionInSection.End, "Конец" }
+            };
+
         private readonly Brush mainBrush = Brushes.DarkSlateGray;
 
         public KilometerPostMapElement(GPost Post) : base(Post.Point)
@@ -25,11 +33,16 @@ namespace BlokMap.MapElements
 
         public Brush SectionBrush { get; set; }
 
+        protected override int ZIndex
+        {
+            get { return base.ZIndex + (IsMouseOver ? 100 : 0); }
+        }
+
         protected override void DrawPointElement(DrawingContext dc, int Zoom)
         {
             if (Zoom > 12 || IsMouseOver)
             {
-                string postLabelText = string.Format("{0}км", (double)Post.Ordinate / 1000);
+                var postLabelText = string.Format("{0}км", (double)Post.Ordinate / 1000);
                 var postLabel = new FormattedText(postLabelText, CultureInfo.CurrentCulture,
                                                   FlowDirection.LeftToRight, new Typeface("Verdana"), 10, mainBrush);
 
@@ -44,7 +57,9 @@ namespace BlokMap.MapElements
             }
 
             if (Zoom > 8)
+            {
                 dc.DrawEllipse(SectionBrush, new Pen(mainBrush, 1.5), new Point(0, 0), 5, 5);
+            }
             else
             {
                 if (Post.Ordinate % (1000 * Math.Pow(2, 9 - Zoom)) == 0)
@@ -55,10 +70,14 @@ namespace BlokMap.MapElements
             {
                 dc.PushTransform(new TranslateTransform(3, 10));
                 PrintStack(dc,
+                           new FormattedText(string.Format("Секция #{0}", Post.SectionId),
+                                             CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Verdana"), 10, Brushes.Sienna),
                            new FormattedText(Post.Direction == OrdinateDirection.Increasing ? "Возрастает по неч." : "Убывает по неч.",
-                                             CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Verdana"), 10, Brushes.DarkBlue),
-                           new FormattedText(String.Format("Пути: {0}", string.Join(", ", Post.Tracks.Select(TrackName))),
-                                             CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Verdana"), 10, Brushes.DarkOliveGreen));
+                                             CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Verdana"), 10, Brushes.Black),
+                           new FormattedText(string.Format("Пути: {0}", string.Join(", ", Post.Tracks.Select(TrackName))),
+                                             CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Verdana"), 10, Brushes.Black),
+                           new FormattedText(string.Format("Положение: {0}", _positionNames[Post.Position]),
+                                             CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Verdana"), 10, Brushes.Black));
                 dc.Pop();
             }
         }
@@ -68,25 +87,6 @@ namespace BlokMap.MapElements
             if (Track.Number <= 15)
                 return string.Format("{0}П", Track.Number);
             return string.Format("{0}Н", Track.Number - 15);
-        }
-
-        protected static void PrintStack(DrawingContext dc, params FormattedText[] labels)
-        {
-            dc.DrawRectangle(TextBackgroundBrush, null, new Rect(-2, -1, labels.Max(l => l.Width) + 2, labels.Sum(l => l.Height + 1) + 2));
-            double yOffset = 0;
-            foreach (FormattedText label in labels)
-            {
-                dc.DrawText(label, new Point(0, yOffset));
-                yOffset += label.Height + 1;
-            }
-        }
-
-        protected double PrintTrack(DrawingContext dc, GTrack Track)
-        {
-            var postLabel = new FormattedText(string.Format("Путь {0}", Track.Number), CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
-                                              new Typeface("Verdana"), 10, mainBrush);
-            dc.DrawText(postLabel, new Point());
-            return postLabel.Height;
         }
 
         #region Реакция на движения мышью

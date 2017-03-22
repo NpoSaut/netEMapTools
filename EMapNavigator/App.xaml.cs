@@ -10,7 +10,7 @@ namespace EMapNavigator
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            _bootstrapper = new MapperBootstrapper();
+            _bootstrapper = new MapperBootstrapper(e.Args);
             _bootstrapper.Run();
         }
 

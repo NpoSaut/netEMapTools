@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using Geographics;
@@ -8,7 +9,7 @@ namespace Tracking.MapElements
 {
     public class MapTrackElement : MapPathElement
     {
-        private readonly Vector _shadowVector = new Vector(0.5, 1);
+        private readonly Vector _shadowVector = new Vector(0.8, 1.2);
 
         /// <summary>Создаёт новый многоточечный объект на карте</summary>
         /// <param name="Points">Точки, входящие в состав объекта</param>
@@ -39,18 +40,16 @@ namespace Tracking.MapElements
                 dc.DrawEllipse(TrackPen.Brush, null, Projector.Project(Points[0], Zoom), TrackPen.Thickness * 1.5, TrackPen.Thickness * 1.5);
                 return;
             }
-            for (int i = 0; i < Points.Count - 1; i++)
-            {
+
+            var points = GetScreenPoints(Zoom).ToList();
+
+            for (var i = 0; i < points.Count - 1; i++)
                 dc.DrawLine(TrackShadowPen,
-                            Projector.Project(Points[i], Zoom) + _shadowVector,
-                            Projector.Project(Points[i + 1], Zoom) + _shadowVector);
-            }
-            for (int i = 0; i < Points.Count - 1; i++)
-            {
-                dc.DrawLine(TrackPen,
-                            Projector.Project(Points[i], Zoom),
-                            Projector.Project(Points[i + 1], Zoom));
-            }
+                            points[i] + _shadowVector,
+                            points[i + 1] + _shadowVector);
+
+            for (var i = 0; i < points.Count - 1; i++)
+                dc.DrawLine(TrackPen, points[i], points[i + 1]);
         }
     }
 }

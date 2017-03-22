@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using BlokFrames;
 using BlokMap.MapElements.MapObjectElements;
 using EMapNavigator.Emition;
@@ -41,7 +39,7 @@ namespace EMapNavigator
         public IPathRider PathRider { get; set; }
         public GpsTrack SelectingTrack { get; private set; }
 
-        public ObservableCollection<MapElement> MapElements { get; private set; }
+        public ObservableCollection<MapElement> MapElements { get; }
         public WheelViewModel Wheel { get; private set; }
 
         private void RideButton_OnClick(object Sender, RoutedEventArgs e)
@@ -97,8 +95,8 @@ namespace EMapNavigator
         {
             if (_gMap == null) return;
 
-            List<MapObjectElement> elementsToRemove = MapElements.OfType<MapObjectElement>().ToList();
-            foreach (MapObjectElement element in elementsToRemove)
+            var elementsToRemove = MapElements.OfType<MapObjectElement>().ToList();
+            foreach (var element in elementsToRemove)
                 MapElements.Remove(element);
 
             //PrintObjects(_gMap, 1);

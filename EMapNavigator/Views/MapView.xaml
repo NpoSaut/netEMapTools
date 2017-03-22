@@ -10,14 +10,18 @@
              d:DataContext="{d:DesignInstance viewModels:MapViewModel}"
              Loaded="MapView_OnLoaded">
     <UserControl.Resources>
-        <eMapNavigator:EarthPointToStringConverter x:Key="EarthPointConverter"></eMapNavigator:EarthPointToStringConverter>
+        <eMapNavigator:EarthPointToStringConverter x:Key="EarthPointConverter" />
     </UserControl.Resources>
     <Grid>
         <mapVisualization:MapView CentralPoint="{Binding MapCenter}" ZoomLevel="{Binding ZoomLevel, Mode=TwoWay}"
                                   ElementsSource="{Binding Elements}" TileLoader="{Binding TileLoader}"
                                   ClickCommand="{Binding MapClickedCommand}" Focusable="True" />
-        <TextBox VerticalAlignment="Top" HorizontalAlignment="Center" Margin="5" Padding="3"
-                 Width="140" Background="#50ffffff"
-                 Text="{Binding MapCenter, Converter={StaticResource EarthPointConverter}, UpdateSourceTrigger=PropertyChanged}"/>
+        <StackPanel VerticalAlignment="Top" HorizontalAlignment="Center" Margin="5" Orientation="Horizontal">
+            <TextBox Padding="3" Width="140" Background="#50ffffff"
+                     Text="{Binding MapCenter, Converter={StaticResource EarthPointConverter}, UpdateSourceTrigger=PropertyChanged}" />
+            <ToggleButton Content="" FontSize="15" Padding="2" FontFamily="/Fonts/#Linearicons-Free"
+                          Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
+                          IsChecked="{Binding IsPointerEnabled}" />
+        </StackPanel>
     </Grid>
 </UserControl>

@@ -6,6 +6,9 @@ using Communications.Usb;
 using MapViewer.Emulation.Blok.Can;
 using MapViewer.Emulation.Blok.Emission;
 using MapViewer.Emulation.Blok.Emission.Implementations;
+using MapViewer.Emulation.Blok.Emission.Options;
+using MapViewer.Emulation.Blok.ViewModels.Options;
+using MapViewer.Emulation.Blok.ViewModels.Options.Producing;
 using Microsoft.Practices.Unity;
 using ReactiveWinUsb;
 
@@ -25,31 +28,35 @@ namespace MapViewer.Emulation.Blok.Modules
                 .RegisterType<IBlokEmitterFactory>(
                     "can", new ContainerControlledLifetimeManager(),
                     new InjectionFactory(
-                        c => new CanBlockEmitterFactory("Через АППИ",
-                                                        new AppiCanPortHandlerProvider(
-                                                            c.Resolve<IAppiFactory<AppiLine>>(),
-                                                            AppiLine.Can1,
-                                                            new Dictionary<AppiLine, int>
-                                                            {
-                                                                { AppiLine.Can1, BaudRates.CBR_100K },
-                                                                { AppiLine.Can2, BaudRates.CBR_100K },
-                                                            }))))
+                        c => new CanBlokEmitterFactory("Через АППИ",
+                                                       new AppiCanPortHandlerProvider(
+                                                           c.Resolve<IAppiFactory<AppiLine>>(),
+                                                           AppiLine.Can1,
+                                                           new Dictionary<AppiLine, int>
+                                                           {
+                                                               { AppiLine.Can1, BaudRates.CBR_100K },
+                                                               { AppiLine.Can2, BaudRates.CBR_100K }
+                                                           }))))
                 .RegisterType<IBlokEmitterFactory>(
                     "can-bus", new ContainerControlledLifetimeManager(),
                     new InjectionFactory(
-                        c => new CanBlockEmitterFactory("Через АППИ (CAN-BUS)",
-                                                        new AppiCanPortHandlerProvider(
-                                                            c.Resolve<IAppiFactory<AppiLine>>(),
-                                                            AppiLine.Can1,
-                                                            new Dictionary<AppiLine, int>
-                                                            {
-                                                                { AppiLine.Can1, BaudRates.CBR_50K },
-                                                                { AppiLine.Can2, BaudRates.CBR_50K },
-                                                            }))))
+                        c => new CanBlokEmitterFactory("Через АППИ (CAN-BUS)",
+                                                       new AppiCanPortHandlerProvider(
+                                                           c.Resolve<IAppiFactory<AppiLine>>(),
+                                                           AppiLine.Can1,
+                                                           new Dictionary<AppiLine, int>
+                                                           {
+                                                               { AppiLine.Can1, BaudRates.CBR_50K },
+                                                               { AppiLine.Can2, BaudRates.CBR_50K }
+                                                           }))))
                 .RegisterType<IBlokEmitterFactory>(
                     "udp-can", new ContainerControlledLifetimeManager(),
-                    new InjectionFactory(c => new CanBlockEmitterFactory("Через UDP-CAN", new UdpCanPortHandlerProvider())))
+                    new InjectionFactory(c => new CanBlokEmitterFactory("Через UDP-CAN", new UdpCanPortHandlerProvider())))
                 .RegisterType<IBlokEmitterFactory, UdpBlokEmitterFactory>("udp", new ContainerControlledLifetimeManager());
+
+            Container
+                .RegisterType<IOptionViewModelsSetFactory, OptionViewModelsSetFactory>(new ContainerControlledLifetimeManager())
+                .RegisterOptionViewModelFactory<IDescriptorEmissionOption>(c => new DescriptorSelectorViewModel());
         }
     }
 }

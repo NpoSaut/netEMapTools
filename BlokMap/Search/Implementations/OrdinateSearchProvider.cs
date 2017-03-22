@@ -15,17 +15,15 @@ namespace BlokMap.Search.Implementations
         {
             _blokMapService = BlokMapService;
             CanSearch =
-                Observable.FromEventPattern(h => BlokMapService.CurrentMapChanged += h,
-                                            h => BlokMapService.CurrentMapChanged -= h)
+                Observable.FromEventPattern<MapChangedEventArgs>(
+                              h => BlokMapService.CurrentMapChanged += h,
+                              h => BlokMapService.CurrentMapChanged -= h)
                           .Select(_ => BlokMapService.CurrentMap != null);
         }
 
-        public IObservable<bool> CanSearch { get; private set; }
+        public IObservable<bool> CanSearch { get; }
 
-        public Task<IList<SearchResult>> Search(string SearchQuery)
-        {
-            return Task.Factory.StartNew((Func<object, IList<SearchResult>>)SearchRoutine, SearchQuery);
-        }
+        public Task<IList<SearchResult>> Search(string SearchQuery) { return Task.Factory.StartNew(SearchRoutine, SearchQuery); }
 
         private IList<SearchResult> SearchRoutine(object SearchQueryObject)
         {
@@ -44,6 +42,7 @@ namespace BlokMap.Search.Implementations
                                   .SelectMany(section => section.Posts)
                                   .Where(post => ordinate == Math.Floor(post.Ordinate / 1000.0))
                                   .Select(post => new SearchResult(string.Format("Столб {0} км", post.Ordinate / 1000.0),
+                                                                   string.Format("Секция #{0}", post.SectionId),
                                                                    post.Point))
                                   .ToList();
         }

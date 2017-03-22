@@ -4,34 +4,43 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:MapViewer.Emulation.Blok.ViewModels"
+             xmlns:options="clr-namespace:MapViewer.Emulation.Blok.ViewModels.Options"
              xmlns:emulation="clr-namespace:MapViewer.Emulation;assembly=MapViewer.Emulation"
              mc:Ignorable="d" MinWidth="150" d:DataContext="{d:DesignInstance viewModels:BlokEmulationViewModel}"
              emulation:EmulatorView.EmulatorName="Эмуляция БЛОК">
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type options:DescriptorSelectorViewModel}">
+            <StackPanel>
+                <TextBlock Margin="2" Text="Дескриптор:" />
+                <ComboBox Margin="2" ItemsSource="{Binding Descriptors}"
+                          SelectedItem="{Binding SelectedDescriptor}"
+                          HorizontalContentAlignment="Stretch">
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="ContentControl">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate DataType="{x:Type viewModels:EmissionDescriptorViewModel}">
+                            <DockPanel>
+                                <TextBlock DockPanel.Dock="Right" Text="{Binding Path=Descriptor, StringFormat=X4}"
+                                           Opacity="0.6" />
+                                <TextBlock Text="{Binding Name}" />
+                            </DockPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.Resources>
     <Grid>
         <StackPanel>
             <CheckBox Content="Достоверность" IsChecked="{Binding Reliability}" Margin="2" />
             <ComboBox Margin="2" IsEnabled="{Binding CanChangeEmissionMethod}"
                       ItemsSource="{Binding EmitterFactories}" DisplayMemberPath="Name"
                       SelectedItem="{Binding SelectedEmitterFactory}" />
-            <TextBlock Margin="2" Text="Дескриптор:" />
-            <ComboBox Margin="2" IsEnabled="{Binding CanChangeDescriptor}"
-                      ItemsSource="{Binding EmissionDescriptors}"
-                      SelectedItem="{Binding SelectedDescriptor}"
-                      HorizontalContentAlignment="Stretch">
-                <ComboBox.ItemContainerStyle>
-                    <Style TargetType="ContentControl">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    </Style>
-                </ComboBox.ItemContainerStyle>
-                <ComboBox.ItemTemplate>
-                    <DataTemplate DataType="{x:Type viewModels:EmissionDescriptorViewModel}">
-                        <DockPanel>
-                            <TextBlock DockPanel.Dock="Right" Text="{Binding Path=Descriptor, StringFormat=X4}" Opacity="0.6" />
-                            <TextBlock Text="{Binding Name}" />
-                        </DockPanel>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
+            <ItemsControl IsTabStop="False" Focusable="False" IsEnabled="{Binding CanChangeEmissionMethod}"
+                          ItemsSource="{Binding EmissionOptions}" />
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />

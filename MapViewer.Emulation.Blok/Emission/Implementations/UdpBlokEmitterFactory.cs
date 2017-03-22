@@ -1,4 +1,7 @@
-﻿namespace MapViewer.Emulation.Blok.Emission.Implementations
+﻿using System.Collections.Generic;
+using MapViewer.Emulation.Blok.Emission.Options;
+
+namespace MapViewer.Emulation.Blok.Emission.Implementations
 {
     public class UdpBlokEmitterFactory : IBlokEmitterFactory
     {
@@ -7,11 +10,6 @@
             get { return "Через UDP"; }
         }
 
-        public bool UsesDescriptor
-        {
-            get { return false; }
-        }
-
-        public IBlokEmitter CreatEmitter(int Descriptor) { return new UdpBlokEmitter(); }
+        public IBlokEmitter CreatEmitter(ICollection<IEmissionOption> Options) { return new UdpBlokEmitter(); }
     }
 }

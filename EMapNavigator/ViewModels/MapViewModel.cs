@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Reactive.Linq;
 using System.Windows.Input;
+using EMapNavigator.MapElements;
 using EMapNavigator.Settings.Interfaces;
 using Geographics;
 using MapViewer.Mapping;
@@ -17,9 +19,10 @@ namespace EMapNavigator.ViewModels
     public class MapViewModel : ReactiveObject, IMappingService
     {
         private readonly IMapAppearanceSettings _appearanceSettings;
-        private readonly ObservableCollection<MapElement> _elements = new ObservableCollection<MapElement>();
         private readonly ReactiveCommand<object> _mapClickedCommand;
         private readonly ObservableAsPropertyHelper<ITileLoader> _tileLoader;
+
+        private bool _isPointerEnabled;
         private EarthPoint _mapCenter;
 
         private int _zoomLevel;
@@ -40,6 +43,10 @@ namespace EMapNavigator.ViewModels
 
             _mapClickedCommand = ReactiveCommand.Create();
 
+            this.WhenAnyValue(x => x.IsPointerEnabled)
+                .DistinctUntilChanged()
+                .Subscribe(PinMarker);
+
             Clicks = _mapClickedCommand.OfType<MapMouseActionEventArgs>();
         }
 
@@ -54,10 +61,10 @@ namespace EMapNavigator.ViewModels
             set { this.RaiseAndSetIfChanged(ref _zoomLevel, value); }
         }
 
-        public EarthPoint MapCenter
+        public bool IsPointerEnabled
         {
-            get { return _mapCenter; }
-            private set { this.RaiseAndSetIfChanged(ref _mapCenter, value); }
+            get { return _isPointerEnabled; }
+            set { this.RaiseAndSetIfChanged(ref _isPointerEnabled, value); }
         }
 
         public ICommand MapClickedCommand
@@ -65,15 +72,26 @@ namespace EMapNavigator.ViewModels
             get { return _mapClickedCommand; }
         }
 
-        public ObservableCollection<MapElement> Elements
+        public ObservableCollection<MapElement> Elements { get; } = new ObservableCollection<MapElement>();
+
+        public EarthPoint MapCenter
         {
-            get { return _elements; }
+            get { return _mapCenter; }
+            private set { this.RaiseAndSetIfChanged(ref _mapCenter, value); }
         }
 
         public void Display(MapElement Element) { Elements.Add(Element); }
         public void Remove(MapElement Element) { Elements.Remove(Element); }
-        public IObservable<MapMouseActionEventArgs> Clicks { get; private set; }
+        public IObservable<MapMouseActionEventArgs> Clicks { get; }
         public void Navigate(EarthPoint ToPoint) { MapCenter = ToPoint; }
+
+        private void PinMarker(bool IsMarkerEnabled)
+        {
+            if (IsMarkerEnabled) Elements.Add(new MapMarkerElement(MapCenter));
+            else
+                foreach (var marker in Elements.OfType<MapMarkerElement>().ToList())
+                    Elements.Remove(marker);
+        }
 
         private ITileLoader ChooseTileLoader(bool UseHighResolutionTiles)
         {
