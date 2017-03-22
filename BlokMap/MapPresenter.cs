@@ -17,16 +17,29 @@ namespace BlokMap
         private readonly Color[] _sectionColors =
         {
             Color.FromRgb(255, 255, 102),
-            Color.FromRgb(255, 204, 102),
-            Color.FromRgb(255, 204, 153),
-            Color.FromRgb(255, 153, 153),
-            Color.FromRgb(255, 102, 51),
-            Color.FromRgb(255, 51, 51),
-            Color.FromRgb(255, 102, 204),
-            Color.FromRgb(153, 102, 255),
-            Color.FromRgb(102, 153, 255),
-            Color.FromRgb(102, 204, 204),
-            Color.FromRgb(0, 255, 51)
+            Color.FromRgb(255, 204, 0),
+            Color.FromRgb(255, 153, 51),
+            Color.FromRgb(255, 51, 0),
+            Color.FromRgb(255, 51, 102),
+            Color.FromRgb(255, 0, 204),
+            Color.FromRgb(204, 51, 204),
+            Color.FromRgb(153, 51, 255),
+            Color.FromRgb(102, 51, 255),
+            Color.FromRgb(51, 102, 255),
+            Color.FromRgb(0, 153, 255),
+            Color.FromRgb(102, 153, 204),
+            Color.FromRgb(51, 204, 255),
+            Color.FromRgb(153, 255, 255),
+            Color.FromRgb(0, 204, 153),
+            Color.FromRgb(0, 255, 153),
+            Color.FromRgb(0, 204, 102),
+            Color.FromRgb(102, 255, 102),
+            Color.FromRgb(102, 153, 102),
+            Color.FromRgb(0, 204, 0),
+            Color.FromRgb(153, 204, 0),
+            Color.FromRgb(204, 255, 51),
+            Color.FromRgb(204, 204, 51),
+            Color.FromRgb(153, 153, 0)
         };
 
         #endregion
