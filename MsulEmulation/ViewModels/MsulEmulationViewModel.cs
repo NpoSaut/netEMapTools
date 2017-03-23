@@ -15,8 +15,7 @@ namespace MsulEmulation.ViewModels
         private bool _emulationEnabled;
         private PositionPresenter _positionPresenter;
 
-        public MsulEmulationViewModel(MsulEmulationParametersViewModel Parameters, MsulEmulationSource EmulationSource, IMsulEmitter Emitter,
-                                      IMappingService MappingService)
+        public MsulEmulationViewModel(MsulEmulationParametersViewModel Parameters, MsulEmulationSource EmulationSource, IMsulEmitter Emitter)
         {
             this.Parameters = Parameters;
             _emulationSource = EmulationSource;
@@ -37,9 +36,6 @@ namespace MsulEmulation.ViewModels
             this.WhenAnyValue(x => x.EmulationEnabled)
                 .Where(running => !running)
                 .InvokeCommand(Stop);
-
-            _positionPresenter = new PositionPresenter(MappingService,
-                                                       Parameters.WhenAnyValue(x => x.Position));
         }
 
         public MsulEmulationParametersViewModel Parameters { get; private set; }

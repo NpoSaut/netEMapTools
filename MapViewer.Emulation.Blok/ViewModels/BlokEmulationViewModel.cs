@@ -25,7 +25,7 @@ namespace MapViewer.Emulation.Blok.ViewModels
         private EmissionDescriptorViewModel _selectedDescriptor;
         private IBlokEmitterFactory _selectedEmitterFactory;
 
-        public BlokEmulationViewModel(IBlokEmitterFactory[] EmitterFactories, BlokEmulationParameters EmulationParameters, IMappingService MappingService,
+        public BlokEmulationViewModel(IBlokEmitterFactory[] EmitterFactories, BlokEmulationParameters EmulationParameters,
                                       IOptionViewModelsSetFactory OptionsFactory)
         {
             _emitterFactories = EmitterFactories;
@@ -62,9 +62,6 @@ namespace MapViewer.Emulation.Blok.ViewModels
                 .ToProperty(this, x => x.EmissionOptions, out _emissionOptions);
 
             SelectedEmitterFactory = EmitterFactories.First();
-
-            _positionPresenter = new PositionPresenter(MappingService,
-                                                       EmulationParameters.WhenAnyValue(x => x.Position));
         }
 
         public IList<IEmissionOption> EmissionOptions

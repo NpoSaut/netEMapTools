@@ -2,10 +2,10 @@
 using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
-using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Geographics;
+using MapViewer.Emulation.Wheels;
 using MapViewer.Mapping;
 using MapViewer.Settings.Interfaces;
 using Microsoft.Win32;
@@ -26,7 +26,7 @@ namespace Tracking.ViewModels
         private IDisposable _previousTrackDisplaying;
 
         public TrackingControlViewModel(ITrackPresenter TrackPresenter, IMappingService MappingService, TrackFormatterManager TrackFormatterManager,
-                                        IMapBehaviorSettings BehaviorSettings)
+                                        IMapBehaviorSettings BehaviorSettings, IWheel Wheel)
         {
             _trackPresenter = TrackPresenter;
             _trackFormatterManager = TrackFormatterManager;
@@ -39,11 +39,11 @@ namespace Tracking.ViewModels
 
             LoadTrack = ReactiveCommand.CreateAsyncTask(LoadTrackImpl);
             SaveTrack = ReactiveCommand.CreateAsyncTask(SaveTrackImpl);
-            ReactiveCommand<object> clearCommand = ReactiveCommand.Create(_track.IsEmptyChanged.Select(e => !e));
+            var clearCommand = ReactiveCommand.Create(_track.IsEmptyChanged.Select(e => !e));
             clearCommand.Subscribe(_ => _track.Clear());
             ClearTrack = clearCommand;
 
-            IConnectableObservable<TrackPathRider> prp =
+            var prp =
                 _track.Changed
                       .Select(_ => new TrackPathRider(new GpsTrack(_track.ToList())))
                       .Publish();
@@ -57,12 +57,17 @@ namespace Tracking.ViewModels
             _mappingService.Clicks
                            .Where(c => c.Action == MouseAction.RightClick)
                            .Subscribe(c => _track.Remove(_track.LastOrDefault()));
+
+            var position = PathRider.CombineLatest(
+                Wheel.Milage,
+                (rider, milage) => rider.PointAt(milage));
+            var presenter = new PositionPresenter(_mappingService, position);
         }
 
         public ICommand ClearTrack { get; private set; }
         public ICommand LoadTrack { get; private set; }
         public ICommand SaveTrack { get; private set; }
-        public IObservable<IPathRider> PathRider { get; private set; }
+        public IObservable<IPathRider> PathRider { get; }
 
         private void AppendPointToTrack(EarthPoint Point) { _track.Add(Point); }
 
@@ -83,7 +88,7 @@ namespace Tracking.ViewModels
 
             await Task.Run(() =>
                            {
-                               using (FileStream stream = File.Create(dlg.FileName))
+                               using (var stream = File.Create(dlg.FileName))
                                {
                                    _trackFormatterManager.GetFormatter(Path.GetExtension(dlg.FileName))
                                                          .SaveTrack(new GpsTrack(_track), stream);
@@ -98,14 +103,14 @@ namespace Tracking.ViewModels
                 return;
 
             _track.Clear();
-            GpsTrack track = await Task.Run(() =>
-                                            {
-                                                using (FileStream stream = File.OpenRead(dlg.FileName))
-                                                {
-                                                    return _trackFormatterManager.GetFormatter(Path.GetExtension(dlg.FileName))
-                                                                                 .LoadTrack(stream);
-                                                }
-                                            });
+            var track = await Task.Run(() =>
+                                       {
+                                           using (var stream = File.OpenRead(dlg.FileName))
+                                           {
+                                               return _trackFormatterManager.GetFormatter(Path.GetExtension(dlg.FileName))
+                                                                            .LoadTrack(stream);
+                                           }
+                                       });
             _track.AddRange(track.TrackPoints);
 
             if (_behaviorSettings.JumpOnOpen)
