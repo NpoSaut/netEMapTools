@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using EMapNavigator.Settings.Interfaces;
 using Newtonsoft.Json;
@@ -26,7 +27,7 @@ namespace EMapNavigator.Settings.Implementations
         {
             try
             {
-                string jsonString = File.ReadAllText(_settingsFileName);
+                var jsonString = File.ReadAllText(_settingsFileName);
                 return JsonConvert.DeserializeObject<UserSettings>(jsonString);
             }
             catch (Exception)
@@ -39,11 +40,16 @@ namespace EMapNavigator.Settings.Implementations
         {
             try
             {
-                Directory.CreateDirectory(Path.GetDirectoryName(_settingsFileName));
-                string json = JsonConvert.SerializeObject(SettingsObject, Formatting.Indented);
+                var settingsDirectory = Path.GetDirectoryName(_settingsFileName);
+                if (settingsDirectory != null)
+                    Directory.CreateDirectory(settingsDirectory);
+                var json = JsonConvert.SerializeObject(SettingsObject, Formatting.Indented);
                 File.WriteAllText(_settingsFileName, json);
             }
-            catch (Exception) { }
+            catch (Exception e)
+            {
+                Debug.Fail(e.Message, e.ToString());
+            }
         }
     }
 }

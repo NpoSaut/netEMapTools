@@ -3,10 +3,12 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Windows;
 using MapViewer;
+using MapVisualization.Annotations;
 using ReactiveUI;
 
 namespace EMapNavigator
 {
+    [UsedImplicitly]
     public class WindowTitleManager : IWindowTitleManager
     {
         private readonly ReactiveList<TitlePiece> _pieces;

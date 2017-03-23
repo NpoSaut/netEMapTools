@@ -2,10 +2,12 @@
 using System.Windows;
 using System.Windows.Input;
 using EMapNavigator.Views;
+using MapVisualization.Annotations;
 using ReactiveUI;
 
 namespace EMapNavigator.ViewModels
 {
+    [UsedImplicitly]
     public class SettingsToolbatViewModel : ReactiveObject
     {
         public SettingsToolbatViewModel()

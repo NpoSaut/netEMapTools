@@ -1,9 +1,11 @@
 ﻿using System;
 using MapViewer.Settings.Interfaces;
+using MapVisualization.Annotations;
 using ReactiveUI;
 
 namespace EMapNavigator.ViewModels
 {
+    [UsedImplicitly]
     public class MapSettingsViewModel : ReactiveObject
     {
         private bool _useHighResolutionTiles;

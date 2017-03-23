@@ -1,9 +1,11 @@
 ﻿using System;
 using MapViewer.Settings.Interfaces;
+using MapVisualization.Annotations;
 using ReactiveUI;
 
 namespace EMapNavigator.ViewModels
 {
+    [UsedImplicitly]
     public class MappingToolbarViewModel : ReactiveObject
     {
         private bool _jumpOnOpen;

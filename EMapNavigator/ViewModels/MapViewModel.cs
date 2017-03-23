@@ -9,6 +9,7 @@ using Geographics;
 using MapViewer.Mapping;
 using MapViewer.Settings.Interfaces;
 using MapVisualization;
+using MapVisualization.Annotations;
 using MapVisualization.Elements;
 using MapVisualization.TileLoaders;
 using MapVisualization.TileLoaders.TilePathProvider;
@@ -16,6 +17,7 @@ using ReactiveUI;
 
 namespace EMapNavigator.ViewModels
 {
+    [UsedImplicitly]
     public class MapViewModel : ReactiveObject, IMappingService
     {
         private readonly IMapAppearanceSettings _appearanceSettings;
