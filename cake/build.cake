@@ -29,7 +29,9 @@ Task("Build")
     // Use MSBuild
     MSBuild(solution, settings =>
         settings
-            .SetConfiguration(configuration));
+            .SetConfiguration(configuration)
+			.WithTarget("Rebuild")
+			.SetVerbosity(Verbosity.Minimal));
 });
 
 Task("MakeInstaller")
