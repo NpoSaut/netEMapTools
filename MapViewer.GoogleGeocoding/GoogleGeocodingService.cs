@@ -56,6 +56,7 @@ namespace MapViewer.GoogleGeocoding
                 }
                 await Task.Delay(TimeSpan.FromMilliseconds(700)).ConfigureAwait(false);
             }
+            // ReSharper disable once PossibleNullReferenceException
             throw exception;
         }
     }

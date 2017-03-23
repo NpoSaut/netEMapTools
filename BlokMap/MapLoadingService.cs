@@ -1,9 +1,11 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
 using GMapElements;
+using MapVisualization.Annotations;
 
 namespace BlokMap
 {
+    [UsedImplicitly]
     public class MapLoadingService : IMapLoadingService
     {
         public async Task<GMap> LoadBlokMap(string FileName)

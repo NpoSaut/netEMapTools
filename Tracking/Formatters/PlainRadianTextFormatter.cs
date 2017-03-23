@@ -2,9 +2,11 @@
 using System.IO;
 using System.Linq;
 using Geographics;
+using MapVisualization.Annotations;
 
 namespace Tracking.Formatters
 {
+    [UsedImplicitly]
     public class PlainRadianTextFormatter : ITrackFormatter
     {
         public FormatterDirection Direction

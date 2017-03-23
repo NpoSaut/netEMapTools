@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Geographics;
 
@@ -8,23 +7,17 @@ namespace Tracking
     /// <summary>Обеспечивает возможность навигации по треку</summary>
     public class TrackPathRider : IPathRider
     {
-        public TrackPathRider(GpsTrack Track)
+        private readonly IList<TrackSegment> _trackSegments;
+
+        public TrackPathRider(GpsTrack Track) { _trackSegments = SliceForSegments(Track); }
+
+        public EarthPoint PointAt(double Offset)
         {
-            this.Track = Track;
-            TrackSegments = SliceForSegments(Track);
-        }
-
-        public GpsTrack Track { get; private set; }
-
-        private IList<TrackSegment> TrackSegments { get; set; }
-
-        public EarthPoint PointAt(Double Offset)
-        {
-            TrackSegment segment = SegmentAt(Offset);
+            var segment = SegmentAt(Offset);
             if (segment == null)
-                return TrackSegments.Select(s => s.EndPoint).DefaultIfEmpty(new EarthPoint()).Last();
+                return _trackSegments.Select(s => s.EndPoint).DefaultIfEmpty(new EarthPoint()).Last();
 
-            double localOffset = Offset - segment.StartOffset;
+            var localOffset = Offset - segment.StartOffset;
             return segment.GetMiddlePoint(localOffset / segment.Length);
         }
 
@@ -39,7 +32,7 @@ namespace Tracking
 
             double offset = 0;
             var res = new List<TrackSegment>(Track.TrackPoints.Count - 1);
-            for (int i = 1; i < Track.TrackPoints.Count; i++)
+            for (var i = 1; i < Track.TrackPoints.Count; i++)
             {
                 var segment = new TrackSegment(Track.TrackPoints[i - 1], Track.TrackPoints[i], offset);
                 offset = segment.EndOffset;
@@ -48,7 +41,7 @@ namespace Tracking
             return res;
         }
 
-        private TrackSegment SegmentAt(Double Offset) { return TrackSegments.FirstOrDefault(seg => seg.StartOffset <= Offset && Offset < seg.EndOffset); }
+        private TrackSegment SegmentAt(double Offset) { return _trackSegments.FirstOrDefault(seg => seg.StartOffset <= Offset && Offset < seg.EndOffset); }
 
         /// <summary>Сегмент трека - участок между двумя точками трека</summary>
         private class TrackSegment
@@ -62,14 +55,14 @@ namespace Tracking
                 EndOffset = StartOffset + Length;
             }
 
-            public EarthPoint StartPoint { get; private set; }
-            public EarthPoint EndPoint { get; private set; }
-            public Double Length { get; private set; }
+            public EarthPoint StartPoint { get; }
+            public EarthPoint EndPoint { get; }
+            public double Length { get; }
 
-            public Double StartOffset { get; private set; }
-            public Double EndOffset { get; private set; }
+            public double StartOffset { get; }
+            public double EndOffset { get; }
 
-            public EarthPoint GetMiddlePoint(Double Ratio) { return EarthPoint.MiddlePoint(StartPoint, EndPoint, Ratio); }
+            public EarthPoint GetMiddlePoint(double Ratio) { return EarthPoint.MiddlePoint(StartPoint, EndPoint, Ratio); }
         }
     }
 }

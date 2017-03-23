@@ -17,7 +17,6 @@ namespace MapViewer.Emulation.Blok.Wheels
         private readonly Subject<double> _milage;
         private readonly Timer _pumpTimer;
         private double _milageValue;
-        private int xxx = -1;
         private double _oldOrdinate;
 
         public CanWheel(ICanPort Port)
@@ -74,7 +73,6 @@ namespace MapViewer.Emulation.Blok.Wheels
 
         private IpdEmulation GetPumpingFrame()
         {
-            xxx = -xxx;
             return new IpdEmulation
                    {
                        Sensor1State =

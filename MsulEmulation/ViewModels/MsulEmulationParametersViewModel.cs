@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reactive.Linq;
 using Geographics;
+using MapViewer.Emulation;
 using MapViewer.Emulation.Wheels;
 using MsulEmulation.Entities;
 using ReactiveUI;
@@ -14,7 +15,6 @@ namespace MsulEmulation.ViewModels
         private readonly ObservableAsPropertyHelper<EarthPoint> _position;
         private readonly ObservableAsPropertyHelper<double> _speed;
         private readonly ObservableAsPropertyHelper<DateTime> _time;
-        private readonly IWheel _wheel;
         private double _altitude;
         private bool _emergencyStop;
         private bool _leftDoorLocked;
@@ -28,7 +28,6 @@ namespace MsulEmulation.ViewModels
 
         public MsulEmulationParametersViewModel(IWheel Wheel, IPathRiderProvider PathRiderProvider)
         {
-            _wheel = Wheel;
             TimeShift = TimeSpan.FromHours(15) - DateTime.Now.TimeOfDay;
 
             TrainNumber = 777;
@@ -54,12 +53,12 @@ namespace MsulEmulation.ViewModels
                       .Select(i => DateTime.Now + TimeShift)
                       .ToProperty(this, x => x.Time, out _time);
 
-            Observable.FromEvent(a => _wheel.SpeedChanged += (s, e) => a(), a => { })
-                      .Select(_ => _wheel.Speed)
+            Observable.FromEvent(a => Wheel.SpeedChanged += (s, e) => a(), a => { })
+                      .Select(_ => Wheel.Speed)
                       .ToProperty(this, x => x.Speed, out _speed);
 
             PathRiderProvider.PathRider
-                             .CombineLatest(_wheel.Milage,
+                             .CombineLatest(Wheel.Milage,
                                             (rider, milage) => rider.PointAt(milage))
                              .ToProperty(this, x => x.Position, out _position);
         }

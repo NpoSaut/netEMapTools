@@ -134,7 +134,6 @@
       <DependentUpon>BlokEmulationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Wheels\CanWheel.cs" />
-    <Compile Include="Wheels\CanWheelFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Can\BlokFrames\BlokFrames.csproj">

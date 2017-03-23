@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MapVisualization.Annotations;
 using Tracking.Formatters;
 
 namespace Tracking
 {
+    [UsedImplicitly]
     public class TrackFormatterManager
     {
         private readonly IDictionary<string, ITrackFormatter> _formatters;

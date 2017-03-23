@@ -5,7 +5,6 @@ using System.Windows.Input;
 using MapViewer.Emulation.Blok.Emission;
 using MapViewer.Emulation.Blok.Emission.Options;
 using MapViewer.Emulation.Blok.ViewModels.Options.Producing;
-using MapViewer.Mapping;
 using ReactiveUI;
 using Tracking;
 
@@ -16,20 +15,16 @@ namespace MapViewer.Emulation.Blok.ViewModels
         private readonly ObservableAsPropertyHelper<bool> _canChangeEmissionMethod;
         private readonly ObservableAsPropertyHelper<IList<IEmissionOption>> _emissionOptions;
         private readonly IBlokEmitterFactory[] _emitterFactories;
-        private readonly IOptionViewModelsSetFactory _optionsFactory;
         private readonly ReactiveCommand<object> _stop;
         private bool _emulationEnabled;
 
-        private PositionPresenter _positionPresenter;
         private bool _reliability = true;
-        private EmissionDescriptorViewModel _selectedDescriptor;
         private IBlokEmitterFactory _selectedEmitterFactory;
 
         public BlokEmulationViewModel(IBlokEmitterFactory[] EmitterFactories, BlokEmulationParameters EmulationParameters,
                                       IOptionViewModelsSetFactory OptionsFactory)
         {
             _emitterFactories = EmitterFactories;
-            _optionsFactory = OptionsFactory;
 
             ReactiveCommand<NavigationInformation> run =
                 ReactiveCommand.CreateAsyncObservable(
@@ -58,7 +53,7 @@ namespace MapViewer.Emulation.Blok.ViewModels
                 .ToProperty(this, x => x.CanChangeEmissionMethod, out _canChangeEmissionMethod, true);
 
             this.WhenAnyValue(x => x.SelectedEmitterFactory)
-                .Select(fac => _optionsFactory.CreateOptionsViewModels(fac.GetType()))
+                .Select(fac => OptionsFactory.CreateOptionsViewModels(fac.GetType()))
                 .ToProperty(this, x => x.EmissionOptions, out _emissionOptions);
 
             SelectedEmitterFactory = EmitterFactories.First();

@@ -24,21 +24,21 @@ namespace BlokMap.MapElements.MapObjectElements
                 { AlsnFrequency.Unknown, "Неизв." }
             };
 
-        public MapObjectElement(EarthPoint Position, GObject Target) : base(Position) { this.Target = Target; }
+        protected MapObjectElement(EarthPoint Position, GObject Target) : base(Position) { this.Target = Target; }
 
-        public GObject Target { get; set; }
+        public GObject Target { get; private set; }
 
         protected override int ZIndex
         {
             get { return base.ZIndex + (IsMouseOver ? 100 : 0); }
         }
 
-        protected string OrdinateString
+        private string OrdinateString
         {
             get { return string.Format("{0:F3}", Target.Ordinate / 1000.0); }
         }
 
-        protected string AlstFrequencyString
+        private string AlstFrequencyString
         {
             get { return _frequencyNames[Target.AlsnFreq]; }
         }

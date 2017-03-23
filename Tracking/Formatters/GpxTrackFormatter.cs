@@ -3,9 +3,11 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Geographics;
+using MapVisualization.Annotations;
 
 namespace Tracking.Formatters
 {
+    [UsedImplicitly]
     public class GpxTrackFormatter : ITrackFormatter
     {
         public void SaveTrack(GpsTrack GpsTrack, Stream output)

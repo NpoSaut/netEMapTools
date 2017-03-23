@@ -1,31 +1,28 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Reactive.Linq;
 using System.Windows.Input;
 using MapViewer.Emulation.Wheels;
-using MapViewer.ViewModels;
 using ReactiveUI;
 
 namespace MapViewer.Emulation.ViewModels
 {
-    public class SpeedControlViewModel : ReactiveObject, ISpeedControlViewModel
+    public class SpeedControlViewModel : ReactiveObject
     {
         private readonly ObservableAsPropertyHelper<double> _disstance;
-        private readonly IWheel _wheel;
         private double _speed;
 
         public SpeedControlViewModel(IWheel Wheel)
         {
-            _wheel = Wheel;
-
             this.WhenAnyValue(x => x.Speed,
-                              speed => _wheel.Speed = speed)
-                .Subscribe(s => _wheel.Speed = s);
+                              speed => Wheel.Speed = speed)
+                .Subscribe(s => Wheel.Speed = s);
 
-            _wheel.Milage
-                  .ToProperty(this, w => w.Disstance, out _disstance);
+            Wheel.Milage
+                 .ToProperty(this, w => w.Disstance, out _disstance);
 
-            ReactiveCommand<object> resetDisstanceCommand = ReactiveCommand.Create(_wheel.Milage.Select(m => m > 0).ObserveOnDispatcher());
-            resetDisstanceCommand.Subscribe(_ => _wheel.Reset());
+            var resetDisstanceCommand = ReactiveCommand.Create(Wheel.Milage.Select(m => m > 0).ObserveOnDispatcher());
+            resetDisstanceCommand.Subscribe(_ => Wheel.Reset());
             ResetDisstance = resetDisstanceCommand;
         }
 

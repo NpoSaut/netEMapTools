@@ -11,17 +11,17 @@ namespace Tracking.MapElements
     {
         private readonly Vector _shadowVector = new Vector(0.8, 1.2);
 
+        private readonly Pen _trackPen;
+        private readonly Pen _trackShadowPen;
+
         /// <summary>Создаёт новый многоточечный объект на карте</summary>
         /// <param name="Points">Точки, входящие в состав объекта</param>
         /// <param name="TrackPen">Карандаш для рисования трека</param>
         public MapTrackElement(IList<EarthPoint> Points, Pen TrackPen) : base(Points)
         {
-            this.TrackPen = TrackPen;
-            TrackShadowPen = new Pen(new SolidColorBrush(Color.FromArgb(80, 0, 0, 0)), TrackPen.Thickness);
+            _trackPen = TrackPen;
+            _trackShadowPen = new Pen(new SolidColorBrush(Color.FromArgb(80, 0, 0, 0)), TrackPen.Thickness);
         }
-
-        public Pen TrackPen { get; set; }
-        public Pen TrackShadowPen { get; set; }
 
         /// <summary>Z-индекс элемента на карте</summary>
         /// <remarks>Меньшее значения индекса соответствуют нижним слоям на карте</remarks>
@@ -37,19 +37,19 @@ namespace Tracking.MapElements
         {
             if (Points.Count == 1)
             {
-                dc.DrawEllipse(TrackPen.Brush, null, Projector.Project(Points[0], Zoom), TrackPen.Thickness * 1.5, TrackPen.Thickness * 1.5);
+                dc.DrawEllipse(_trackPen.Brush, null, Projector.Project(Points[0], Zoom), _trackPen.Thickness * 1.5, _trackPen.Thickness * 1.5);
                 return;
             }
 
             var points = GetScreenPoints(Zoom).ToList();
 
             for (var i = 0; i < points.Count - 1; i++)
-                dc.DrawLine(TrackShadowPen,
+                dc.DrawLine(_trackShadowPen,
                             points[i] + _shadowVector,
                             points[i + 1] + _shadowVector);
 
             for (var i = 0; i < points.Count - 1; i++)
-                dc.DrawLine(TrackPen, points[i], points[i + 1]);
+                dc.DrawLine(_trackPen, points[i], points[i + 1]);
         }
     }
 }

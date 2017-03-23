@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MapVisualization.Annotations;
 using ReactiveUI;
 
 namespace BlokMap.ViewModels
 {
+    [UsedImplicitly]
     public class TrackSelectorViewModel : ReactiveObject, ITrackSource
     {
         private int _selectedTrack;

@@ -16,7 +16,6 @@ namespace BlokMap.ViewModels
     public class BlokMapSearchViewModel : ReactiveObject
     {
         private readonly ObservableAsPropertyHelper<bool> _canSearch;
-        private readonly IGeocodingService _geocodingService;
 
         private readonly Dictionary<SearchResult, SearchHighlightMapElement> _highlights =
             new Dictionary<SearchResult, SearchHighlightMapElement>();
@@ -31,7 +30,6 @@ namespace BlokMap.ViewModels
         {
             _searchProvider = SearchProvider;
             _mappingService = MappingService;
-            _geocodingService = GeocodingService;
 
             this.WhenAny(x => x.SearchQuery, x => x != null)
                 .CombineLatest(_searchProvider.CanSearch,
@@ -59,7 +57,7 @@ namespace BlokMap.ViewModels
                 .InvokeCommand(this, x => x.Search);
 
             SearchResults = _searchResults.CreateDerivedCollection(
-                sr => new SearchResultViewModel(sr, _mappingService, _geocodingService.GetPlacementName(sr.Point)),
+                sr => new SearchResultViewModel(sr, _mappingService, GeocodingService.GetPlacementName(sr.Point)),
                 orderer: (a, b) => _mappingService.MapCenter.DistanceTo(a.Position)
                                                   .CompareTo(_mappingService.MapCenter.DistanceTo(b.Position)));
 

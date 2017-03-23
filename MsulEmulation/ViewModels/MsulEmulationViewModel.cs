@@ -1,29 +1,22 @@
 ﻿using System.Reactive.Linq;
 using System.Windows.Input;
-using MapViewer.Mapping;
 using MsulEmulation.Emit;
 using ReactiveUI;
-using Tracking;
 
 namespace MsulEmulation.ViewModels
 {
     public class MsulEmulationViewModel : ReactiveObject
     {
-        private readonly IMsulEmitter _emitter;
-        private readonly MsulEmulationSource _emulationSource;
         private readonly ReactiveCommand<object> _stop;
         private bool _emulationEnabled;
-        private PositionPresenter _positionPresenter;
 
         public MsulEmulationViewModel(MsulEmulationParametersViewModel Parameters, MsulEmulationSource EmulationSource, IMsulEmitter Emitter)
         {
             this.Parameters = Parameters;
-            _emulationSource = EmulationSource;
-            _emitter = Emitter;
-            ReactiveCommand<MsulMessage> run =
-                ReactiveCommand.CreateAsyncObservable(_ => _emulationSource.EmulationSource(Parameters)
-                                                                           .EmitOn(_emitter)
-                                                                           .TakeUntil(_stop));
+            var run =
+                ReactiveCommand.CreateAsyncObservable(_ => EmulationSource.EmulationSource(Parameters)
+                                                                          .EmitOn(Emitter)
+                                                                          .TakeUntil(_stop));
 
             _stop = ReactiveCommand.Create();
 
@@ -39,8 +32,8 @@ namespace MsulEmulation.ViewModels
         }
 
         public MsulEmulationParametersViewModel Parameters { get; private set; }
-        public ICommand Run { get; private set; }
-        public ICommand Stop { get; private set; }
+        public ICommand Run { get; }
+        public ICommand Stop { get; }
 
         public bool EmulationEnabled
         {

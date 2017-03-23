@@ -39,7 +39,7 @@ namespace BlokMap.ViewModels
         public override string ToString() { return Title; }
 
         [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string PropertyName = null)
+        private void OnPropertyChanged([CallerMemberName] string PropertyName = null)
         {
             PropertyChangedEventHandler handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(PropertyName));

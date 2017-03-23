@@ -106,11 +106,13 @@
       <DependentUpon>SpeedControlView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Wheels\IWheel.cs" />
-    <Compile Include="Wheels\IWheelFactory.cs" />
     <Compile Include="Wheels\VirtualWheel.cs" />
-    <Compile Include="Wheels\VirtualWheelFactory.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Geographics\Geographics.csproj">
+      <Project>{4EAF91DF-7A6C-4F0E-B15B-F372CE42C8D0}</Project>
+      <Name>Geographics</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MapViewer.Shared\MapViewer.Shared.csproj">
       <Project>{4B6E0840-94A8-4CCD-AAB8-C4C24383229E}</Project>
       <Name>MapViewer.Shared</Name>
