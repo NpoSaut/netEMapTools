@@ -52,7 +52,7 @@ public class Script
         project.SetInterface(InstallerInterfaceKind.SelectDirectory);
         project.SetProjectInformation(assembly,
                                       Path.Combine(dir.FullName, "..", "..", "icon.ico"),
-                                      "https://repo.nposaut.ru/#/tools?tool=MapViewer");
+                                      "https://repo.saut.ru/#/tools?tool=MapViewer");
 
         string msi = Compiler.BuildMsi(project);
         InstallerHelper.SignInstaller(msi);
