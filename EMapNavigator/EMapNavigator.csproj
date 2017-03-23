@@ -122,8 +122,6 @@
     <Compile Include="EarthPointToStringConverter.cs" />
     <Compile Include="MapElements\MapMarkerElement.cs" />
     <Compile Include="MapperBootstrapper.cs" />
-    <Compile Include="Emition\LanEmitter.cs" />
-    <Compile Include="Emition\IEmitter.cs" />
     <Compile Include="Modules\BlokMapEmulatorServicesModule.cs" />
     <Compile Include="Modules\MainInterfaceModule.cs" />
     <Compile Include="Modules\MainServicesModule.cs" />
@@ -139,8 +137,6 @@
     <Compile Include="ViewModels\MapSettingsViewModel.cs" />
     <Compile Include="ViewModels\MapViewModel.cs" />
     <Compile Include="ViewModels\SettingsToolbatViewModel.cs" />
-    <Compile Include="ViewModels\WheelViewModel.cs" />
-    <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\MappingToolbarView.xaml.cs">
       <DependentUpon>MappingToolbarView.xaml</DependentUpon>
     </Compile>
@@ -282,6 +278,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

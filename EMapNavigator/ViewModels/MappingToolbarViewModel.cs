@@ -6,14 +6,12 @@ namespace EMapNavigator.ViewModels
 {
     public class MappingToolbarViewModel : ReactiveObject
     {
-        private readonly IMapBehaviorSettings _behaviorSettings;
         private bool _jumpOnOpen;
 
         public MappingToolbarViewModel(IMapBehaviorSettings BehaviorSettings)
         {
-            _behaviorSettings = BehaviorSettings;
             JumpOnOpen = BehaviorSettings.JumpOnOpen;
-            this.WhenAnyValue(x => x.JumpOnOpen).Subscribe(v => _behaviorSettings.JumpOnOpen = v);
+            this.WhenAnyValue(x => x.JumpOnOpen).Subscribe(v => BehaviorSettings.JumpOnOpen = v);
         }
 
         public bool JumpOnOpen
