@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -11,7 +12,8 @@ public class Script
 {
     public static void Main(string[] args)
     {
-        var dir = new DirectoryInfo(@"..\..\..\EMapNavigator\bin\Release");
+        var dir = new DirectoryInfo(args.Length > 0 ? args[0] : @"..\..\..\EMapNavigator\bin\Release");
+        var outputDir = new DirectoryInfo(args.Length > 1 ? args[1] : @"..\..\..\installers");
 
         string exeFileFullName = dir.EnumerateFiles("*.exe").First().FullName;
         string exeFileName = Path.GetFileName(exeFileFullName);
@@ -34,9 +36,9 @@ public class Script
                                       ))
                       {
                           DefaultFeature = mainFeature,
-                          OutDir = @"..\..\..\installers"
+                          OutDir = outputDir.FullName
                       };
-
+        
         project.ResolveWildCards(true)
                .FindFile(f => f.Name.EndsWith(exeFileName))
                .First()
@@ -49,7 +51,7 @@ public class Script
         project.SetBasicThings(new Guid("E9D8C57F-D4D0-4772-A508-1F21C627B892"), DotNetVersion.DotNet45);
         project.SetInterface(InstallerInterfaceKind.SelectDirectory);
         project.SetProjectInformation(assembly,
-                                      @"..\..\..\EMapNavigator\icon.ico",
+                                      Path.Combine(dir.FullName, "..", "..", "icon.ico"),
                                       "https://repo.nposaut.ru/#/tools?tool=MapViewer");
 
         string msi = Compiler.BuildMsi(project);
