@@ -103,11 +103,11 @@
     <Compile Include="Formatters\PlainRadianTextFormatter.cs" />
     <Compile Include="GpsTrack.cs" />
     <Compile Include="IPathRider.cs" />
-    <Compile Include="IPathRiderProvider.cs" />
     <Compile Include="MapElements\PositionMapElement.cs" />
     <Compile Include="MapElements\MapTrackElement.cs" />
     <Compile Include="Modules\TrackingInterfaceModule.cs" />
     <Compile Include="Modules\TrackingServicesModule.cs" />
+    <Compile Include="PathNavigator.cs" />
     <Compile Include="PositionPresenter.cs" />
     <Compile Include="Presenting\ITrackPresenter.cs" />
     <Compile Include="Presenting\SegmentationTrackPresenterDecorator.cs" />

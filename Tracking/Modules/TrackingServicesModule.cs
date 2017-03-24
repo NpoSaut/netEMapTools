@@ -1,4 +1,5 @@
 ﻿using MapViewer;
+using MapViewer.Emulation;
 using MapViewer.Mapping;
 using Microsoft.Practices.Unity;
 using Tracking.Formatters;
@@ -17,13 +18,13 @@ namespace Tracking.Modules
                 .RegisterType<ITrackFormatter, GpxTrackFormatter>("GpxTrackFormatter", new ContainerControlledLifetimeManager())
                 .RegisterType<ITrackFormatter, PlainRadianTextFormatter>("PlainRadianTextFormatter", new ContainerControlledLifetimeManager())
                 .RegisterType<IPathRider, TrackPathRider>(new ContainerControlledLifetimeManager())
+                .RegisterType<INavigator, PathNavigator>(new ContainerControlledLifetimeManager())
                 .RegisterType<ITrackPresenter>(
                     new ContainerControlledLifetimeManager(),
                     new InjectionFactory(c =>
-                                         new TrackFilterPresenterDecorator(
-                                             10.0, new SegmentationTrackPresenterDecorator(
-                                                       300, new TrackPresenter(c.Resolve<IMappingService>())))))
-                .RegisterType<IPathRiderProvider, TrackingControlViewModel>(new ContainerControlledLifetimeManager());
+                                             new TrackFilterPresenterDecorator(
+                                                 10.0, new SegmentationTrackPresenterDecorator(
+                                                     300, new TrackPresenter(c.Resolve<IMappingService>())))));
         }
     }
 }

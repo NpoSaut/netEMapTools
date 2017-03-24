@@ -1,6 +1,6 @@
 ﻿using Geographics;
 
-namespace MapViewer.Emulation.Blok.Emission
+namespace MapViewer.Emulation
 {
     public class NavigationInformation
     {

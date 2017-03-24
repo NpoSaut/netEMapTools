@@ -6,7 +6,6 @@ using MapViewer.Emulation.Blok.Emission;
 using MapViewer.Emulation.Blok.Emission.Options;
 using MapViewer.Emulation.Blok.ViewModels.Options.Producing;
 using ReactiveUI;
-using Tracking;
 
 namespace MapViewer.Emulation.Blok.ViewModels
 {
@@ -21,20 +20,16 @@ namespace MapViewer.Emulation.Blok.ViewModels
         private bool _reliability = true;
         private IBlokEmitterFactory _selectedEmitterFactory;
 
-        public BlokEmulationViewModel(IBlokEmitterFactory[] EmitterFactories, BlokEmulationParameters EmulationParameters,
+        public BlokEmulationViewModel(IBlokEmitterFactory[] EmitterFactories, INavigator Navigator,
                                       IOptionViewModelsSetFactory OptionsFactory)
         {
             _emitterFactories = EmitterFactories;
 
-            ReactiveCommand<NavigationInformation> run =
+            var run =
                 ReactiveCommand.CreateAsyncObservable(
-                    _ => EmulationParameters.WhenAnyValue(x => x.Position,
-                                                          x => x.Speed,
-                                                          (position, speed) => new { position, speed })
-                                            .CombineLatest(this.WhenAnyValue(x => x.Reliability),
-                                                           (n, r) => new NavigationInformation(n.position, n.speed, r))
-                                            .TakeUntil(_stop)
-                                            .EmitThorough(SelectedEmitterFactory.CreatEmitter(EmissionOptions)));
+                    _ => Navigator.Navigation
+                                  .TakeUntil(_stop)
+                                  .EmitThorough(SelectedEmitterFactory.CreatEmitter(EmissionOptions)));
 
             _stop = ReactiveCommand.Create();
 
@@ -64,8 +59,8 @@ namespace MapViewer.Emulation.Blok.ViewModels
             get { return _emissionOptions.Value; }
         }
 
-        public ICommand Run { get; private set; }
-        public ICommand Stop { get; private set; }
+        public ICommand Run { get; }
+        public ICommand Stop { get; }
 
         public IBlokEmitterFactory SelectedEmitterFactory
         {

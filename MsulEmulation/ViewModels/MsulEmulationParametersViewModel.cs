@@ -6,7 +6,6 @@ using MapViewer.Emulation;
 using MapViewer.Emulation.Wheels;
 using MsulEmulation.Entities;
 using ReactiveUI;
-using Tracking;
 
 namespace MsulEmulation.ViewModels
 {
@@ -26,7 +25,7 @@ namespace MsulEmulation.ViewModels
         private TimeSpan _timeShift;
         private int _trainNumber;
 
-        public MsulEmulationParametersViewModel(IWheel Wheel, IPathRiderProvider PathRiderProvider)
+        public MsulEmulationParametersViewModel(IWheel Wheel, INavigator Navigator)
         {
             TimeShift = TimeSpan.FromHours(15) - DateTime.Now.TimeOfDay;
 
@@ -57,10 +56,9 @@ namespace MsulEmulation.ViewModels
                       .Select(_ => Wheel.Speed)
                       .ToProperty(this, x => x.Speed, out _speed);
 
-            PathRiderProvider.PathRider
-                             .CombineLatest(Wheel.Milage,
-                                            (rider, milage) => rider.PointAt(milage))
-                             .ToProperty(this, x => x.Position, out _position);
+            Navigator.Navigation
+                     .Select(n => n.Position)
+                     .ToProperty(this, x => x.Position, out _position);
         }
 
         public DateTime Time

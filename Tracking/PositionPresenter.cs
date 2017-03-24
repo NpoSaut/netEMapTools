@@ -6,7 +6,7 @@ using Tracking.MapElements;
 
 namespace Tracking
 {
-    public class PositionPresenter
+    public class PositionPresenter : IDisposable
     {
         private readonly IMappingService _mappingService;
         private PositionMapElement _currentElement;
@@ -16,6 +16,12 @@ namespace Tracking
             _mappingService = MappingService;
             Position.ObserveOnDispatcher()
                     .Subscribe(RefreshPosition);
+        }
+
+        public void Dispose()
+        {
+            if (_currentElement != null)
+                _mappingService.Remove(_currentElement);
         }
 
         private void RefreshPosition(EarthPoint Position)

@@ -114,14 +114,12 @@
     <Compile Include="Emission\Implementations\CanBlokEmitter.cs" />
     <Compile Include="Emission\Implementations\UdpBlokEmitter.cs" />
     <Compile Include="Emission\Implementations\UdpBlokEmitterFactory.cs" />
-    <Compile Include="Emission\NavigationInformation.cs" />
     <Compile Include="Emission\Options\IDescriptorEmissionOption.cs" />
     <Compile Include="Emission\Options\IEmissionOption.cs" />
     <Compile Include="Emission\Options\OptionsHelper.cs" />
     <Compile Include="Modules\BlokEmulationInterfaceModule.cs" />
     <Compile Include="Modules\BlokEmulationServicesModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\BlokEmulationParameters.cs" />
     <Compile Include="ViewModels\BlokEmulationViewModel.cs" />
     <Compile Include="ViewModels\EmissionDescriptorViewModel.cs" />
     <Compile Include="ViewModels\Options\ComPortSelectorViewModel.cs" />

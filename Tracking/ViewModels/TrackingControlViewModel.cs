@@ -5,7 +5,7 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Geographics;
-using MapViewer.Emulation.Wheels;
+using MapViewer.Emulation;
 using MapViewer.Mapping;
 using MapViewer.Settings.Interfaces;
 using Microsoft.Win32;
@@ -15,18 +15,21 @@ using Tracking.Presenting;
 
 namespace Tracking.ViewModels
 {
-    public class TrackingControlViewModel : ReactiveObject, IPathRiderProvider
+    public class TrackingControlViewModel : ReactiveObject, IDisposable
     {
         private readonly IMapBehaviorSettings _behaviorSettings;
         private readonly IMappingService _mappingService;
+        private readonly PositionPresenter _presenter;
         private readonly ReactiveList<EarthPoint> _track;
 
         private readonly TrackFormatterManager _trackFormatterManager;
         private readonly ITrackPresenter _trackPresenter;
         private IDisposable _previousTrackDisplaying;
 
-        public TrackingControlViewModel(ITrackPresenter TrackPresenter, IMappingService MappingService, TrackFormatterManager TrackFormatterManager,
-                                        IMapBehaviorSettings BehaviorSettings, IWheel Wheel)
+        public TrackingControlViewModel(ITrackPresenter TrackPresenter, IMappingService MappingService,
+                                        TrackFormatterManager TrackFormatterManager,
+                                        IMapBehaviorSettings BehaviorSettings,
+                                        PathNavigator Navigator)
         {
             _trackPresenter = TrackPresenter;
             _trackFormatterManager = TrackFormatterManager;
@@ -37,18 +40,14 @@ namespace Tracking.ViewModels
             _track.Changed
                   .Subscribe(_ => RefreshTrack());
 
+            _track.Changed
+                .Subscribe(_ => Navigator.ChangeTrack(new GpsTrack(_track.ToList())));
+
             LoadTrack = ReactiveCommand.CreateAsyncTask(LoadTrackImpl);
             SaveTrack = ReactiveCommand.CreateAsyncTask(SaveTrackImpl);
             var clearCommand = ReactiveCommand.Create(_track.IsEmptyChanged.Select(e => !e));
             clearCommand.Subscribe(_ => _track.Clear());
             ClearTrack = clearCommand;
-
-            var prp =
-                _track.Changed
-                      .Select(_ => new TrackPathRider(new GpsTrack(_track.ToList())))
-                      .Publish();
-            PathRider = prp;
-            prp.Connect();
 
             _mappingService.Clicks
                            .Where(c => c.Action == MouseAction.LeftClick)
@@ -58,16 +57,19 @@ namespace Tracking.ViewModels
                            .Where(c => c.Action == MouseAction.RightClick)
                            .Subscribe(c => _track.Remove(_track.LastOrDefault()));
 
-            var position = PathRider.CombineLatest(
-                Wheel.Milage,
-                (rider, milage) => rider.PointAt(milage));
-            var presenter = new PositionPresenter(_mappingService, position);
+            _presenter = new PositionPresenter(_mappingService, Navigator.Navigation.Select(n => n.Position));
         }
 
         public ICommand ClearTrack { get; private set; }
         public ICommand LoadTrack { get; private set; }
         public ICommand SaveTrack { get; private set; }
-        public IObservable<IPathRider> PathRider { get; }
+
+        public void Dispose()
+        {
+            _presenter.Dispose();
+            if (_previousTrackDisplaying != null)
+                _previousTrackDisplaying.Dispose();
+        }
 
         private void AppendPointToTrack(EarthPoint Point) { _track.Add(Point); }
 

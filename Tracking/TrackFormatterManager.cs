@@ -22,8 +22,8 @@ namespace Tracking
                 _formatters.Where(f => (f.Value.Direction & Direction) == Direction)
                            .ToList();
 
-            return String.Format("All supported|{0}|",
-                                 string.Join(";", formatters.Select(k => String.Format("*.{0}", k.Key))))
+            return string.Format("All supported|{0}|",
+                                 string.Join(";", formatters.Select(k => string.Format("*.{0}", k.Key))))
                    +
                    string.Join("|", formatters.Select(f => string.Format("{0}|*.{1}", f.Value.Name, f.Value.Extension)));
         }
