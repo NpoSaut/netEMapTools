@@ -2,6 +2,9 @@
 using System.Windows.Input;
 using MsulEmulation.Emit;
 using ReactiveUI;
+using ReactiveUI.Legacy;
+using ReactiveCommand = ReactiveUI.ReactiveCommand;
+using ReactiveCommandMixins = ReactiveUI.ReactiveCommandMixins;
 
 namespace MsulEmulation.ViewModels
 {
@@ -23,12 +26,10 @@ namespace MsulEmulation.ViewModels
             Run = run;
             Stop = _stop;
 
-            this.WhenAnyValue(x => x.EmulationEnabled)
-                .Where(running => running)
-                .InvokeCommand(Run);
-            this.WhenAnyValue(x => x.EmulationEnabled)
-                .Where(running => !running)
-                .InvokeCommand(Stop);
+            ReactiveCommandMixins.InvokeCommand(this.WhenAnyValue(x => x.EmulationEnabled)
+                                   .Where(running => running), Run);
+            ReactiveCommandMixins.InvokeCommand(this.WhenAnyValue(x => x.EmulationEnabled)
+                                   .Where(running => !running), Stop);
         }
 
         public MsulEmulationParametersViewModel Parameters { get; private set; }

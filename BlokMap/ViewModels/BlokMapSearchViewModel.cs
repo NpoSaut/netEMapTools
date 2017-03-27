@@ -38,9 +38,7 @@ namespace BlokMap.ViewModels
 
             Clear = new DelegateCommand(() => SearchQuery = string.Empty);
 
-            ReactiveCommand<IList<SearchResult>> search =
-                ReactiveCommand.CreateAsyncTask(this.WhenAnyValue(x => x.CanSearch),
-                                                GetSearchResults);
+            var search = ReactiveCommand.CreateFromTask(GetSearchResults, this.WhenAnyValue(x => x.CanSearch));
 
             _searchResults = new ReactiveList<SearchResult>();
 
@@ -108,6 +106,6 @@ namespace BlokMap.ViewModels
             _highlights.Add(Result, element);
         }
 
-        private async Task<IList<SearchResult>> GetSearchResults(object Parameter) { return await _searchProvider.Search(SearchQuery); }
+        private async Task<IList<SearchResult>> GetSearchResults() { return await _searchProvider.Search(SearchQuery); }
     }
 }

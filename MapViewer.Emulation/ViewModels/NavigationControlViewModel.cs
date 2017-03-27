@@ -24,9 +24,8 @@ namespace MapViewer.Emulation.ViewModels
             this.WhenAnyValue(x => x.Reliability)
                 .Subscribe(r => NavigatorConfig.Relability = r);
 
-            var resetDisstanceCommand = ReactiveCommand.Create(Wheel.Milage.Select(m => m > 0).ObserveOnDispatcher());
-            resetDisstanceCommand.Subscribe(_ => Wheel.Reset());
-            ResetDisstance = resetDisstanceCommand;
+            ResetDisstance = ReactiveCommand.Create(Wheel.Reset,
+                                                    Wheel.Milage.Select(m => m > 0).ObserveOnDispatcher());
         }
 
         public ICommand ResetDisstance { get; private set; }

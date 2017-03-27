@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Linq;
 using System.Windows.Input;
 using EMapNavigator.MapElements;
@@ -21,7 +22,7 @@ namespace EMapNavigator.ViewModels
     public class MapViewModel : ReactiveObject, IMappingService
     {
         private readonly IMapAppearanceSettings _appearanceSettings;
-        private readonly ReactiveCommand<object> _mapClickedCommand;
+        private readonly ReactiveCommand<MapMouseActionEventArgs, MapMouseActionEventArgs> _mapClickedCommand;
         private readonly ObservableAsPropertyHelper<ITileLoader> _tileLoader;
 
         private bool _isPointerEnabled;
@@ -43,7 +44,7 @@ namespace EMapNavigator.ViewModels
                 .Select(ChooseTileLoader)
                 .ToProperty(this, x => x.TileLoader, out _tileLoader);
 
-            _mapClickedCommand = ReactiveCommand.Create();
+            _mapClickedCommand = ReactiveCommand.Create<MapMouseActionEventArgs, MapMouseActionEventArgs>(x => x);
 
             this.WhenAnyValue(x => x.IsPointerEnabled)
                 .DistinctUntilChanged()

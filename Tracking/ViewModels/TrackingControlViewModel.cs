@@ -41,11 +41,9 @@ namespace Tracking.ViewModels
             _track.Changed.Subscribe(_ => RefreshTrack());
             _track.Changed.Subscribe(_ => NavigatorConfig.ChangeTrack(new GpsTrack(_track.ToList())));
 
-            LoadTrack = ReactiveCommand.CreateAsyncTask(LoadTrackImpl);
-            SaveTrack = ReactiveCommand.CreateAsyncTask(SaveTrackImpl);
-            var clearCommand = ReactiveCommand.Create(_track.IsEmptyChanged.Select(e => !e));
-            clearCommand.Subscribe(_ => _track.Clear());
-            ClearTrack = clearCommand;
+            LoadTrack = ReactiveCommand.CreateFromTask(LoadTrackImpl);
+            SaveTrack = ReactiveCommand.CreateFromTask(SaveTrackImpl);
+            ClearTrack = ReactiveCommand.Create(_track.Clear, _track.IsEmptyChanged.Select(e => !e));
 
             _mappingService.Clicks
                            .Where(c => c.Action == MouseAction.LeftClick)
@@ -80,7 +78,7 @@ namespace Tracking.ViewModels
                 _previousTrackDisplaying = _trackPresenter.DisplayTrack(_track);
         }
 
-        private async Task SaveTrackImpl(object _)
+        private async Task SaveTrackImpl()
         {
             var dlg = new SaveFileDialog { DefaultExt = "gpx", Filter = _trackFormatterManager.GetFileFilterString(FormatterDirection.Save), FilterIndex = 0 };
             if (dlg.ShowDialog() != true)
@@ -96,7 +94,7 @@ namespace Tracking.ViewModels
                            });
         }
 
-        private async Task LoadTrackImpl(object _)
+        private async Task LoadTrackImpl()
         {
             var dlg = new OpenFileDialog { DefaultExt = "gpx", Filter = _trackFormatterManager.GetFileFilterString(FormatterDirection.Load), FilterIndex = 0 };
             if (dlg.ShowDialog() != true)

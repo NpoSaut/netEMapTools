@@ -13,7 +13,6 @@ namespace BlokMap.ViewModels
     {
         private readonly IMapBehaviorSettings _behaviorSettings;
         private readonly IBlokMapService _blokMapService;
-        private readonly ReactiveCommand<Unit> _load;
         private readonly IMappingService _mappingService;
 
         public MapLoaderControlViewModel(IMappingService MappingService, IMapBehaviorSettings BehaviorSettings, IBlokMapService BlokMapService)
@@ -21,13 +20,10 @@ namespace BlokMap.ViewModels
             _mappingService = MappingService;
             _behaviorSettings = BehaviorSettings;
             _blokMapService = BlokMapService;
-            _load = ReactiveCommand.CreateAsyncTask((_, c) => LoadMap());
+            Load = ReactiveCommand.CreateFromTask(LoadMap);
         }
 
-        public ICommand Load
-        {
-            get { return _load; }
-        }
+        public ICommand Load { get; private set; }
 
         private async Task LoadMap()
         {
