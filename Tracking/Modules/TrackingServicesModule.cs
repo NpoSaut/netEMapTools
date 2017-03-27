@@ -4,7 +4,6 @@ using MapViewer.Mapping;
 using Microsoft.Practices.Unity;
 using Tracking.Formatters;
 using Tracking.Presenting;
-using Tracking.ViewModels;
 
 namespace Tracking.Modules
 {
@@ -15,10 +14,16 @@ namespace Tracking.Modules
         public override void Initialize()
         {
             Container
-                .RegisterType<ITrackFormatter, GpxTrackFormatter>("GpxTrackFormatter", new ContainerControlledLifetimeManager())
-                .RegisterType<ITrackFormatter, PlainRadianTextFormatter>("PlainRadianTextFormatter", new ContainerControlledLifetimeManager())
                 .RegisterType<IPathRider, TrackPathRider>(new ContainerControlledLifetimeManager())
                 .RegisterType<INavigator, PathNavigator>(new ContainerControlledLifetimeManager())
+                .RegisterType<INavigatorConfig, PathNavigator>(new ContainerControlledLifetimeManager());
+
+            Container
+                .RegisterType<ITrackFormatter, GpxTrackFormatter>("GpxTrackFormatter", new ContainerControlledLifetimeManager())
+                .RegisterType<ITrackFormatter, PlainRadianTextFormatter>("PlainRadianTextFormatter", new ContainerControlledLifetimeManager())
+                .RegisterType<IPathNavigatorConfig, PathNavigator>(new ContainerControlledLifetimeManager());
+
+            Container
                 .RegisterType<ITrackPresenter>(
                     new ContainerControlledLifetimeManager(),
                     new InjectionFactory(c =>

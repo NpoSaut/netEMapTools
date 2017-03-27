@@ -11,7 +11,7 @@ namespace MapViewer.Emulation.Modules
         public override void Initialize()
         {
             RegionManager
-                .RegisterViewWithRegion("MapOverlay", typeof (SpeedControlView));
+                .RegisterViewWithRegion("MapOverlay", typeof (NavigationControlView));
         }
     }
 }

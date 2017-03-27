@@ -102,6 +102,7 @@
     <Compile Include="Formatters\ITrackFormatter.cs" />
     <Compile Include="Formatters\PlainRadianTextFormatter.cs" />
     <Compile Include="GpsTrack.cs" />
+    <Compile Include="IPathNavigatorConfig.cs" />
     <Compile Include="IPathRider.cs" />
     <Compile Include="MapElements\PositionMapElement.cs" />
     <Compile Include="MapElements\MapTrackElement.cs" />

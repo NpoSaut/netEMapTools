@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Windows.Input;
@@ -16,8 +17,7 @@ namespace MapViewer.Emulation.Blok.ViewModels
         private readonly IBlokEmitterFactory[] _emitterFactories;
         private readonly ReactiveCommand<object> _stop;
         private bool _emulationEnabled;
-
-        private bool _reliability = true;
+        
         private IBlokEmitterFactory _selectedEmitterFactory;
 
         public BlokEmulationViewModel(IBlokEmitterFactory[] EmitterFactories, INavigator Navigator,
@@ -66,12 +66,6 @@ namespace MapViewer.Emulation.Blok.ViewModels
         {
             get { return _selectedEmitterFactory; }
             set { this.RaiseAndSetIfChanged(ref _selectedEmitterFactory, value); }
-        }
-
-        public bool Reliability
-        {
-            get { return _reliability; }
-            set { this.RaiseAndSetIfChanged(ref _reliability, value); }
         }
 
         public bool EmulationEnabled

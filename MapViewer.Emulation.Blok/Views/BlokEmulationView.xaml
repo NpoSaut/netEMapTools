@@ -34,7 +34,6 @@
     <Grid>
         <GroupBox Header="Эмуляция БЛОК" Padding="4">
             <StackPanel>
-                <CheckBox Content="Достоверность" IsChecked="{Binding Reliability}" Margin="2" />
                 <ComboBox Margin="2" IsEnabled="{Binding CanChangeEmissionMethod}"
                           ItemsSource="{Binding EmitterFactories}" DisplayMemberPath="Name"
                           SelectedItem="{Binding SelectedEmitterFactory}" />

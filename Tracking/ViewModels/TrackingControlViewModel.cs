@@ -29,7 +29,8 @@ namespace Tracking.ViewModels
         public TrackingControlViewModel(ITrackPresenter TrackPresenter, IMappingService MappingService,
                                         TrackFormatterManager TrackFormatterManager,
                                         IMapBehaviorSettings BehaviorSettings,
-                                        PathNavigator Navigator)
+                                        IPathNavigatorConfig NavigatorConfig,
+                                        INavigator Navigator)
         {
             _trackPresenter = TrackPresenter;
             _trackFormatterManager = TrackFormatterManager;
@@ -37,11 +38,8 @@ namespace Tracking.ViewModels
             _mappingService = MappingService;
 
             _track = new ReactiveList<EarthPoint>();
-            _track.Changed
-                  .Subscribe(_ => RefreshTrack());
-
-            _track.Changed
-                .Subscribe(_ => Navigator.ChangeTrack(new GpsTrack(_track.ToList())));
+            _track.Changed.Subscribe(_ => RefreshTrack());
+            _track.Changed.Subscribe(_ => NavigatorConfig.ChangeTrack(new GpsTrack(_track.ToList())));
 
             LoadTrack = ReactiveCommand.CreateAsyncTask(LoadTrackImpl);
             SaveTrack = ReactiveCommand.CreateAsyncTask(SaveTrackImpl);
