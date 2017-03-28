@@ -11,29 +11,30 @@ namespace MapViewer.Emulation.Blok.Emission.Implementations
     {
         private const int Port = 50325;
         private const string RemoteAddress = "localhost";
+        private readonly SerialDisposable _subscription = new SerialDisposable();
 
-        public IObservable<NavigationInformation> Emit(IObservable<NavigationInformation> Navigation)
+        public void Emit(IObservable<NavigationInformation> Navigation)
         {
             var udpClient = new UdpClient();
             udpClient.Connect(RemoteAddress, Port);
 
-            IObservable<long> speedSampler = Observable.Interval(TimeSpan.FromMilliseconds(500));
-            IObservable<long> gpsSampler = Observable.Interval(TimeSpan.FromMilliseconds(1000));
+            var speedSampler = Observable.Interval(TimeSpan.FromMilliseconds(500));
+            var gpsSampler = Observable.Interval(TimeSpan.FromMilliseconds(1000));
 
-            var sub = new CompositeDisposable(
-                udpClient,
-                Navigation.CombineLatest(speedSampler, (n, i) => n)
-                          .Sample(speedSampler)
-                          .TimeInterval()
-                          .Scan(0.0, (dst, tn) => dst + (tn.Interval.TotalHours * tn.Value.Speed * 1000))
-                          .Subscribe(disstance => EmitSpeed(udpClient, disstance)),
-                Navigation.CombineLatest(gpsSampler, (n, i) => n)
-                          .Sample(gpsSampler)
-                          .Subscribe(n => EmitPosition(udpClient, n.Position, n.Reliability)));
-
-            Navigation.Subscribe(_ => { }, sub.Dispose);
-            return Navigation;
+            _subscription.Disposable =
+                new CompositeDisposable(
+                    udpClient,
+                    Navigation.CombineLatest(speedSampler, (n, i) => n)
+                              .Sample(speedSampler)
+                              .TimeInterval()
+                              .Scan(0.0, (dst, tn) => dst + tn.Interval.TotalHours * tn.Value.Speed * 1000)
+                              .Subscribe(disstance => EmitSpeed(udpClient, disstance)),
+                    Navigation.CombineLatest(gpsSampler, (n, i) => n)
+                              .Sample(gpsSampler)
+                              .Subscribe(n => EmitPosition(udpClient, n.Position, n.Reliability)));
         }
+
+        public void Dispose() { _subscription.Dispose(); }
 
         private void EmitSpeed(UdpClient Client, double Disstance)
         {
@@ -42,7 +43,7 @@ namespace MapViewer.Emulation.Blok.Emission.Implementations
                 var writer = new BinaryWriter(ms);
                 writer.Write((byte)PacketType.Speed);
                 writer.Write((int)Math.Round(Disstance));
-                byte[] dat = ms.ToArray();
+                var dat = ms.ToArray();
                 Client.Send(dat, dat.Length);
             }
         }
@@ -56,7 +57,7 @@ namespace MapViewer.Emulation.Blok.Emission.Implementations
                 writer.Write(Position.Latitude);
                 writer.Write(Position.Longitude);
                 writer.Write((byte)(Reliability ? 1 : 0));
-                byte[] dat = ms.ToArray();
+                var dat = ms.ToArray();
                 Client.Send(dat, dat.Length);
             }
         }

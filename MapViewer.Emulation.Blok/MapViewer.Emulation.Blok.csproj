@@ -109,6 +109,7 @@
     <Compile Include="Emission\EmissionOptionAttribute.cs" />
     <Compile Include="Emission\IBlokEmitter.cs" />
     <Compile Include="Emission\IBlokEmitterFactory.cs" />
+    <Compile Include="Emission\Implementations\BlokEmitterFactoryBase.cs" />
     <Compile Include="Emission\Implementations\CanBlokEmitterFactory.cs" />
     <Compile Include="Emission\Implementations\CanBlokEmitter.cs" />
     <Compile Include="Emission\Implementations\UdpBlokEmitter.cs" />

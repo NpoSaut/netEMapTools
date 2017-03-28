@@ -2,16 +2,8 @@
 
 namespace MapViewer.Emulation.Blok.Emission
 {
-    public interface IBlokEmitter
+    public interface IBlokEmitter : IDisposable
     {
-        IObservable<NavigationInformation> Emit(IObservable<NavigationInformation> Navigation);
-    }
-
-    public static class BlokEmitterHelper
-    {
-        public static IObservable<NavigationInformation> EmitThorough(this IObservable<NavigationInformation> Navigation, IBlokEmitter Emitter)
-        {
-            return Emitter.Emit(Navigation);
-        }
+        void Emit(IObservable<NavigationInformation> Navigation);
     }
 }

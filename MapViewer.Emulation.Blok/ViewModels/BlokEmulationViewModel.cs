@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Windows.Input;
 using MapViewer.Emulation.Blok.Emission;
 using MapViewer.Emulation.Blok.Emission.Options;
 using MapViewer.Emulation.Blok.ViewModels.Options.Producing;
@@ -15,33 +15,22 @@ namespace MapViewer.Emulation.Blok.ViewModels
         private readonly ObservableAsPropertyHelper<bool> _canChangeEmissionMethod;
         private readonly ObservableAsPropertyHelper<IList<IEmissionOption>> _emissionOptions;
         private readonly IBlokEmitterFactory[] _emitterFactories;
-        private readonly ReactiveCommand<object> _stop;
         private bool _emulationEnabled;
-        
+
         private IBlokEmitterFactory _selectedEmitterFactory;
 
         public BlokEmulationViewModel(IBlokEmitterFactory[] EmitterFactories, INavigator Navigator,
                                       IOptionViewModelsSetFactory OptionsFactory)
         {
             _emitterFactories = EmitterFactories;
-
-            var run =
-                ReactiveCommand.CreateAsyncObservable(
-                    _ => Navigator.Navigation
-                                  .TakeUntil(_stop)
-                                  .EmitThorough(SelectedEmitterFactory.CreatEmitter(EmissionOptions)));
-
-            _stop = ReactiveCommand.Create();
-
-            Run = run;
-            Stop = _stop;
+            SelectedEmitterFactory = EmitterFactories.First();
 
             this.WhenAnyValue(x => x.EmulationEnabled)
-                .Where(running => running)
-                .InvokeCommand(Run);
-            this.WhenAnyValue(x => x.EmulationEnabled)
-                .Where(running => !running)
-                .InvokeCommand(Stop);
+                .Select(enabled => enabled
+                                       ? SelectedEmitterFactory.CreatEmitter(EmissionOptions, Navigator.Navigation)
+                                       : Disposable.Empty)
+                .DisposePrevious()
+                .Subscribe();
 
             this.WhenAnyValue(x => x.EmulationEnabled)
                 .Select(e => !e)
@@ -50,17 +39,12 @@ namespace MapViewer.Emulation.Blok.ViewModels
             this.WhenAnyValue(x => x.SelectedEmitterFactory)
                 .Select(fac => OptionsFactory.CreateOptionsViewModels(fac.GetType()))
                 .ToProperty(this, x => x.EmissionOptions, out _emissionOptions);
-
-            SelectedEmitterFactory = EmitterFactories.First();
         }
 
         public IList<IEmissionOption> EmissionOptions
         {
             get { return _emissionOptions.Value; }
         }
-
-        public ICommand Run { get; }
-        public ICommand Stop { get; }
 
         public IBlokEmitterFactory SelectedEmitterFactory
         {

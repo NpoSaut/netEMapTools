@@ -8,14 +8,14 @@ using MapViewer.Emulation.Blok.Can;
 
 namespace MapViewer.Emulation.Blok.Emission.Implementations
 {
-    public class CanBlokEmitter : IBlokEmitter, IDisposable
+    public class CanBlokEmitter : IBlokEmitter
     {
         private const int Cogs = 42;
         private const double Diameter = 1250;
 
         private readonly ICanPortHandlerProvider _canPortHandlerProvider;
         private readonly int _emissionDescriptor;
-        private IDisposable _subscription;
+        private readonly SerialDisposable _subscription = new SerialDisposable();
 
         public CanBlokEmitter(ICanPortHandlerProvider CanPortHandlerProvider, int EmissionDescriptor)
         {
@@ -23,24 +23,22 @@ namespace MapViewer.Emulation.Blok.Emission.Implementations
             _emissionDescriptor = EmissionDescriptor;
         }
 
-        public IObservable<NavigationInformation> Emit(IObservable<NavigationInformation> Navigation)
+        public void Emit(IObservable<NavigationInformation> Navigation)
         {
             var canPortHandler = _canPortHandlerProvider.OpenPort();
 
             var speedSampler = Observable.Interval(TimeSpan.FromMilliseconds(200));
             var gpsSampler = Observable.Interval(TimeSpan.FromMilliseconds(1000));
 
-            _subscription = new CompositeDisposable(
-                canPortHandler,
-                Navigation.CombineLatest(speedSampler, (n, i) => n)
-                          .Sample(speedSampler)
-                          .Subscribe(n => EmitSpeed(canPortHandler.Port, n.Speed)),
-                Navigation.CombineLatest(gpsSampler, (n, i) => n)
-                          .Sample(gpsSampler)
-                          .Subscribe(n => EmitPosition(canPortHandler.Port, n.Position, n.Reliability)));
-
-            Navigation.Subscribe(_ => { }, _subscription.Dispose);
-            return Navigation;
+            _subscription.Disposable =
+                new CompositeDisposable(
+                    canPortHandler,
+                    Navigation.CombineLatest(speedSampler, (n, i) => n)
+                              .Sample(speedSampler)
+                              .Subscribe(n => EmitSpeed(canPortHandler.Port, n.Speed)),
+                    Navigation.CombineLatest(gpsSampler, (n, i) => n)
+                              .Sample(gpsSampler)
+                              .Subscribe(n => EmitPosition(canPortHandler.Port, n.Position, n.Reliability)));
         }
 
         public void Dispose() { _subscription.Dispose(); }
