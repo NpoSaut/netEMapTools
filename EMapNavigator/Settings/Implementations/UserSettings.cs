@@ -13,8 +13,8 @@ namespace EMapNavigator.Settings.Implementations
 
         public UserSettings()
         {
-            MapCenter = new EarthPoint(new Degree(55.729959), new Degree(37.540420));
-            ZoomLevel = 14;
+            MapCenter = new EarthPoint(new Degree(56.8393), new Degree(60.5994));
+            ZoomLevel = 12;
             JumpOnOpen = true;
             HighResolutionTiles = false;
         }
