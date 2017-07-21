@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using BlokFrames;
@@ -25,10 +24,10 @@ namespace MapViewer.Emulation.Blok.Emission.Implementations
 
         public IObservable<NavigationInformation> Emit(IObservable<NavigationInformation> Navigation)
         {
-            ICanPortHandler canPortHandler = _canPortHandlerProvider.OpenPort();
+            var canPortHandler = _canPortHandlerProvider.OpenPort();
 
-            IObservable<long> speedSampler = Observable.Interval(TimeSpan.FromMilliseconds(200));
-            IObservable<long> gpsSampler = Observable.Interval(TimeSpan.FromMilliseconds(1000));
+            var speedSampler = Observable.Interval(TimeSpan.FromMilliseconds(200));
+            var gpsSampler = Observable.Interval(TimeSpan.FromMilliseconds(1000));
 
             var sub = new CompositeDisposable(
                 canPortHandler,
@@ -55,10 +54,10 @@ namespace MapViewer.Emulation.Blok.Emission.Implementations
 
         private void EmitPosition(ICanPort Port, EarthPoint Position, bool Reliability)
         {
-            CanFrame frame = new MmAltLongFrame(Position.Latitude,
-                                                Position.Longitude,
-                                                Reliability).GetCanFrame();
-            CanFrame fx = CanFrame.NewWithDescriptor(_emissionDescriptor, frame.Data);
+            var frame = new MmAltLongFrame(Position.Latitude,
+                                           Position.Longitude,
+                                           Reliability).GetCanFrame();
+            var fx = CanFrame.NewWithDescriptor(_emissionDescriptor, frame.Data);
             Port.BeginSend(fx);
             Console.WriteLine("---> {0}", fx);
         }

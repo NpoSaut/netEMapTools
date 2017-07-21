@@ -112,6 +112,8 @@
     <Compile Include="Emission\IBlokEmitterFactory.cs" />
     <Compile Include="Emission\Implementations\CanBlokEmitterFactory.cs" />
     <Compile Include="Emission\Implementations\CanBlokEmitter.cs" />
+    <Compile Include="Emission\Implementations\ElectronicMapImitationEmitter.cs" />
+    <Compile Include="Emission\Implementations\ElectronicMapImitationEmitterFactory.cs" />
     <Compile Include="Emission\Implementations\UdpBlokEmitter.cs" />
     <Compile Include="Emission\Implementations\UdpBlokEmitterFactory.cs" />
     <Compile Include="Emission\NavigationInformation.cs" />
