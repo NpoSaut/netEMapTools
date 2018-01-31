@@ -12,4 +12,4 @@
 	url = https://git.saut.ru:443/netCanLib.git
 [submodule "InstallerTools"]
 	path = InstallerTools
-	url = https://git.nposaut.ru:443/netInstallerTools.git
+	url = https://git.saut.ru:443/netInstallerTools.git
