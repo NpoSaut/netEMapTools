@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using GMapElements;
+using GMapElements.Entities;
 using MapViewer;
 using MapViewer.Environment;
 using MapViewer.Mapping;

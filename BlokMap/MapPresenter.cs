@@ -6,6 +6,7 @@ using BlokMap.MapElements;
 using BlokMap.MapElements.MapObjectElements;
 using Geographics;
 using GMapElements;
+using GMapElements.Entities;
 using MapVisualization.Elements;
 
 namespace BlokMap

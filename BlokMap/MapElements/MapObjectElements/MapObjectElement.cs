@@ -7,6 +7,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Geographics;
 using GMapElements;
+using GMapElements.Entities;
 using MapVisualization.Elements;
 
 namespace BlokMap.MapElements.MapObjectElements

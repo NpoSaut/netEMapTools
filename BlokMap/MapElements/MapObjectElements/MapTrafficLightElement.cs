@@ -2,6 +2,7 @@ using System.Windows;
 using System.Windows.Media;
 using Geographics;
 using GMapElements;
+using GMapElements.Entities;
 
 namespace BlokMap.MapElements.MapObjectElements
 {

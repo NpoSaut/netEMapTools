@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using GMapElements;
+using GMapElements.Entities;
 
 namespace BlokMap
 {

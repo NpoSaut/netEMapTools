@@ -11,6 +11,7 @@ using EMapNavigator.Emition;
 using EMapNavigator.ViewModels;
 using Geographics;
 using GMapElements;
+using GMapElements.Entities;
 using MapViewer.Emulation.Wheels;
 using MapVisualization.Elements;
 using Tracking;
