@@ -96,8 +96,8 @@ namespace EMapNavigator.ViewModels
         private ITileLoader ChooseTileLoader(bool UseHighResolutionTiles)
         {
             return UseHighResolutionTiles
-                       ? new SimpleWebTileLoader(OsmTilePathProviders.Retina)
-                       : new SimpleWebTileLoader(OsmTilePathProviders.Default);
+                       ? new WebTileLoader(OsmTilePathProviders.Retina)
+                       : new WebTileLoader(OsmTilePathProviders.Default);
         }
     }
 }
