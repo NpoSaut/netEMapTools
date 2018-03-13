@@ -2,7 +2,6 @@ using MapViewer;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
 using Prism.Regions;
-using Tracking.Views;
 
 namespace Tracking.Modules
 {
@@ -12,10 +11,6 @@ namespace Tracking.Modules
     {
         public TrackingInterfaceModule(IUnityContainer Container, IRegionManager RegionManager) : base(Container, RegionManager) { }
 
-        public override void Initialize()
-        {
-            RegionManager
-                .RegisterViewWithRegion("MainToolbar", typeof (TrackingControlView));
-        }
+        public override void Initialize() { }
     }
 }

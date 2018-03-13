@@ -117,9 +117,6 @@
     <Compile Include="TrackFormatterManager.cs" />
     <Compile Include="TrackPathRider.cs" />
     <Compile Include="ViewModels\TrackingControlViewModel.cs" />
-    <Compile Include="Views\TrackingControlView.xaml.cs">
-      <DependentUpon>TrackingControlView.xaml</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Geographics\Geographics.csproj">
@@ -138,12 +135,6 @@
       <Project>{4B6E0840-94A8-4CCD-AAB8-C4C24383229E}</Project>
       <Name>MapViewer.Shared</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="Views\TrackingControlView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

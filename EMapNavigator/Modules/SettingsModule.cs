@@ -9,12 +9,16 @@ namespace EMapNavigator.Modules
     public class SettingsModule : IModule
     {
         private readonly IUnityContainer _container;
-        public SettingsModule(IUnityContainer Container) { _container = Container; }
+
+        public SettingsModule(IUnityContainer Container)
+        {
+            _container = Container;
+        }
 
         public void Initialize()
         {
             _container
-                .RegisterType(typeof (ISettingsFactory<>), typeof (JsonUserSettingsFactory), new ContainerControlledLifetimeManager());
+                .RegisterType(typeof(ISettingsFactory<>), typeof(JsonUserSettingsFactory), new ContainerControlledLifetimeManager());
 
             RegisterSettings<IMapPositionSettings>();
             RegisterSettings<IMapBehaviorSettings>();

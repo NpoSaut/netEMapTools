@@ -1,4 +1,5 @@
-﻿using BlokMap.Views;
+﻿using BlokMap.ViewModels;
+using BlokMap.Views;
 using MapViewer;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
@@ -14,8 +15,13 @@ namespace BlokMap.Modules
 
         public override void Initialize()
         {
-            RegionManager.RegisterViewWithRegion("MainToolbar", typeof (MapLoaderControlView));
-            RegionManager.RegisterViewWithRegion("MapOverlay", typeof (BlokMapOverlayView));
+            RegionManager.RegisterViewWithRegion("MapOverlay", typeof(BlokMapOverlayView));
+
+            var menu      = Container.Resolve<IMainMenuService>();
+            var viewModel = Container.Resolve<MapLoaderControlViewModel>();
+
+            menu.RegisterCommand((MenuPath)"Карта" / "Открыть карту...",
+                                 viewModel.Load);
         }
     }
 }

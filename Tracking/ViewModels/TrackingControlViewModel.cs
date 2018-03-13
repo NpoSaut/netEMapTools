@@ -6,6 +6,7 @@ using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Geographics;
+using MapViewer;
 using MapViewer.Mapping;
 using MapViewer.Settings.Interfaces;
 using Microsoft.Win32;
@@ -26,7 +27,7 @@ namespace Tracking.ViewModels
         private IDisposable _previousTrackDisplaying;
 
         public TrackingControlViewModel(ITrackPresenter TrackPresenter, IMappingService MappingService, TrackFormatterManager TrackFormatterManager,
-                                        IMapBehaviorSettings BehaviorSettings)
+                                        IMapBehaviorSettings BehaviorSettings, IMainMenuService MenuService)
         {
             _trackPresenter = TrackPresenter;
             _trackFormatterManager = TrackFormatterManager;
@@ -57,6 +58,10 @@ namespace Tracking.ViewModels
             _mappingService.Clicks
                            .Where(c => c.Action == MouseAction.RightClick)
                            .Subscribe(c => _track.Remove(_track.LastOrDefault()));
+
+            MenuService.RegisterCommand((MenuPath)"Трек" / "Загрузить...", LoadTrack);
+            MenuService.RegisterCommand((MenuPath)"Трек" / "Сохранить...", SaveTrack);
+            MenuService.RegisterCommand((MenuPath)"Трек" / "Очистить", ClearTrack);
         }
 
         public ICommand ClearTrack { get; private set; }

@@ -120,6 +120,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="EarthPointToStringConverter.cs" />
+    <Compile Include="MainMenuService.cs" />
     <Compile Include="MapElements\MapMarkerElement.cs" />
     <Compile Include="MapperBootstrapper.cs" />
     <Compile Include="Emition\LanEmitter.cs" />
@@ -136,22 +137,14 @@
     <Compile Include="Settings\Interfaces\IMapPositionSettings.cs" />
     <Compile Include="Settings\Interfaces\ISettingsFactory.cs" />
     <Compile Include="ViewModels\MappingToolbarViewModel.cs" />
-    <Compile Include="ViewModels\MapSettingsViewModel.cs" />
     <Compile Include="ViewModels\MapViewModel.cs" />
-    <Compile Include="ViewModels\SettingsToolbatViewModel.cs" />
     <Compile Include="ViewModels\WheelViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\MappingToolbarView.xaml.cs">
       <DependentUpon>MappingToolbarView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MapSettingsView.xaml.cs">
-      <DependentUpon>MapSettingsView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\MapView.xaml.cs">
       <DependentUpon>MapView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsToolbarView.xaml.cs">
-      <DependentUpon>SettingsToolbarView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
@@ -173,15 +166,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\MapSettingsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\MapView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsToolbarView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

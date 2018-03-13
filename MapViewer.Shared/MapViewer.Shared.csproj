@@ -78,6 +78,7 @@
     <Compile Include="Environment\IStartupArgumentsProvider.cs" />
     <Compile Include="Environment\StartupArgumentsProviderHelper.cs" />
     <Compile Include="Geocoding\IGeocodingService.cs" />
+    <Compile Include="IMainMenuService.cs" />
     <Compile Include="InterfaceElements\InterfaceElementsRegistrationHelper.cs" />
     <Compile Include="InterfaceElements\IToolbarCommand.cs" />
     <Compile Include="InterfaceElements\IToolbarCommandGroup.cs" />

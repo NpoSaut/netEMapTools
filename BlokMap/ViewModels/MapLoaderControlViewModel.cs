@@ -2,6 +2,7 @@
 using System.Reactive;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using MapViewer;
 using MapViewer.Mapping;
 using MapViewer.Settings.Interfaces;
 using Microsoft.Win32;
@@ -13,21 +14,18 @@ namespace BlokMap.ViewModels
     {
         private readonly IMapBehaviorSettings _behaviorSettings;
         private readonly IBlokMapService _blokMapService;
-        private readonly ReactiveCommand<Unit> _load;
         private readonly IMappingService _mappingService;
 
-        public MapLoaderControlViewModel(IMappingService MappingService, IMapBehaviorSettings BehaviorSettings, IBlokMapService BlokMapService)
+        public MapLoaderControlViewModel(IMappingService MappingService, IMapBehaviorSettings BehaviorSettings, IBlokMapService BlokMapService,
+                                         IMainMenuService MenuService)
         {
-            _mappingService = MappingService;
+            _mappingService   = MappingService;
             _behaviorSettings = BehaviorSettings;
-            _blokMapService = BlokMapService;
-            _load = ReactiveCommand.CreateAsyncTask((_, c) => LoadMap());
+            _blokMapService   = BlokMapService;
+            Load = ReactiveCommand.CreateAsyncTask((_, c) => LoadMap());
         }
 
-        public ICommand Load
-        {
-            get { return _load; }
-        }
+        public ICommand Load { get; }
 
         private async Task LoadMap()
         {

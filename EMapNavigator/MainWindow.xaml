@@ -9,24 +9,7 @@
         SnapsToDevicePixels="True" TextOptions.TextFormattingMode="Display"
         Background="{StaticResource {x:Static SystemColors.ControlBrushKey}}">
     <DockPanel>
-        <ItemsControl DockPanel.Dock="Top" regions:RegionManager.RegionName="MainToolbar">
-            <ItemsControl.Resources>
-                <Style TargetType="Control">
-                    <Setter Property="Margin" Value="2" />
-                </Style>
-                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Control}}">
-                    <Setter Property="Padding" Value="6, 2" />
-                </Style>
-                <Style TargetType="ToggleButton" BasedOn="{StaticResource {x:Type Control}}">
-                    <Setter Property="Padding" Value="6, 2" />
-                </Style>
-            </ItemsControl.Resources>
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel Orientation="Horizontal" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-        </ItemsControl>
+        <Menu DockPanel.Dock="Top" Name="MainMenu" Margin="3" />
         <ScrollViewer DockPanel.Dock="Right" Margin="3"
                       VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
             <ItemsControl regions:RegionManager.RegionName="Emulators" />

@@ -122,9 +122,6 @@
     <Compile Include="ViewModels\MapLoaderControlViewModel.cs" />
     <Compile Include="ViewModels\SearchResultViewModel.cs" />
     <Compile Include="ViewModels\TrackSelectorViewModel.cs" />
-    <Compile Include="Views\MapLoaderControlView.xaml.cs">
-      <DependentUpon>MapLoaderControlView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\BlokMapOverlayView.xaml.cs">
       <DependentUpon>BlokMapOverlayView.xaml</DependentUpon>
     </Compile>
@@ -152,10 +149,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Views\MapLoaderControlView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\BlokMapOverlayView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

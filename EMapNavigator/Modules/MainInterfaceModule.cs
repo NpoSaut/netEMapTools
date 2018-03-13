@@ -7,6 +7,10 @@ namespace EMapNavigator.Modules
     {
         public MainInterfaceModule(IUnityContainer Container) : base(Container) { }
 
-        public override void Initialize() { }
+        public override void Initialize()
+        {
+            Container
+                .RegisterType<IMainMenuService, MainMenuService>(new ContainerControlledLifetimeManager());
+        }
     }
 }
