@@ -20,8 +20,11 @@ namespace BlokMap.Modules
             var menu      = Container.Resolve<IMainMenuService>();
             var viewModel = Container.Resolve<MapLoaderControlViewModel>();
 
-            menu.RegisterCommand((MenuPath)"Карта" / "Открыть карту...",
+            menu.RegisterCommand((MenuPath)"Карта" / "Открыть...",
                                  viewModel.Load);
+
+            menu.RegisterCommand((MenuPath)"Карта" / "Экспорт в GPX...",
+                                 viewModel.Export);
         }
     }
 }
