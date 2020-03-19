@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Can" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/GMapElements" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Geographics" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/InstallerTools" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/MapViewControl" vcs="Git" />
+  </component>
+</project>
