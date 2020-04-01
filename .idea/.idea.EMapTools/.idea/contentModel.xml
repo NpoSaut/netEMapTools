@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="C:\Users\plyusnin\.Rider2019.3\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\plyusnin\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_EMapTools.-2053009935.00" t="ExcludeRecursive" />
-    <e p="C:\Users\plyusnin\Sources\EMapTools" t="IncludeFlat">
-      <e p="!res\gps-file-icon\gpsfile.ico" t="Include" />
+    <e p="$USER_HOME$/Library/Caches/Rider2019.3/extResources" t="IncludeRecursive" />
+    <e p="$USER_HOME$/Library/Caches/Rider2019.3/resharper-host/local/Transient/ReSharperHost/v193/SolutionCaches/_EMapTools.694136210.00" t="ExcludeRecursive" />
+    <e p="$PROJECT_DIR$" t="IncludeFlat">
+      <e p="!res/gps-file-icon/gpsfile.ico" t="Include" />
       <e p=".nuget" t="Include">
         <e p="NuGet.Config" t="Include" />
         <e p="NuGet.exe" t="Include" />
@@ -50,14 +50,7 @@
           <e p="BlokMapInterfaceModule.cs" t="Include" />
           <e p="BlokMapServicesModule.cs" t="Include" />
         </e>
-        <e p="obj" t="ExcludeRecursive">
-          <e p="Debug" t="Include">
-            <e p="GeneratedInternalTypeHelper.g.cs" t="Include" />
-            <e p="Views" t="Include">
-              <e p="BlokMapOverlayView.g.cs" t="Include" />
-            </e>
-          </e>
-        </e>
+        <e p="obj" t="ExcludeRecursive" />
         <e p="packages.config" t="Include" />
         <e p="Properties" t="Include">
           <e p="AssemblyInfo.cs" t="Include" />
@@ -88,11 +81,7 @@
         <e p="bin" t="ExcludeRecursive" />
         <e p="Build.cs" t="Include" />
         <e p="MapViewerInstallerScript.cs" t="Include" />
-        <e p="obj" t="ExcludeRecursive">
-          <e p="Debug" t="Include">
-            <e p=".build.AssemblyInfo.cs" t="Include" />
-          </e>
-        </e>
+        <e p="obj" t="ExcludeRecursive" />
       </e>
       <e p="Can" t="Include">
         <e p="BlokFrames" t="IncludeRecursive">
@@ -313,19 +302,7 @@
           <e p="SettingsInterfaceModule.cs" t="Include" />
           <e p="SettingsModule.cs" t="Include" />
         </e>
-        <e p="obj" t="ExcludeRecursive">
-          <e p="Debug" t="Include">
-            <e p="App.g.cs" t="Include" />
-            <e p="GeneratedInternalTypeHelper.g.cs" t="Include" />
-            <e p="MainWindow.g.cs" t="Include" />
-            <e p="MapViewer_Content.g.cs" t="Include" />
-            <e p="Views" t="Include">
-              <e p="MappingToolbarView.g.cs" t="Include" />
-              <e p="MapView.g.cs" t="Include" />
-              <e p="SettingsWindow.g.cs" t="Include" />
-            </e>
-          </e>
-        </e>
+        <e p="obj" t="ExcludeRecursive" />
         <e p="packages.config" t="Include" />
         <e p="Properties" t="Include">
           <e p="AssemblyInfo.cs" t="Include" />
@@ -427,11 +404,7 @@
         <e p="InstallerInterfaceKind.cs" t="Include" />
         <e p="InstallerScriptBase.cs" t="Include" />
         <e p="InstallerTools.csproj" t="IncludeRecursive" />
-        <e p="obj" t="ExcludeRecursive">
-          <e p="Debug" t="Include">
-            <e p="RefitStubs.g.cs" t="Include" />
-          </e>
-        </e>
+        <e p="obj" t="ExcludeRecursive" />
         <e p="packages.config" t="Include" />
         <e p="Properties" t="Include">
           <e p="AssemblyInfo.cs" t="Include" />
@@ -455,11 +428,7 @@
         <e p="MapVisual.cs" t="Include" />
         <e p="MapVisualHost.cs" t="Include" />
         <e p="MapVisualization.csproj" t="IncludeRecursive" />
-        <e p="obj" t="ExcludeRecursive">
-          <e p="Debug" t="Include">
-            <e p="GeneratedInternalTypeHelper.g.cs" t="Include" />
-          </e>
-        </e>
+        <e p="obj" t="ExcludeRecursive" />
         <e p="OsmIndexes.cs" t="Include" />
         <e p="Properties" t="Include">
           <e p="Annotations.cs" t="Include" />
@@ -492,13 +461,7 @@
           <e p="EmulationBasicsInterfaceModule.cs" t="Include" />
           <e p="EmulationBasicsServicesModule.cs" t="Include" />
         </e>
-        <e p="obj" t="ExcludeRecursive">
-          <e p="Debug" t="Include">
-            <e p="Views" t="Include">
-              <e p="SpeedControlView.g.cs" t="Include" />
-            </e>
-          </e>
-        </e>
+        <e p="obj" t="ExcludeRecursive" />
         <e p="packages.config" t="Include" />
         <e p="Properties" t="Include">
           <e p="AssemblyInfo.cs" t="Include" />
@@ -552,14 +515,7 @@
           <e p="BlokEmulationInterfaceModule.cs" t="Include" />
           <e p="BlokEmulationServicesModule.cs" t="Include" />
         </e>
-        <e p="obj" t="ExcludeRecursive">
-          <e p="Debug" t="Include">
-            <e p="GeneratedInternalTypeHelper.g.cs" t="Include" />
-            <e p="Views" t="Include">
-              <e p="BlokEmulationView.g.cs" t="Include" />
-            </e>
-          </e>
-        </e>
+        <e p="obj" t="ExcludeRecursive" />
         <e p="packages.config" t="Include" />
         <e p="Properties" t="Include">
           <e p="AssemblyInfo.cs" t="Include" />
@@ -665,16 +621,7 @@
         <e p="MsulEmulation.csproj" t="IncludeRecursive" />
         <e p="MsulEmulationSource.cs" t="Include" />
         <e p="MsulMessage.cs" t="Include" />
-        <e p="obj" t="ExcludeRecursive">
-          <e p="Debug" t="Include">
-            <e p="GeneratedInternalTypeHelper.g.cs" t="Include" />
-            <e p="Views" t="Include">
-              <e p="CarriageParametersModel.g.cs" t="Include" />
-              <e p="MsulEmulationParametersView.g.cs" t="Include" />
-              <e p="MsulEmulationView.g.cs" t="Include" />
-            </e>
-          </e>
-        </e>
+        <e p="obj" t="ExcludeRecursive" />
         <e p="packages.config" t="Include" />
         <e p="Properties" t="Include">
           <e p="AssemblyInfo.cs" t="Include" />
