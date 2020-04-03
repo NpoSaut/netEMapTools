@@ -77,7 +77,7 @@ namespace EMapNavigator.ViewModels
         public EarthPoint MapCenter
         {
             get { return _mapCenter; }
-            private set { this.RaiseAndSetIfChanged(ref _mapCenter, value); }
+            set { this.RaiseAndSetIfChanged(ref _mapCenter, value); }
         }
 
         public void Display(MapElement Element) { Elements.Add(Element); }

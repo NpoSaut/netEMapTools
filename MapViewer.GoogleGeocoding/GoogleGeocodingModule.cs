@@ -10,7 +10,7 @@ namespace MapViewer.GoogleGeocoding
         public override void Initialize()
         {
             Container
-                .RegisterType<IGeocodingService, GoogleGeocodingService>(new ContainerControlledLifetimeManager());
+                .RegisterType<IGeocodingService, MapQuestGeocodingService>(new ContainerControlledLifetimeManager());
         }
     }
 }

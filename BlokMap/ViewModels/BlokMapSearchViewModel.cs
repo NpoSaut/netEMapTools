@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reactive.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using BlokMap.MapElements;
@@ -27,6 +28,8 @@ namespace BlokMap.ViewModels
         private readonly ReactiveList<SearchResult> _searchResults;
         private string _searchQuery;
 
+        CancellationTokenSource _resultsUpdatingCancellationTokenSource = new CancellationTokenSource();
+        
         public BlokMapSearchViewModel(ISearchProvider SearchProvider, IMappingService MappingService, IGeocodingService GeocodingService)
         {
             _searchProvider = SearchProvider;
@@ -59,7 +62,7 @@ namespace BlokMap.ViewModels
                 .InvokeCommand(this, x => x.Search);
 
             SearchResults = _searchResults.CreateDerivedCollection(
-                sr => new SearchResultViewModel(sr, _mappingService, _geocodingService.GetPlacementName(sr.Point)),
+                sr => new SearchResultViewModel(sr, _mappingService, _geocodingService.GetPlacementName(sr.Point, _resultsUpdatingCancellationTokenSource.Token)),
                 orderer: (a, b) => _mappingService.MapCenter.DistanceTo(a.Position)
                                                   .CompareTo(_mappingService.MapCenter.DistanceTo(b.Position)));
 
@@ -110,6 +113,12 @@ namespace BlokMap.ViewModels
             _highlights.Add(Result, element);
         }
 
-        private async Task<IList<SearchResult>> GetSearchResults(object Parameter) { return await _searchProvider.Search(SearchQuery); }
+        private async Task<IList<SearchResult>> GetSearchResults(object Parameter)
+        {
+            _resultsUpdatingCancellationTokenSource?.Cancel();
+            _resultsUpdatingCancellationTokenSource?.Dispose();
+            _resultsUpdatingCancellationTokenSource = new CancellationTokenSource();
+            return await _searchProvider.Search(SearchQuery);
+        }
     }
 }
