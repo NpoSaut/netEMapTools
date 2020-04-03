@@ -24,21 +24,31 @@ namespace MapViewer.GoogleGeocoding
 
         private readonly GoogleGeocoder _okGoogle;
         private readonly WebClient _webClient;
+        
+        private DateTime _lastAccessTime;
+        private TimeSpan _minimumInterval = TimeSpan.FromMilliseconds(750);
 
         public GoogleGeocodingService()
         {
             _webClient = new WebClient { Encoding = Encoding.UTF8 };
             _okGoogle = new GoogleGeocoder { Language = "ru" };
+
+            _lastAccessTime = DateTime.Today;
         }
 
         public void Dispose() { _webClient.Dispose(); }
 
-        public async Task<string> GetPlacementName(EarthPoint Point)
+        public async Task<string> GetPlacementName(EarthPoint Point, CancellationToken token)
         {
             Exception exception = null;
             for (int i = 0; i < 5; i++)
             {
                 await _googleSemaphore.WaitAsync().ConfigureAwait(false);
+
+                var waitFor = (_lastAccessTime + _minimumInterval) - DateTime.Now;
+                if (waitFor.TotalSeconds > 0)
+                    await Task.Delay(waitFor);
+                
                 try
                 {
                     IEnumerable<GoogleAddress> geocode = await _okGoogle.ReverseGeocodeAsync(Point.Latitude.Value, Point.Longitude.Value).ConfigureAwait(false);
@@ -52,9 +62,9 @@ namespace MapViewer.GoogleGeocoding
                 }
                 finally
                 {
+                    _lastAccessTime = DateTime.Now;
                     _googleSemaphore.Release();
                 }
-                await Task.Delay(TimeSpan.FromMilliseconds(700)).ConfigureAwait(false);
             }
             throw exception;
         }
