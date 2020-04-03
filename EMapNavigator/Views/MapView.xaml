@@ -13,12 +13,12 @@
         <eMapNavigator:EarthPointToStringConverter x:Key="EarthPointConverter" />
     </UserControl.Resources>
     <Grid>
-        <mapVisualization:MapView CentralPoint="{Binding MapCenter}" ZoomLevel="{Binding ZoomLevel, Mode=TwoWay}"
+        <mapVisualization:MapView CentralPoint="{Binding MapCenter, Mode=OneWay}" ZoomLevel="{Binding ZoomLevel, Mode=TwoWay}"
                                   ElementsSource="{Binding Elements}" TileLoader="{Binding TileLoader}"
                                   ClickCommand="{Binding MapClickedCommand}" Focusable="True" />
         <StackPanel VerticalAlignment="Top" HorizontalAlignment="Center" Margin="5" Orientation="Horizontal">
             <TextBox Padding="3" Width="140" Background="#50ffffff"
-                     Text="{Binding MapCenter, Converter={StaticResource EarthPointConverter}, UpdateSourceTrigger=PropertyChanged}" />
+                     Text="{Binding MapCenter, Converter={StaticResource EarthPointConverter}, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
             <ToggleButton Content="" FontSize="15" Padding="2" FontFamily="/Fonts/#Linearicons-Free"
                           Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
                           IsChecked="{Binding IsPointerEnabled}" />
