@@ -3,72 +3,36 @@ using System.Linq;
 using Communications;
 using Communications.Appi.Devices;
 using Communications.Appi.Factories;
+using Communications.Appi.StaticFactory;
 using Communications.Can;
+using Communications.Ports.Factories;
+using Communications.Ports.Tokens;
 
 namespace MapViewer.Emulation.Blok.Can
 {
-    public class AppiCanPortHandlerProvider : ICanPortHandlerProvider, IDisposable
+    public class AppiCanPortHandlerProvider : ICanPortHandlerProvider
     {
-        private readonly IAppiFactory<AppiLine> _appiFactory;
-        private readonly object _appiLocker = new object();
-
-        private AppiDevice<AppiLine> _appiDev;
-        private int _refCounter;
-        public AppiCanPortHandlerProvider(IAppiFactory<AppiLine> AppiFactory) { _appiFactory = AppiFactory; }
-
         public ICanPortHandler OpenPort()
         {
-            lock (_appiLocker)
+            var token = Appi.Any(AppiLine.Can1, AppiStandLine.CanA).Open().GetAwaiter().GetResult();
+            return new PortTokenToPortHandlerProxy(token);
+        }
+
+        private class PortTokenToPortHandlerProxy : ICanPortHandler
+        {
+            private readonly IPortToken<ICanPort> _token;
+
+            public PortTokenToPortHandlerProxy(IPortToken<ICanPort> token)
             {
-                if (_appiDev == null)
-                    _appiDev = OpenDevice();
-                _refCounter++;
-                var handler = new Handler(_appiDev.CanPorts[AppiLine.Can1]);
-                handler.Disposed +=
-                    (s, e) =>
-                    {
-                        lock (_appiLocker)
-                        {
-                            _refCounter--;
-                            if (_refCounter == 0)
-                            {
-                                _appiDev.Dispose();
-                                _appiDev = null;
-                            }
-                        }
-                    };
-                return handler;
+                _token = token;
             }
-        }
 
-        public void Dispose()
-        {
-            if (_appiDev != null)
-                _appiDev.Dispose();
-        }
-
-        private AppiDevice<AppiLine> OpenDevice()
-        {
-            IAppiDeviceInfo slot = _appiFactory.EnumerateDevices().First();
-            AppiDevice<AppiLine> dev = _appiFactory.OpenDevice(slot);
-
-            dev.CanPorts[AppiLine.Can1].Options.BaudRate = BaudRates.CBR_100K;
-            dev.CanPorts[AppiLine.Can2].Options.BaudRate = BaudRates.CBR_100K;
-            return dev;
-        }
-
-        private class Handler : ICanPortHandler
-        {
-            public Handler(ICanPort Port) { this.Port = Port; }
-            public void Dispose() { OnDisposed(); }
-            public ICanPort Port { get; private set; }
-            public event EventHandler Disposed;
-
-            protected virtual void OnDisposed()
+            public void Dispose()
             {
-                EventHandler handler = Disposed;
-                if (handler != null) handler(this, EventArgs.Empty);
+                _token.Dispose();
             }
+
+            public ICanPort Port => _token.Port;
         }
     }
 }

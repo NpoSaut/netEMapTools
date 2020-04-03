@@ -17,7 +17,10 @@ namespace MapViewer.Emulation.Blok.Emission.Implementations
         private const int ImitMmAltSpMagDescriptor = 0x7EA << 5;
         private readonly ICanPortHandlerProvider _canPortHandlerProvider;
 
-        public ElectronicMapImitationEmitter(ICanPortHandlerProvider CanPortHandlerProvider) { _canPortHandlerProvider = CanPortHandlerProvider; }
+        public ElectronicMapImitationEmitter(ICanPortHandlerProvider CanPortHandlerProvider)
+        {
+            _canPortHandlerProvider = CanPortHandlerProvider;
+        }
 
         public IObservable<NavigationInformation> Emit(IObservable<NavigationInformation> Navigation)
         {
@@ -29,27 +32,29 @@ namespace MapViewer.Emulation.Blok.Emission.Implementations
                     new
                     {
                         interval = 1000,
-                        task = (Action<NavigationInformation>)(n => EmitPosition(canPortHandler.Port, n.Position, n.Reliability))
+                        task = (Action<NavigationInformation>) (n =>
+                            EmitPosition(canPortHandler.Port, n.Position, n.Reliability))
                     },
                     new
                     {
                         interval = 1000,
-                        task = (Action<NavigationInformation>)(n => EmitTime(canPortHandler.Port, DateTime.Now))
+                        task = (Action<NavigationInformation>) (n => EmitTime(canPortHandler.Port, DateTime.Now))
                     },
                     new
                     {
                         interval = 1000,
-                        task = (Action<NavigationInformation>)(n => EmitMysteriousStuffWithSpeed(canPortHandler.Port, n.Speed))
+                        task = (Action<NavigationInformation>) (n =>
+                            EmitMysteriousStuffWithSpeed(canPortHandler.Port, n.Speed))
                     }
                 };
 
             var sub = new CompositeDisposable(
                 emulationTasks
-                    .Select(t => new { t.task, sampler = Observable.Interval(TimeSpan.FromMilliseconds(t.interval)) })
+                    .Select(t => new {t.task, sampler = Observable.Interval(TimeSpan.FromMilliseconds(t.interval))})
                     .Select(t => Navigation.CombineLatest(t.sampler, (n, i) => n)
-                                           .Sample(t.sampler)
-                                           .Subscribe(t.task))
-                    .Concat(new[] { canPortHandler })
+                        .Sample(t.sampler)
+                        .Subscribe(t.task))
+                    .Concat(new[] {canPortHandler})
                     .ToList());
 
             Navigation.Subscribe(_ => { }, sub.Dispose);
@@ -60,12 +65,12 @@ namespace MapViewer.Emulation.Blok.Emission.Implementations
         {
             var ms = new MemoryStream();
             var writer = new BinaryWriter(ms);
-            writer.Write((ushort)0);
-            writer.Write((ushort)(0x03ff & (int)Speed));
-            writer.Write((byte)0);
-            writer.Write((byte)0);
-            writer.Write((byte)0x80);
-            writer.Write((byte)0);
+            writer.Write((ushort) 0);
+            writer.Write((ushort) (0x03ff & (int) Speed));
+            writer.Write((byte) 0);
+            writer.Write((byte) 0);
+            writer.Write((byte) 0x80);
+            writer.Write((byte) 0);
 
             var frame = CanFrame.NewWithDescriptor(ImitMmAltSpMagDescriptor, ms.ToArray());
             Port.BeginSend(frame);
@@ -81,8 +86,8 @@ namespace MapViewer.Emulation.Blok.Emission.Implementations
         private void EmitPosition(ICanPort Port, EarthPoint Position, bool Reliability)
         {
             var frame = new MmAltLongFrame(Position.Latitude,
-                                           Position.Longitude,
-                                           Reliability).GetCanFrame();
+                Position.Longitude,
+                Reliability).GetCanFrame();
             var fx = CanFrame.NewWithDescriptor(ImitMmAltLongDescriptor, frame.Data);
             Port.BeginSend(fx);
         }

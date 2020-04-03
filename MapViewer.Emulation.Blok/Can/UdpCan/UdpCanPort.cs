@@ -5,8 +5,10 @@ using System.Net.Sockets;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Reactive.Threading.Tasks;
+using Communications;
 using Communications.Can;
 using Communications.Transactions;
+using Communications.Transactions.Results;
 
 namespace MapViewer.Emulation.Blok.Can.UdpCan
 {
@@ -20,11 +22,11 @@ namespace MapViewer.Emulation.Blok.Can.UdpCan
             _client = new UdpClient(LocalEnpPoint);
             _client.Connect(RemoteEndPoint);
 
-            IConnectableObservable<ITransaction<CanFrame>> rx =
+            var rx =
                 Observable.Defer(() => _client.ReceiveAsync().ToObservable())
-                          .Repeat()
-                          .Select(CreateCanTransaction)
-                          .Publish();
+                    .Repeat()
+                    .Select(CreateCanTransaction)
+                    .Publish();
             Rx = rx;
             _rxConnection = rx.Connect();
 
@@ -41,12 +43,6 @@ namespace MapViewer.Emulation.Blok.Can.UdpCan
         /// <summary>Поток входящих сообщений</summary>
         public IObservable<ITransaction<CanFrame>> Rx { get; private set; }
 
-        /// <summary>Поток исходящих сообщений</summary>
-        public IObserver<CanFrame> Tx { get; private set; }
-
-        /// <summary>Опции порта</summary>
-        public CanPortOptions Options { get; private set; }
-
         /// <summary>Начинает отправку кадра</summary>
         /// <param name="Frame">Кадр для отправки</param>
         /// <returns>Транзакция передачи</returns>
@@ -58,23 +54,36 @@ namespace MapViewer.Emulation.Blok.Can.UdpCan
                 writer.Write(Frame.Id);
                 writer.Write(Frame.Data);
 
-                byte[] buffer = ms.ToArray();
+                var buffer = ms.ToArray();
                 _client.Send(buffer, buffer.Length);
-                return new InstantaneousTransaction<CanFrame>(Frame);
+                return Transaction.WithResult(Frame);
             }
         }
 
         private ITransaction<CanFrame> CreateCanTransaction(UdpReceiveResult Packet)
         {
-            CanFrame frame = CanFrame.NewWithId(BitConverter.ToInt32(Packet.Buffer, 0),
-                                                Packet.Buffer, 4, Packet.Buffer.Length - 4);
-            return new InstantaneousTransaction<CanFrame>(frame);
+            var frame = CanFrame.NewWithId(BitConverter.ToInt32(Packet.Buffer, 0),
+                Packet.Buffer, 4, Packet.Buffer.Length - 4);
+            return Transaction.WithResult(frame);
         }
 
         public class UdpCanPortOptions : CanPortOptions
         {
             /// <summary>Скорость обмена</summary>
             public override int BaudRate { get; set; }
+
+            public UdpCanPortOptions() : base(false, false)
+            {
+            }
         }
+
+        public bool IsClosed => false;
+        public event EventHandler Disconnected;
+
+        public void Close()
+        {
+        }
+
+        public ICanPortOptions Options { get; }
     }
 }

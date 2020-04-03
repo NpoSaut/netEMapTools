@@ -8,7 +8,6 @@ using MapViewer.Emulation.Blok.Emission.Options;
 using MapViewer.Emulation.Blok.ViewModels.Options;
 using MapViewer.Emulation.Blok.ViewModels.Options.Producing;
 using Microsoft.Practices.Unity;
-using ReactiveWinUsb;
 
 namespace MapViewer.Emulation.Blok.Modules
 {
@@ -19,20 +18,16 @@ namespace MapViewer.Emulation.Blok.Modules
         public override void Initialize()
         {
             Container
-                .RegisterType<IUsbFacade, WinUsbFacade>(new ContainerControlledLifetimeManager())
-                .RegisterType<IAppiFactory<AppiLine>, AppiBlockFactory>(new ContainerControlledLifetimeManager());
-
-            Container
                 .RegisterType<IBlokEmitterFactory>(
                     "can", new ContainerControlledLifetimeManager(),
-                    new InjectionFactory(c => new CanBlokEmitterFactory("Через АППИ", new AppiCanPortHandlerProvider(c.Resolve<IAppiFactory<AppiLine>>()))))
+                    new InjectionFactory(c => new CanBlokEmitterFactory("Через АППИ", new AppiCanPortHandlerProvider())))
                 .RegisterType<IBlokEmitterFactory>(
                     "udp-can", new ContainerControlledLifetimeManager(),
                     new InjectionFactory(c => new CanBlokEmitterFactory("Через UDP-CAN", new UdpCanPortHandlerProvider())))
                 .RegisterType<IBlokEmitterFactory, UdpBlokEmitterFactory>("udp", new ContainerControlledLifetimeManager())
                 .RegisterType<IBlokEmitterFactory>(
                     "can-imitation", new ContainerControlledLifetimeManager(),
-                    new InjectionFactory(c => new ElectronicMapImitationEmitterFactory(new AppiCanPortHandlerProvider(c.Resolve<IAppiFactory<AppiLine>>()))));
+                    new InjectionFactory(c => new ElectronicMapImitationEmitterFactory(new AppiCanPortHandlerProvider())));
 
             Container
                 .RegisterType<IOptionViewModelsSetFactory, OptionViewModelsSetFactory>(new ContainerControlledLifetimeManager())

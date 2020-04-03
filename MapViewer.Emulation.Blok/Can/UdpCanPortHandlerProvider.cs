@@ -9,13 +9,20 @@ namespace MapViewer.Emulation.Blok.Can
         public ICanPortHandler OpenPort()
         {
             return new Handler(new UdpCanPort(new IPEndPoint(IPAddress.Loopback, 0),
-                                              new IPEndPoint(IPAddress.Loopback, 50326)));
+                new IPEndPoint(IPAddress.Loopback, 50326)));
         }
 
         private class Handler : ICanPortHandler
         {
-            public Handler(ICanPort Port) { this.Port = Port; }
-            public void Dispose() { Port.Dispose(); }
+            public Handler(ICanPort Port)
+            {
+                this.Port = Port;
+            }
+
+            public void Dispose()
+            {
+            }
+
             public ICanPort Port { get; private set; }
         }
     }

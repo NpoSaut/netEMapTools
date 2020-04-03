@@ -26,7 +26,7 @@ namespace MapViewer.Emulation.Blok.Wheels
             GetParameters();
 
             var descriptor = BlokFrame.GetDescriptors<IpdState>()[HalfsetKind.SetA];
-            Port.Rx.WaitForTransactionCompleated()
+            Port.Rx.Frames()
                 .Where(f => f.Descriptor == descriptor)
                 .Select(BlokFrame.GetBlokFrame<IpdState>)
                 .Subscribe(ProcessIpdState);
