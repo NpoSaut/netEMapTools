@@ -11,6 +11,9 @@ namespace Tracking.Modules
     {
         public TrackingInterfaceModule(IUnityContainer Container, IRegionManager RegionManager) : base(Container, RegionManager) { }
 
-        public override void Initialize() { }
+        public override void Initialize()
+        {
+            Container.Resolve<IPathRiderProvider>();
+        }
     }
 }
