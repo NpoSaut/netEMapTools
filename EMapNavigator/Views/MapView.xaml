@@ -13,7 +13,7 @@
         <eMapNavigator:EarthPointToStringConverter x:Key="EarthPointConverter" />
     </UserControl.Resources>
     <Grid>
-        <mapVisualization:MapView CentralPoint="{Binding MapCenter, Mode=OneWay}" ZoomLevel="{Binding ZoomLevel, Mode=TwoWay}"
+        <mapVisualization:MapView CentralPoint="{Binding MapCenter}" ZoomLevel="{Binding ZoomLevel, Mode=TwoWay}"
                                   ElementsSource="{Binding Elements}" TileLoader="{Binding TileLoader}"
                                   ClickCommand="{Binding MapClickedCommand}" Focusable="True" />
         <StackPanel VerticalAlignment="Top" HorizontalAlignment="Center" Margin="5" Orientation="Horizontal">
