@@ -103,10 +103,8 @@
     </Reference>
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
@@ -138,7 +136,6 @@
     <Compile Include="Settings\Interfaces\ISettingsFactory.cs" />
     <Compile Include="ViewModels\MappingToolbarViewModel.cs" />
     <Compile Include="ViewModels\MapViewModel.cs" />
-    <Compile Include="ViewModels\WheelViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\MappingToolbarView.xaml.cs">
       <DependentUpon>MappingToolbarView.xaml</DependentUpon>
@@ -205,41 +202,17 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BlokCanTracking\BlokCanTracking.csproj">
-      <Project>{54EB8115-E732-454C-B513-368080E12A17}</Project>
-      <Name>BlokCanTracking</Name>
-    </ProjectReference>
     <ProjectReference Include="..\BlokMap\BlokMap.csproj">
       <Project>{23739518-611C-45A5-AE6F-258D2846E1C9}</Project>
       <Name>BlokMap</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Can\BlokFrames\BlokFrames.csproj">
-      <Project>{405B0F26-46EE-4D8C-9267-652F7D4C4AB0}</Project>
-      <Name>BlokFrames</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Can\Communications\Communications.csproj">
-      <Project>{6C5B1ECA-5187-4F63-8CF1-C17DF50D0F65}</Project>
-      <Name>Communications</Name>
     </ProjectReference>
     <ProjectReference Include="..\Geographics\Geographics.csproj">
       <Project>{4eaf91df-7a6c-4f0e-b15b-f372ce42c8d0}</Project>
       <Name>Geographics</Name>
     </ProjectReference>
-    <ProjectReference Include="..\GMapElements\GMapElements.csproj">
-      <Project>{87d32b78-3566-4d13-9b15-2b369e04a325}</Project>
-      <Name>GMapElements</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MapViewControl\MapVisualization.csproj">
       <Project>{e4d20511-9feb-4102-bee2-208b124c60c4}</Project>
       <Name>MapVisualization</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MapViewer.Emulation.Blok\MapViewer.Emulation.Blok.csproj">
-      <Project>{F88BA4DE-2663-44C1-A953-F0D5E49396A1}</Project>
-      <Name>MapViewer.Emulation.Blok</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MapViewer.Emulation\MapViewer.Emulation.csproj">
-      <Project>{45DBB5B9-9527-4394-AD47-59EE02BD0E5E}</Project>
-      <Name>MapViewer.Emulation</Name>
     </ProjectReference>
     <ProjectReference Include="..\MapViewer.GoogleGeocoding\MapViewer.GoogleGeocoding.csproj">
       <Project>{E95C2324-4902-4BB3-A30D-6A9E7E5AF8C2}</Project>
@@ -248,10 +221,6 @@
     <ProjectReference Include="..\MapViewer.Shared\MapViewer.Shared.csproj">
       <Project>{4B6E0840-94A8-4CCD-AAB8-C4C24383229E}</Project>
       <Name>MapViewer.Shared</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MsulEmulation\MsulEmulation.csproj">
-      <Project>{BB9BE2B4-DE1A-471D-A915-44C1E49D6C96}</Project>
-      <Name>MsulEmulation</Name>
     </ProjectReference>
     <ProjectReference Include="..\Tracking\Tracking.csproj">
       <Project>{D8EA3F6F-A88B-475A-89DF-3B1CA6C5AD8D}</Project>

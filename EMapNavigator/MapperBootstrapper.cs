@@ -3,7 +3,6 @@ using System.Windows;
 using BlokMap.Modules;
 using EMapNavigator.Modules;
 using MapViewer;
-using MapViewer.Emulation.Modules;
 using MapViewer.Environment;
 using MapViewer.Environment.Implementations;
 using MapViewer.GoogleGeocoding;
