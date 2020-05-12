@@ -42,13 +42,26 @@ namespace Tracking.Formatters
         {
             XDocument doc = XDocument.Load(input);
             if (doc.Root == null) throw new ArgumentException("Указанный файл трека пуст");
+            var trackPoints =
+                doc.Root
+                   .Elements()
+                   .Where(e => e.Name.LocalName == "trk")
+                   .SelectMany(
+                        track =>
+                            track.Elements()
+                                 .Where(e => e.Name.LocalName == "trkseg")
+                                 .SelectMany(
+                                      seg =>
+                                          seg.Elements()
+                                             .Where(e => e.Name.LocalName == "trkpt")
+                                             .Select(
+                                                  XPoint =>
+                                                      new EarthPoint(
+                                                          (Double) XPoint.Attribute("lat"),
+                                                          (Double) XPoint.Attribute("lon")))))
+                   .ToList();
             return
-                new GpsTrack(doc.Root
-                                .Elements("trk").First()
-                                .Elements("trkseg").First()
-                                .Elements("trkpt").Select(XPoint =>
-                                                          new EarthPoint((Double)XPoint.Attribute("lat"),
-                                                                         (Double)XPoint.Attribute("lon"))).ToList());
+                new GpsTrack(trackPoints);
         }
     }
 }
