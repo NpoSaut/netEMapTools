@@ -2,6 +2,7 @@
 using MapViewer.Mapping;
 using Microsoft.Practices.Unity;
 using Tracking.Formatters;
+using Tracking.Formatters.CanLog;
 using Tracking.Presenting;
 using Tracking.ViewModels;
 
@@ -16,6 +17,7 @@ namespace Tracking.Modules
             Container
                 .RegisterType<ITrackFormatter, GpxTrackFormatter>("GpxTrackFormatter", new ContainerControlledLifetimeManager())
                 .RegisterType<ITrackFormatter, PlainRadianTextFormatter>("PlainRadianTextFormatter", new ContainerControlledLifetimeManager())
+                .RegisterType<ITrackFormatter, CanLogTrackFormatter>("CanLogFormatter", new ContainerControlledLifetimeManager())
                 .RegisterType<IPathRider, TrackPathRider>(new ContainerControlledLifetimeManager())
                 .RegisterType<ITrackPresenter>(
                     new ContainerControlledLifetimeManager(),

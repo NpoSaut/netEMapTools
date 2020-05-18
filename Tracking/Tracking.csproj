@@ -98,6 +98,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Formatters\CanLog\CanFrameLogRecord.cs" />
+    <Compile Include="Formatters\CanLog\CanLogTrackFormatter.cs" />
+    <Compile Include="Formatters\CanLog\MmAltLongFrame.cs" />
     <Compile Include="Formatters\GpxTrackFormatter.cs" />
     <Compile Include="Formatters\ITrackFormatter.cs" />
     <Compile Include="Formatters\PlainRadianTextFormatter.cs" />
