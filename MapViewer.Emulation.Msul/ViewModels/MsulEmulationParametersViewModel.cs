@@ -19,6 +19,17 @@ namespace MapViewer.Emulation.Msul.ViewModels
         private readonly IWheel _wheel;
         private int _activeSection;
         private double _altitude;
+
+        private readonly IList<CarriageParametersViewModel> _defaultTrainConfiguration =
+            new[]
+            {
+                new CarriageParametersViewModel(1, CarriageKind.TractionHead, CarriagePosition.Left),
+                new CarriageParametersViewModel(2, CarriageKind.HighVoltage,  CarriagePosition.Middle),
+                new CarriageParametersViewModel(3, CarriageKind.Normal,       CarriagePosition.Middle),
+                new CarriageParametersViewModel(4, CarriageKind.HighVoltage,  CarriagePosition.Middle),
+                new CarriageParametersViewModel(5, CarriageKind.TractionHead, CarriagePosition.Right)
+            };
+
         private bool _emergencyStop;
         private bool _leftDoorLocked;
         private bool _leftDoorOpened;
@@ -29,29 +40,22 @@ namespace MapViewer.Emulation.Msul.ViewModels
         private TimeSpan _timeShift;
         private int _trainNumber;
 
-        public MsulEmulationParametersViewModel(IWheel Wheel, IPathRiderProvider PathRiderProvider)
+        public MsulEmulationParametersViewModel(
+            IWheel Wheel, IPathRiderProvider PathRiderProvider, IList<CarriageParametersViewModel> Carriages = null)
         {
-            _wheel = Wheel;
+            _wheel    = Wheel;
             TimeShift = TimeSpan.FromHours(15) - DateTime.Now.TimeOfDay;
 
-            TrainNumber = 777;
+            TrainNumber        = 777;
             OutdoorTemperature = -18.4;
-            EmergencyStop = false;
-            LeftDoorLocked = true;
-            RightDoorLocked = false;
-            LeftDoorOpened = false;
-            RightDoorOpened = false;
-            LightOn = true;
+            EmergencyStop      = false;
+            LeftDoorLocked     = true;
+            RightDoorLocked    = false;
+            LeftDoorOpened     = false;
+            RightDoorOpened    = false;
+            LightOn            = true;
 
-            Carriages =
-                new[]
-                {
-                    new CarriageParametersViewModel(1, CarriageKind.TractionHead, CarriagePosition.Left),
-                    new CarriageParametersViewModel(2, CarriageKind.HighVoltage, CarriagePosition.Middle),
-                    new CarriageParametersViewModel(3, CarriageKind.Normal, CarriagePosition.Middle),
-                    new CarriageParametersViewModel(4, CarriageKind.HighVoltage, CarriagePosition.Middle),
-                    new CarriageParametersViewModel(5, CarriageKind.TractionHead, CarriagePosition.Right)
-                };
+            this.Carriages = Carriages ?? _defaultTrainConfiguration;
 
             Observable.Interval(TimeSpan.FromSeconds(1))
                       .Select(i => DateTime.Now + TimeShift)
@@ -77,97 +81,88 @@ namespace MapViewer.Emulation.Msul.ViewModels
 
         public bool IsLeftSectionActive
         {
-            get { return _isLeftSectionActive.Value; }
-            set { ActiveSection = 1; }
+            get => _isLeftSectionActive.Value;
+            set => ActiveSection = 1;
         }
 
         public bool IsRightSectionActive
         {
-            get { return _isRightSectionActive.Value; }
-            set { ActiveSection = 5; }
+            get => _isRightSectionActive.Value;
+            set => ActiveSection = 5;
         }
 
-        public DateTime Time
-        {
-            get { return _time.Value; }
-        }
+        public DateTime Time => _time.Value;
 
         public TimeSpan TimeShift
         {
-            get { return _timeShift; }
-            set { this.RaiseAndSetIfChanged(ref _timeShift, value); }
+            get => _timeShift;
+            set => this.RaiseAndSetIfChanged(ref _timeShift, value);
         }
 
         public double OutdoorTemperature
         {
-            get { return _outdoorTemperature; }
-            set { this.RaiseAndSetIfChanged(ref _outdoorTemperature, value); }
+            get => _outdoorTemperature;
+            set => this.RaiseAndSetIfChanged(ref _outdoorTemperature, value);
         }
 
         public bool EmergencyStop
         {
-            get { return _emergencyStop; }
-            set { this.RaiseAndSetIfChanged(ref _emergencyStop, value); }
+            get => _emergencyStop;
+            set => this.RaiseAndSetIfChanged(ref _emergencyStop, value);
         }
 
         public bool LeftDoorLocked
         {
-            get { return _leftDoorLocked; }
-            set { this.RaiseAndSetIfChanged(ref _leftDoorLocked, value); }
+            get => _leftDoorLocked;
+            set => this.RaiseAndSetIfChanged(ref _leftDoorLocked, value);
         }
 
         public bool RightDoorLocked
         {
-            get { return _rightDoorLocked; }
-            set { this.RaiseAndSetIfChanged(ref _rightDoorLocked, value); }
+            get => _rightDoorLocked;
+            set => this.RaiseAndSetIfChanged(ref _rightDoorLocked, value);
         }
 
         public bool LeftDoorOpened
         {
-            get { return _leftDoorOpened; }
-            set { this.RaiseAndSetIfChanged(ref _leftDoorOpened, value); }
+            get => _leftDoorOpened;
+            set => this.RaiseAndSetIfChanged(ref _leftDoorOpened, value);
         }
 
         public bool RightDoorOpened
         {
-            get { return _rightDoorOpened; }
-            set { this.RaiseAndSetIfChanged(ref _rightDoorOpened, value); }
+            get => _rightDoorOpened;
+            set => this.RaiseAndSetIfChanged(ref _rightDoorOpened, value);
         }
 
         public bool LightOn
         {
-            get { return _lightOn; }
-            set { this.RaiseAndSetIfChanged(ref _lightOn, value); }
+            get => _lightOn;
+            set => this.RaiseAndSetIfChanged(ref _lightOn, value);
         }
 
         public int TrainNumber
         {
-            get { return _trainNumber; }
-            set { this.RaiseAndSetIfChanged(ref _trainNumber, value); }
+            get => _trainNumber;
+            set => this.RaiseAndSetIfChanged(ref _trainNumber, value);
         }
 
-        public double Speed
-        {
-            get { return _speed.Value; }
-        }
+        public double Speed => _speed.Value;
 
-        public EarthPoint Position
-        {
-            get { return _position.Value; }
-        }
+        public EarthPoint Position => _position.Value;
 
         public double Altitude
         {
-            get { return _altitude; }
-            set { this.RaiseAndSetIfChanged(ref _altitude, value); }
+            get => _altitude;
+            set => this.RaiseAndSetIfChanged(ref _altitude, value);
         }
 
-        public IList<CarriageParametersViewModel> Carriages { get; private set; }
+        public IList<CarriageParametersViewModel> Carriages { get; }
 
         public int ActiveSection
         {
-            get { return _activeSection; }
-            set { this.RaiseAndSetIfChanged(ref _activeSection, value); }
+            get => _activeSection;
+            set => this.RaiseAndSetIfChanged(ref _activeSection, value);
         }
     }
 }

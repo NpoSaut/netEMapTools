@@ -43,13 +43,13 @@
         </Grid.Resources>
 
         <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="12" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
@@ -107,14 +107,15 @@
         <ToggleButton Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"
                       Content="Освещение" IsChecked="{Binding LightOn}" />
 
-        <ItemsControl Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2"
-                      ItemsSource="{Binding Carriages}">
-            <ItemsControl.Resources>
-                <DataTemplate DataType="{x:Type viewModels:CarriageParametersViewModel}">
-                    <views:CarriageParametersModel />
-                </DataTemplate>
-            </ItemsControl.Resources>
-        </ItemsControl>
+        <ScrollViewer Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2">
+            <ItemsControl ItemsSource="{Binding Carriages}">
+                <ItemsControl.Resources>
+                    <DataTemplate DataType="{x:Type viewModels:CarriageParametersViewModel}">
+                        <views:CarriageParametersModel />
+                    </DataTemplate>
+                </ItemsControl.Resources>
+            </ItemsControl>
+        </ScrollViewer>
 
     </Grid>
 </UserControl>

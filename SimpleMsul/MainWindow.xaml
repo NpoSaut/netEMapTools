@@ -1,0 +1,24 @@
+﻿<Window x:Class="SimpleMsul.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SimpleMsul"
+        xmlns:viewModels="clr-namespace:SimpleMsul.ViewModels"
+        xmlns:views="clr-namespace:SimpleMsul.Views"
+        SnapsToDevicePixels="True" TextOptions.TextFormattingMode="Display"
+        mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
+        Title="Emsulate" SizeToContent="WidthAndHeight" ResizeMode="CanMinimize">
+    <Grid>
+        <ContentPresenter Margin="2" Content="{Binding ActivePage}">
+            <ContentPresenter.Resources>
+                <DataTemplate DataType="{x:Type viewModels:ConstructorViewModel}">
+                    <views:ConstructorView />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewModels:EmulatorViewModel}">
+                    <views:EmulatorView />
+                </DataTemplate>
+            </ContentPresenter.Resources>
+        </ContentPresenter>
+    </Grid>
+</Window>
