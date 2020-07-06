@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Net;
 using System.Reactive.Linq;
 using MapViewer.Emulation.Msul.Emit;
 using MapViewer.Emulation.Msul.Settings;
@@ -13,7 +14,7 @@ namespace SimpleMsul.ViewModels
 {
     public class MainViewModel : ReactiveObject
     {
-        private ReactiveObject _activePage;
+        private IMainWindowPage _activePage;
 
         public MainViewModel()
         {
@@ -22,24 +23,28 @@ namespace SimpleMsul.ViewModels
 
             this.WhenAnyValue(x => x.ActivePage)
                 .OfType<ConstructorViewModel>()
-                .Select(c => c.Commit.Select(_ => c.TrainViewModel))
+                .Select(c => c.Commit.Select(_ => Tuple.Create(c.TrainViewModel, c.AddressesDictionary)))
                 .Switch()
                 .Subscribe(SwitchToTrainModel);
         }
 
-        public ReactiveObject ActivePage
+        public IMainWindowPage ActivePage
         {
             get => _activePage;
-            set => this.RaiseAndSetIfChanged(ref _activePage, value);
+            set
+            {
+                _activePage?.Dispose();
+                this.RaiseAndSetIfChanged(ref _activePage, value);
+            }
         }
 
-        private void SwitchToTrainModel(List<List<CarriageParametersViewModel>> Train)
+        private void SwitchToTrainModel(Tuple<IList<CarriageParametersViewModel>, IDictionary<int, IPAddress>> Train)
         {
             var parameters = new MsulEmulationParametersViewModel(new FakeWheel(),
                                                                   new FakePathRider(),
-                                                                  Train.SelectMany(x => x).ToList());
+                                                                  Train.Item1);
 
-            var emulation = new EmulatorViewModel(parameters);
+            var emulation = new EmulatorViewModel(parameters, Train.Item2);
 
             ActivePage = emulation;
         }

@@ -27,9 +27,8 @@ namespace MapViewer.Emulation.Msul.ViewModels
                 .Subscribe(link => _emulationSettings.RightEmissionLink = link);
         }
 
-        public MsulEmissionLinkViewModel Right { get; private set; }
-
-        public MsulEmissionLinkViewModel Left { get; private set; }
+        public MsulEmissionLinkViewModel Right { get; }
+        public MsulEmissionLinkViewModel Left { get; }
     }
 
     public class MsulEmissionLinkViewModel : ReactiveObject
@@ -40,19 +39,19 @@ namespace MapViewer.Emulation.Msul.ViewModels
         public MsulEmissionLinkViewModel(IPAddress From, IPAddress To)
         {
             _from = From;
-            _to = To;
+            _to   = To;
         }
 
         public IPAddress From
         {
-            get { return _from; }
-            set { this.RaiseAndSetIfChanged(ref _from, value); }
+            get => _from;
+            set => this.RaiseAndSetIfChanged(ref _from, value);
         }
 
         public IPAddress To
         {
-            get { return _to; }
-            set { this.RaiseAndSetIfChanged(ref _to, value); }
+            get => _to;
+            set => this.RaiseAndSetIfChanged(ref _to, value);
         }
     }
 }

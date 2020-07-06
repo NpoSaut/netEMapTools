@@ -14,6 +14,27 @@
         <TextBlock Margin="2">
             <Run Text="Опишу тут формат" />
         </TextBlock>
+        
+        <TextBlock Margin="2" Text="Введите адреса голов:" />
+        <ItemsControl ItemsSource="{Binding Addresses}" IsTabStop="False" Focusable="False">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type viewModels:IpAddressInputViewModel}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="30" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Margin="2">
+                            <Run Text="Голова" />
+                            <Run Text="{Binding Number}" />
+                        </TextBlock>
+                        <TextBox Grid.Column="1" Margin="2" Padding="5,2"
+                                 Text="{Binding Address}" />
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        
         <Button Margin="2" Padding="5,2" Content="Запустить" IsDefault="True"
                 Command="{Binding Commit}" />
     </StackPanel>

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using MapViewer.Emulation.Msul.Entities;
 using MapViewer.Emulation.Msul.ViewModels;
@@ -8,7 +10,7 @@ using ReactiveUI;
 
 namespace SimpleMsul.ViewModels
 {
-    public class ConstructorViewModel : ReactiveObject
+    public class ConstructorViewModel : ReactiveObject, IMainWindowPage
     {
         private static readonly Dictionary<char, CarriageKind> _carriageKinds = new Dictionary<char, CarriageKind>
         {
@@ -17,21 +19,35 @@ namespace SimpleMsul.ViewModels
             { 'h', CarriageKind.HighVoltage }
         };
 
+        private readonly ObservableAsPropertyHelper<List<IpAddressInputViewModel>> _addresses;
+
+        private readonly CompositeDisposable _cleanUp = new CompositeDisposable();
+
+        private readonly ObservableAsPropertyHelper<IList<CarriageParametersViewModel>> _trainViewModel;
+
         private string _trainConfigurationText = "thnht thnht";
-        private readonly ObservableAsPropertyHelper<List<List<CarriageParametersViewModel>>> _trainViewModel;
 
         public ConstructorViewModel()
         {
             this.WhenAnyValue(x => x.TrainConfigurationText)
                 .Select(ParseConfiguration)
-                .ToProperty(this, x => x.TrainViewModel, out _trainViewModel);
+                .ToProperty(this, x => x.TrainViewModel, out _trainViewModel)
+                .DisposeWith(_cleanUp);
 
-            Commit = ReactiveCommand.Create();
+            this.WhenAnyValue(x => x.TrainViewModel)
+                .Select(t => t.Where(c => c.Kind == CarriageKind.TractionHead)
+                              .Select(c => new IpAddressInputViewModel(c.Number))
+                              .ToList())
+                .ToProperty(this, x => x.Addresses, out _addresses);
+
+            Commit = ReactiveCommand.Create().DisposeWith(_cleanUp);
         }
+
+        public List<IpAddressInputViewModel> Addresses => _addresses.Value;
 
         public ReactiveCommand<object> Commit { get; }
 
-        public List<List<CarriageParametersViewModel>> TrainViewModel => _trainViewModel.Value;
+        public IList<CarriageParametersViewModel> TrainViewModel => _trainViewModel.Value;
 
         public string TrainConfigurationText
         {
@@ -39,13 +55,19 @@ namespace SimpleMsul.ViewModels
             set => this.RaiseAndSetIfChanged(ref _trainConfigurationText, value);
         }
 
-        private List<List<CarriageParametersViewModel>> ParseConfiguration(string Text)
+        public IDictionary<int, IPAddress> AddressesDictionary =>
+            Addresses.ToDictionary(a => a.Number,
+                                   a => IPAddress.Parse(a.Address));
+
+        public void Dispose()
         {
-            var trains = Text.ToLower()
-                             .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
-                             .Select(train => ParseTrain(train).ToList())
-                             .ToList();
-            return trains;
+            _cleanUp.Dispose();
+        }
+
+        private IList<CarriageParametersViewModel> ParseConfiguration(string Text)
+        {
+            var train = ParseTrain(Text.ToLower()).ToList();
+            return train;
         }
 
         private IEnumerable<CarriageParametersViewModel> ParseTrain(string Text)
@@ -54,6 +76,9 @@ namespace SimpleMsul.ViewModels
             {
                 var code = Text[i];
 
+                if (code == ' ')
+                    continue;
+                
                 if (!_carriageKinds.TryGetValue(code, out var kind))
                     throw new ArgumentException($"Неизвестный код вагона: {code}", nameof(Text));
 
@@ -66,6 +91,25 @@ namespace SimpleMsul.ViewModels
 
                 yield return new CarriageParametersViewModel(i, kind, position);
             }
+        }
+    }
+
+    public class IpAddressInputViewModel : ReactiveObject
+    {
+        private string _address;
+
+        public IpAddressInputViewModel(int Number)
+        {
+            this.Number = Number;
+            _address    = $"192.168.0.{Number}";
+        }
+
+        public int Number { get; }
+
+        public string Address
+        {
+            get => _address;
+            set => this.RaiseAndSetIfChanged(ref _address, value);
         }
     }
 }

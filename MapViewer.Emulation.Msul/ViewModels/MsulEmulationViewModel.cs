@@ -3,36 +3,38 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Windows.Input;
 using MapViewer.Emulation.Msul.Emit;
-using MapViewer.Emulation.Msul.Encoding;
 using ReactiveUI;
 
 namespace MapViewer.Emulation.Msul.ViewModels
 {
     public class MsulEmulationViewModel : ReactiveObject
     {
-        private readonly MsulEmulationSource _emulationSource;
+        private readonly MsulEmulationSettingsViewModel _settings;
         private readonly ReactiveCommand<object> _stop;
         private bool _emulationEnabled;
 
-        public MsulEmulationViewModel(MsulEmulationParametersViewModel Parameters, MsulEmulationSource EmulationSource,
-                                      IMsulEmitterProvider EmitterProvider)
+        public MsulEmulationViewModel(
+            MsulEmulationParametersViewModel Parameters, MsulEmulationSettingsViewModel Settings,
+            IMsulEmitterFactory EmitterFactory)
         {
+            _settings       = Settings;
             this.Parameters = Parameters;
-            _emulationSource = EmulationSource;
 
             // ReSharper disable InvokeAsExtensionMethod
-            var emulationSettings = Observable.CombineLatest(EmitterProvider.LeftEmitter,
-                                                             EmitterProvider.RightEmitter,
+            var emulationSettings = Observable.CombineLatest(EmitterFactory.LeftEmitter,
+                                                             EmitterFactory.RightEmitter,
                                                              Parameters.WhenAnyValue(x => x.ActiveSection),
-                                                             (left, right, activeSection) => new { left, right, activeSection });
+                                                             (left, right, activeSection) =>
+                                                                 new { left, right, activeSection });
 
-            ReactiveCommand<CompositeDisposable> run =
+            var run =
                 ReactiveCommand.CreateAsyncObservable(
                     _ => emulationSettings.Select(s => new CompositeDisposable(Emit(s.activeSection == 1, s.left),
                                                                                Emit(s.activeSection == 5, s.right)))
-                                          .Scan((old, current) =>
+                                          .Scan((CompositeDisposable) null,
+                                                (old, current) =>
                                                 {
-                                                    old.Dispose();
+                                                    old?.Dispose();
                                                     return current;
                                                 })
                                           .TakeUntil(_stop));
@@ -43,7 +45,7 @@ namespace MapViewer.Emulation.Msul.ViewModels
             run.Sample(_stop)
                .Subscribe(d => d.Dispose());
 
-            Run = run;
+            Run  = run;
             Stop = _stop;
 
             this.WhenAnyValue(x => x.EmulationEnabled)
@@ -54,23 +56,14 @@ namespace MapViewer.Emulation.Msul.ViewModels
                 .InvokeCommand(Stop);
         }
 
-        public MsulEmulationParametersViewModel Parameters { get; private set; }
-        public ICommand Run { get; private set; }
-        public ICommand Stop { get; private set; }
+        public MsulEmulationParametersViewModel Parameters { get; }
+        public ICommand                         Run        { get; }
+        public ICommand                         Stop       { get; }
 
         public bool EmulationEnabled
         {
-            get { return _emulationEnabled; }
-            set { this.RaiseAndSetIfChanged(ref _emulationEnabled, value); }
-        }
-
-        private IDisposable Emit(bool Active, IMsulEmitter Emitter)
-        {
-            return _emulationSource.EmulationSource(Parameters,
-                                                    Active
-                                                        ? InitializationKind.HeadSection
-                                                        : InitializationKind.TailSection)
-                                   .EmitOn(Emitter);
+            get => _emulationEnabled;
+            set => this.RaiseAndSetIfChanged(ref _emulationEnabled, value);
         }
     }
 }

@@ -1,9 +1,10 @@
 ﻿using System;
+using MapViewer.Emulation.Msul.Encoding;
 
 namespace MapViewer.Emulation.Msul.Emit
 {
     public static class MsulEmitterHelper
     {
-        public static IDisposable EmitOn(this IObservable<MsulMessage> Messages, IMsulEmitter Emitter) { return Emitter.Emit(Messages); }
+        public static IDisposable EmitOn(this IObservable<MsulData> Data, IMsulEmitter Emitter) { return Emitter.Emit(Data); }
     }
 }

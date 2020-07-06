@@ -101,20 +101,22 @@
   <ItemGroup>
     <Compile Include="Emit\EmissionLink.cs" />
     <Compile Include="Emit\IMsulEmitter.cs" />
-    <Compile Include="Emit\IMsulEmitterProvider.cs" />
+    <Compile Include="Emit\IMsulEmitterFactory.cs" />
     <Compile Include="Emit\MsulEmitterHelper.cs" />
     <Compile Include="Emit\UdpMsulEmitter.cs" />
-    <Compile Include="Emit\UdpMsulEmitterProvider.cs" />
+    <Compile Include="Emit\UdpMsulEmitterFactory.cs" />
+    <Compile Include="Emulator.cs" />
     <Compile Include="Encoding\IMsulMessageEncoder.cs" />
     <Compile Include="Encoding\InitializationKind.cs" />
+    <Compile Include="Encoding\MsulData.cs" />
     <Compile Include="Encoding\MsulMessageEncoder.cs" />
     <Compile Include="Entities\CarriageKind.cs" />
     <Compile Include="Modules\MsulEmulationInterfaceModule.cs" />
     <Compile Include="Modules\MsulEmulationServicesModule.cs" />
-    <Compile Include="MsulEmulationSource.cs" />
     <Compile Include="MsulMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\IMsulEmulationSettings.cs" />
+    <Compile Include="ViewModels\MsulEmulationParametersHelper.cs" />
     <Compile Include="ViewModels\MsulEmulationParametersViewModel.cs" />
     <Compile Include="ViewModels\CarriageParametersViewModel.cs" />
     <Compile Include="ViewModels\MsulEmulationSettingsViewModel.cs" />

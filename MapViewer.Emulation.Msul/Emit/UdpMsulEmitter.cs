@@ -1,34 +1,38 @@
 ﻿using System;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Reactive.Linq;
+using MapViewer.Emulation.Msul.Encoding;
 
 namespace MapViewer.Emulation.Msul.Emit
 {
     public class UdpMsulEmitter : IMsulEmitter
     {
         private readonly EmissionLink _emissionLink;
+        private readonly IMsulMessageEncoder _encoder;
         private readonly TimeSpan _messageInterval = TimeSpan.FromMilliseconds(50);
 
-        public UdpMsulEmitter(EmissionLink EmissionLink) { _emissionLink = EmissionLink; }
+        public UdpMsulEmitter(EmissionLink EmissionLink, IMsulMessageEncoder Encoder)
+        {
+            _emissionLink = EmissionLink;
+            _encoder      = Encoder;
+        }
 
-        public IDisposable Emit(IObservable<MsulMessage> Messages)
+        public IDisposable Emit(IObservable<MsulData> Data)
         {
             var client = new UdpClient(new IPEndPoint(_emissionLink.LocalAddress, 0));
 
             return Observable.Interval(_messageInterval)
-                             .CombineLatest(Messages, (i, m) => m)
+                             .CombineLatest(Data, (i, m) => m)
                              .Sample(_messageInterval)
-                             .Select((m, i) => new { m, i = i % m.CarriagesData.Count })
-                             .Subscribe(mx => Emit(client, mx.m, mx.i),
-                                        client.Close);
+                             .Select((m, i) => _encoder.GetMessage(m, i))
+                             .Finally(client.Close)
+                             .Subscribe(m => Emit(client, m));
         }
 
-        private int Emit(UdpClient client, MsulMessage Message, int i)
+        private void Emit(UdpClient client, byte[] Message)
         {
-            byte[] data = Message.CommonData.Concat(Message.CarriagesData[i]).ToArray();
-            return client.Send(data, data.Length, new IPEndPoint(_emissionLink.TargetAddress, 125));
+            client.Send(Message, Message.Length, new IPEndPoint(_emissionLink.TargetAddress, 125));
         }
     }
 }

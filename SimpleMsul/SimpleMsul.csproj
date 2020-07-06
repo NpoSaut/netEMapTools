@@ -78,10 +78,13 @@
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
         </ApplicationDefinition>
+        <Compile Include="Extensions.cs" />
+        <Compile Include="LocalAddressProvider.cs" />
         <Compile Include="Model\FakePathRider.cs" />
         <Compile Include="Model\FakeWheel.cs" />
         <Compile Include="ViewModels\ConstructorViewModel.cs" />
         <Compile Include="ViewModels\EmulatorViewModel.cs" />
+        <Compile Include="ViewModels\IMainWindowPage.cs" />
         <Compile Include="ViewModels\MainViewModel.cs" />
         <Compile Include="Views\ConstructorView.xaml.cs">
           <DependentUpon>ConstructorView.xaml</DependentUpon>
