@@ -5,9 +5,16 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <UseWPF>true</UseWPF>
     <LangVersion>default</LangVersion>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyTitle>Map Viewer</AssemblyTitle>
+    <Company>НПО САУТ</Company>
+    <Product>Map Viewer</Product>
+    <Description>Программа для работы с картами БЛОК</Description>
+    <Copyright>Copyright © NPO SAUT, 2016</Copyright>
     <AssemblyVersion>4.13</AssemblyVersion>
     <FileVersion>4.13</FileVersion>
-    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
