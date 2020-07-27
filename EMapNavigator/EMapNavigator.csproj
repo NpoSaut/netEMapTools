@@ -130,6 +130,7 @@
     <Compile Include="Modules\MappingServicesModule.cs" />
     <Compile Include="Modules\SettingsInterfaceModule.cs" />
     <Compile Include="Modules\SettingsModule.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\Implementations\UserSettings.cs" />
     <Compile Include="Settings\Implementations\JsonUserSettingsFactory.cs" />
     <Compile Include="Settings\Interfaces\IMapPositionSettings.cs" />
