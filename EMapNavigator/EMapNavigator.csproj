@@ -42,4 +42,10 @@
     <ProjectReference Include="..\MapViewer.Shared\MapViewer.Shared.csproj" />
     <ProjectReference Include="..\Tracking\Tracking.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\!res\gps-file-icon\gpsfile.ico">
+      <Link>gpsfile.ico</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 </Project>

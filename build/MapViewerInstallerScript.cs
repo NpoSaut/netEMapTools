@@ -19,14 +19,16 @@ class MapViewerInstallerScript : InstallerScript
 
     protected override void ConfigureProject(Project Project)
     {
-        Project.ResolveWildCards(true)
-               .FindFile(f => f.Name.EndsWith(ExeFileName))
-               .First()
-               .AddAssociation(
-                    new FileAssociation("gps", "application/blok-map-project", "Открыть в MapViewer", "\"%1\"")
-                    {
-                        Icon        = "gpsfile.ico",
-                        Description = "Карта КЛУБ/БЛОК"
-                    });
+        var exeFile = Project.FindFile(f => f.Name.EndsWith(ExeFileName))
+                             .First();
+
+        var iconFile = Project.FindFile(f => f.Name.EndsWith("gpsfile.ico"))
+                              .First();
+
+        exeFile.AddAssociation(new FileAssociation("gps", "application/blok-map-project", "Открыть в MapViewer", "\"%1\"")
+        {
+            Icon        = iconFile.Id,
+            Description = "Карта КЛУБ/БЛОК"
+        });
     }
 }
