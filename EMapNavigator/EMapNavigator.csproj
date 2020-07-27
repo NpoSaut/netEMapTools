@@ -7,7 +7,7 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyTitle>Map Viewer</AssemblyTitle>
+    <AssemblyTitle>MapViewer</AssemblyTitle>
     <Company>НПО САУТ</Company>
     <Product>Map Viewer</Product>
     <Description>Программа для работы с картами БЛОК</Description>
