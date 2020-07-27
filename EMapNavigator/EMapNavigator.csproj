@@ -28,10 +28,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BlokCanTracking\BlokCanTracking.csproj" />
     <ProjectReference Include="..\BlokMap\BlokMap.csproj" />
-    <ProjectReference Include="..\MapViewer.Emulation.Blok\MapViewer.Emulation.Blok.csproj" />
-    <ProjectReference Include="..\MapViewer.Emulation\MapViewer.Emulation.csproj" />
     <ProjectReference Include="..\MapViewer.GoogleGeocoding\MapViewer.GoogleGeocoding.csproj" />
     <ProjectReference Include="..\MapViewer.Shared\MapViewer.Shared.csproj" />
     <ProjectReference Include="..\Tracking\Tracking.csproj" />
