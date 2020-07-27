@@ -30,6 +30,7 @@ namespace Tracking.Formatters.CanLog
 
             IList<EarthPoint> trackPoints =
                 LoadCanLog(input).AsParallel()
+                                 .AsOrdered()
                                  .Select(ParseRecordLine)
                                  .Where(f => f.HasValue)
                                   // ReSharper disable once PossibleInvalidOperationException
