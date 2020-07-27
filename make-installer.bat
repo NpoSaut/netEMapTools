@@ -1,2 +1,5 @@
-powershell -ExecutionPolicy ByPass -File ./build.ps1 -target publish -configuration release -project EMapNavigator -publishplace \\git\ToolsRepo\MapViewer
+dotnet publish build/.build.csproj --output .output/builder --configuration Release
+
+.output\builder\.build.exe --publishplace \\repo\ToolsRepo\MapViewer
+
 pause
