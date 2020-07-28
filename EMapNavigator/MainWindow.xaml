@@ -10,11 +10,11 @@
         Background="{StaticResource {x:Static SystemColors.ControlBrushKey}}">
     <DockPanel>
         <Menu DockPanel.Dock="Top" Name="MainMenu" Margin="3" />
-        <ScrollViewer DockPanel.Dock="Right" Margin="3"
+        <ScrollViewer DockPanel.Dock="Right" Margin="3" Visibility="Collapsed"
                       VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
             <ItemsControl regions:RegionManager.RegionName="Emulators" />
         </ScrollViewer>
-        <Border BorderThickness="0,1,1,0" BorderBrush="#FF8D3300">
+        <Border BorderThickness="0,1,0,0" BorderBrush="#FF8D3300">
             <Grid>
                 <ContentControl regions:RegionManager.RegionName="Map" />
                 <Rectangle VerticalAlignment="Top" Height="7" IsHitTestVisible="False">

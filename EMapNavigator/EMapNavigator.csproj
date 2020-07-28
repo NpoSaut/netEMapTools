@@ -45,4 +45,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="Fonts\Linearicons-Free.ttf" />
+    <Resource Include="Fonts\Linearicons-Free.ttf" />
+  </ItemGroup>
 </Project>
